@@ -1,24 +1,15 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
+/vendor/
+/node_modules/
 /public/hot
 /public/storage
 /storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
-Thumbs.db
+.env
+.DS_Store
+.idea/
+/npm-debug.log
+yarn-error.log
+pnpm-debug.log
+# 빌드 산출물(대부분 서버에서 빌드하므로 보통 커밋하지 않음)
+public/build/
+# 로컬 DB 파일을 쓰는 경우 커밋 금지
+database/*.sqlite

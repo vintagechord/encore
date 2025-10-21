@@ -21,3 +21,5 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
+
+$this->call(\Database\Seeders\DisciplineGenreTagSeeder::class);

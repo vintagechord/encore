@@ -13,7 +13,7 @@
 <div style="display:grid; grid-template-columns: 1fr; gap: 16px;">
 
     {{-- 분야 --}}
-    <section style="border:1px solid #eee; border-radius:8px; padding:12px;">
+    <section style="border:1px solid var(--border); border-radius:8px; padding:12px; background: var(--surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);">
         <h2>분야(Discipline)</h2>
         <form method="post" action="{{ route('admin.taxonomies.store') }}" style="display:flex; gap:8px; align-items:flex-end;">
             @csrf
@@ -57,7 +57,7 @@
     </section>
 
     {{-- 장르 --}}
-    <section style="border:1px solid #eee; border-radius:8px; padding:12px;">
+    <section style="border:1px solid var(--border); border-radius:8px; padding:12px; background: var(--surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);">
         <h2>장르(Genre)</h2>
         <form method="post" action="{{ route('admin.taxonomies.store') }}" style="display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap;">
             @csrf
@@ -112,7 +112,7 @@
     </section>
 
     {{-- 태그 --}}
-    <section style="border:1px solid #eee; border-radius:8px; padding:12px;">
+    <section style="border:1px solid var(--border); border-radius:8px; padding:12px; background: var(--surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);">
         <h2>태그(Tag)</h2>
         <form method="post" action="{{ route('admin.taxonomies.store') }}" style="display:flex; gap:8px; align-items:flex-end;">
             @csrf

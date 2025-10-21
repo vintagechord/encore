@@ -89,7 +89,7 @@
     </div>
 
     {{-- === 요율(다중) === --}}
-    <fieldset style="margin:12px 0; padding:12px; border:1px solid #e5e7eb;">
+    <fieldset style="margin:12px 0; padding:12px; border:1px solid var(--border); background: var(--surface); border-radius:10px;">
         <legend>섭외비(여러 개 추가 가능)</legend>
 
         <table id="feeTable" class="table" style="width:100%;">

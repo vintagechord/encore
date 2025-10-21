@@ -6,32 +6,44 @@
     <title>링크가 만료되었습니다</title>
     <meta name="robots" content="noindex, nofollow">
     <style>
+        :root {
+            --bg: #050912;
+            --fg: #e5ecff;
+            --muted: #97a6c9;
+            --card: #0f1729;
+            --border: #1f2b41;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+        }
+
         body {
             font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
             line-height: 1.55;
             margin: 40px;
-            color: #111
+            color: var(--fg);
+            background: var(--bg);
         }
 
         h1 {
             font-size: 24px;
-            margin: 0 0 10px
+            margin: 0 0 10px;
         }
 
         p {
-            margin: 8px 0
+            margin: 8px 0;
         }
 
         .card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             border-radius: 12px;
-            background: #fafafa;
+            background: var(--card);
             padding: 18px 20px;
-            max-width: 720px
+            max-width: 720px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
         }
 
         .muted {
-            color: #6b7280
+            color: var(--muted);
         }
 
         a.btn {
@@ -39,15 +51,23 @@
             margin-top: 14px;
             padding: 8px 12px;
             border-radius: 8px;
-            background: #111;
+            background: var(--accent);
             color: #fff;
-            text-decoration: none
+            text-decoration: none;
+            border: 1px solid var(--accent);
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        a.btn:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
         }
 
         code {
-            background: #f3f4f6;
+            background: rgba(148, 163, 208, 0.12);
             padding: 2px 6px;
-            border-radius: 6px
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 208, 0.25);
         }
     </style>
 </head>

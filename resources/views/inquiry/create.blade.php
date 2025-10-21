@@ -8,15 +8,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
+    :root {
+      --bg: #060913;
+      --surface: #0f1729;
+      --surface-alt: #152038;
+      --card: #111b30;
+      --border: #1e2a40;
+      --border-alt: #273554;
+      --text: #e5ecff;
+      --muted: #94a3c4;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --danger-bg: rgba(248, 113, 113, 0.18);
+      --danger-border: rgba(248, 113, 113, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      margin: 24px;
-      line-height: 1.5
+      margin: 0;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--text);
+      padding-top: 96px;
+    }
+
+    a {
+      color: #8da2fb;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #b3c0ff;
+      text-decoration: underline;
     }
 
     h1 {
       margin: 0 0 12px;
-      font-size: 22px
+      font-size: 22px;
     }
 
     .topbar {
@@ -24,154 +56,259 @@
       gap: 8px;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px
+      margin-bottom: 12px;
+    }
+
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 24px;
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(7, 12, 24, 0.92);
+      backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 40;
+    }
+
+    .site-nav {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .site-nav .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .site-nav .logo-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #6366f1, #ec4899);
+      display: inline-flex;
+    }
+
+    .site-nav .nav-link {
+      color: var(--muted);
+      border: 1px solid transparent;
+      padding: 8px 12px;
+      border-radius: 999px;
+      transition: background .2s ease, color .2s ease, border-color .2s ease;
+    }
+
+    .site-nav .nav-link:hover {
+      background: rgba(99, 102, 241, 0.18);
+      color: var(--text);
+      border-color: rgba(99, 102, 241, 0.35);
     }
 
     fieldset {
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
-      margin: 12px 0
+      margin: 12px 0;
+      background: var(--surface);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
     }
 
     legend {
       padding: 0 8px;
-      color: #374151
+      color: var(--muted);
     }
 
     .row {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      align-items: center
+      align-items: center;
     }
 
     label {
       display: block;
       font-weight: 600;
-      margin: 8px 0 4px
+      margin: 8px 0 4px;
+      color: var(--text);
     }
 
     input[type="text"],
     input[type="email"],
     input[type="date"],
-    input[type="number"] {
+    input[type="number"],
+    select {
       padding: 10px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border-alt);
       border-radius: 8px;
-      min-width: 260px
+      min-width: 260px;
+      background: var(--card);
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="date"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+      outline: none;
     }
 
     .qty {
       width: 78px;
       padding: 6px 8px;
       border-radius: 8px;
-      border: 1px solid #d1d5db;
-      min-width: 0
+      border: 1px solid var(--border-alt);
+      min-width: 0;
+      background: var(--card);
+      color: var(--text);
     }
 
     .chips {
       display: flex;
       gap: 8px;
-      flex-wrap: wrap
+      flex-wrap: wrap;
     }
 
     .chip {
       display: inline-flex;
       gap: 10px;
       align-items: center;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border-alt);
       border-radius: 999px;
       padding: 6px 10px;
-      background: #f9fafb;
-      flex-wrap: nowrap
+      background: var(--surface-alt);
+      flex-wrap: nowrap;
     }
 
     .chip span {
       white-space: nowrap;
-      line-height: 1.2
+      line-height: 1.2;
     }
 
     .chip .qty {
       flex: 0 0 80px;
       width: 80px;
-      min-width: 80px
+      min-width: 80px;
     }
 
     .chip input[type="checkbox"] {
-      flex: 0 0 auto
+      flex: 0 0 auto;
+      accent-color: var(--accent);
     }
 
     .muted {
-      color: #6b7280
+      color: var(--muted);
     }
 
     .btn {
       padding: 10px 14px;
       border-radius: 10px;
-      border: 1px solid #111;
-      background: #111;
+      border: 1px solid var(--accent);
+      background: var(--accent);
       color: #fff;
       cursor: pointer;
       text-decoration: none;
-      display: inline-block
+      display: inline-block;
+      font-weight: 600;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent);
     }
 
     .panel {
       padding: 10px 12px;
-      border: 1px dashed #e5e7eb;
+      border: 1px dashed var(--border-alt);
       border-radius: 10px;
-      background: #fcfcfd
+      background: var(--card);
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 8px
+      gap: 8px;
     }
 
     .range-wrap {
       padding: 10px 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
     }
 
     .range-row {
       display: flex;
       gap: 12px;
-      align-items: center
+      align-items: center;
     }
 
     .range-row input[type="range"] {
-      width: 280px
-    }
-
-    * {
-      box-sizing: border-box
+      width: 280px;
+      accent-color: var(--accent);
     }
 
     /* 에러 블록 */
     .alert {
-      border: 1px solid #fecaca;
-      background: #fef2f2;
-      color: #991b1b;
+      border: 1px solid var(--danger-border);
+      background: var(--danger-bg);
+      color: #fda4af;
       padding: 12px;
       border-radius: 10px;
-      margin: 12px 0
+      margin: 12px 0;
     }
 
     .alert ul {
-      margin: 6px 0 0 20px
+      margin: 6px 0 0 20px;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      padding: 18px 24px;
+      text-align: center;
+      color: var(--muted);
     }
   </style>
 </head>
 
 <body>
-  <!-- 상단: 제목 + 홈으로 -->
-  <div class="topbar">
-    <h1>문의하기</h1>
-    <a class="btn" href="{{ route('home') }}">홈으로</a>
-  </div>
+  <header class="site-header">
+    <div class="site-nav">
+      <a class="brand" href="{{ route('home') }}" aria-label="Encore 홈">
+        <span class="logo-dot" aria-hidden="true"></span>Encore
+      </a>
+      <a class="nav-link" href="{{ route('inquiry.create') }}">문의</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- 상단: 제목 + 홈으로 -->
+    <div class="topbar">
+      <h1>문의하기</h1>
+      <a class="btn" href="{{ route('home') }}">홈으로</a>
+    </div>
 
   <!-- 에러 요약 -->
   @if ($errors->any())
@@ -311,6 +448,7 @@
       <button class="btn" type="submit">문의 보내기</button>
     </div>
   </form>
+  </main>
 
   <script>
     (function() {
@@ -389,6 +527,10 @@
       syncBudget();
     })();
   </script>
+
+  <footer class="site-footer">
+    <span>&copy; {{ date('Y') }} Encore. 필요한 정보를 편하게 남겨주세요.</span>
+  </footer>
 </body>
 
 </html>

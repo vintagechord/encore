@@ -32,19 +32,22 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <meta name="theme-color" content="#111111">
-    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#050912">
+    <meta name="color-scheme" content="dark">
 
     <style>
         :root {
-            --bg: #ffffff;
-            --fg: #0b0f19;
-            --muted: #6b7280;
-            --accent: #111111;
-            --accent-hover: #000000;
-            --ring: #2563eb;
-            --card: #f9fafb;
-            --border: #e5e7eb;
+            --bg: #050912;
+            --fg: #e6edff;
+            --muted: #97a6c9;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --ring: #4f46e5;
+            --card: #0f1729;
+            --card-alt: #152033;
+            --border: #1f2b41;
+            --chip: rgba(99, 102, 241, 0.18);
+            --chip-border: rgba(99, 102, 241, 0.35);
         }
 
         * {
@@ -95,8 +98,8 @@
             position: sticky;
             top: 0;
             z-index: 20;
-            background: rgba(255, 255, 255, .8);
-            backdrop-filter: saturate(180%) blur(10px);
+            background: rgba(7, 12, 24, .88);
+            backdrop-filter: saturate(200%) blur(12px);
             border-bottom: 1px solid var(--border);
         }
 
@@ -120,9 +123,9 @@
             display: inline-flex;
             align-items: center;
             font-size: 12px;
-            color: #0ea5e9;
-            background: #eff6ff;
-            border: 1px solid #dbeafe;
+            color: #7dd3fc;
+            background: rgba(14, 165, 233, 0.12);
+            border: 1px solid rgba(14, 165, 233, 0.32);
             padding: 2px 8px;
             border-radius: 999px
         }
@@ -138,25 +141,29 @@
             padding: 8px 10px;
             border-radius: 8px;
             border: 1px solid transparent;
-            color: #111
+            color: var(--muted);
+            transition: background .2s ease, color .2s ease, border-color .2s ease;
         }
 
         .nav-link:hover {
-            background: #f3f4f6
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--fg);
+            border-color: rgba(99, 102, 241, 0.35);
         }
 
         .nav-link[aria-current="page"] {
-            border-color: #d1d5db;
-            background: #f9fafb
+            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(99, 102, 241, 0.18);
+            color: var(--fg);
         }
 
         .hero {
             position: relative;
             overflow: hidden;
             background:
-                radial-gradient(1000px 400px at 20% -10%, #e0f2fe 0%, rgba(255, 255, 255, 0) 60%),
-                radial-gradient(800px 340px at 90% 10%, #fce7f3 0%, rgba(255, 255, 255, 0) 55%),
-                var(--bg);
+                radial-gradient(1100px 420px at 10% -20%, rgba(59, 130, 246, 0.28) 0%, rgba(5, 9, 18, 0) 60%),
+                radial-gradient(900px 360px at 95% 10%, rgba(236, 72, 153, 0.25) 0%, rgba(5, 9, 18, 0) 58%),
+                linear-gradient(180deg, #050912 0%, #070c1f 100%);
             border-bottom: 1px solid var(--border);
         }
 
@@ -214,11 +221,12 @@
         .btn-ghost {
             background: transparent;
             border-color: var(--border);
-            color: var(--fg)
+            color: var(--fg);
         }
 
         .btn-ghost:hover {
-            background: #f3f4f6
+            background: rgba(99, 102, 241, 0.16);
+            border-color: rgba(99, 102, 241, 0.35);
         }
 
         .features {
@@ -257,8 +265,8 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: #fff;
-            border: 1px solid var(--border)
+            background: var(--chip);
+            border: 1px solid var(--chip-border)
         }
 
         /* ▼ Testimonials */
@@ -272,8 +280,167 @@
             gap: 14px
         }
 
+        .success-stories {
+            padding: 48px 0 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .success-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .success-title {
+            margin: 0;
+            font-size: clamp(24px, 4vw, 32px);
+        }
+
+        .success-eyebrow {
+            display: inline-flex;
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .success-tabs {
+            display: inline-flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .success-tab {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background .2s ease, color .2s ease, border-color .2s ease;
+        }
+
+        .success-tab.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--fg);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+
+        .stories-frame {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stories-track {
+            display: none;
+        }
+
+        .stories-track.active {
+            display: block;
+        }
+
+        .stories-slide {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .stories-slide.current {
+            display: grid;
+        }
+
+        .story-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .story-thumb {
+            position: relative;
+            padding-top: 62%;
+            background: rgba(148, 163, 208, 0.12);
+        }
+
+        .story-thumb img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .story-body {
+            padding: 14px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .story-body h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .story-meta {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .story-meta strong {
+            display: inline-block;
+            min-width: 44px;
+            color: var(--fg);
+        }
+
+        .stories-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
+            gap: 12px;
+            color: var(--muted);
+        }
+
+        .stories-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .stories-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .stories-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.35);
+        }
+
+        .stories-btn:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
         .t-card {
-            background: #fff;
+            background: var(--card);
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 16px;
@@ -284,9 +451,9 @@
 
         .t-kind {
             font-size: 12px;
-            color: #2563eb;
-            background: #eff6ff;
-            border: 1px solid #dbeafe;
+            color: #c7d2ff;
+            background: rgba(99, 102, 241, 0.16);
+            border: 1px solid rgba(99, 102, 241, 0.35);
             border-radius: 999px;
             padding: 2px 8px;
             display: inline-flex;
@@ -300,7 +467,7 @@
 
         blockquote {
             margin: 0;
-            color: #374151;
+            color: var(--fg);
             font-size: 14px;
             line-height: 1.6
         }
@@ -315,7 +482,8 @@
         }
 
         .stars {
-            letter-spacing: 1px
+            letter-spacing: 1px;
+            color: #facc15;
         }
 
         .sr-only {
@@ -340,11 +508,16 @@
                 grid-template-columns: repeat(3, 1fr);
                 gap: 16px
             }
+
+            .stories-slide {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
         }
 
         .footer {
             border-top: 1px solid var(--border);
-            margin-top: 36px
+            margin-top: 36px;
+            background: rgba(5, 9, 18, 0.7);
         }
 
         .footer-inner {
@@ -364,15 +537,15 @@
             right: 14px;
             bottom: 14px;
             z-index: 40;
-            background: #111;
-            color: #fff;
-            border: 1px solid #111;
+            background: rgba(7, 12, 24, 0.95);
+            color: var(--fg);
+            border: 1px solid var(--border);
             border-radius: 999px;
             display: flex;
             align-items: center;
             gap: 6px;
             padding: 6px 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+            box-shadow: 0 12px 30px rgba(2, 4, 12, .55);
         }
 
         .ab-toggle .label {
@@ -382,23 +555,26 @@
         }
 
         .ab-btn {
-            background: #fff;
-            color: #111;
-            border: 1px solid #e5e7eb;
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border);
             border-radius: 999px;
             padding: 6px 10px;
             font-weight: 700;
             cursor: pointer;
+            transition: background .2s ease, color .2s ease, border-color .2s ease;
         }
 
         .ab-btn:hover {
-            background: #f9fafb
+            background: rgba(99, 102, 241, 0.16);
+            color: var(--fg);
+            border-color: rgba(99, 102, 241, 0.35);
         }
 
         .ab-btn.active {
-            background: #111;
+            background: var(--accent);
             color: #fff;
-            border-color: #111
+            border-color: var(--accent);
         }
 
         /* Skip link for a11y */
@@ -417,7 +593,7 @@
             height: auto;
             padding: 8px 12px;
             margin: 8px;
-            background: #111;
+            background: var(--accent);
             color: #fff;
             border-radius: 8px
         }
@@ -425,17 +601,25 @@
 </head>
 
 <body>
+@php
+    use Illuminate\Support\Str;
+    $storyGroups = isset($storyGroups) ? $storyGroups : collect();
+    $firstCategory = $storyGroups->keys()->first();
+    $initialPages = $storyGroups->isNotEmpty() ? max(1, $storyGroups->first()->chunk(4)->count()) : 1;
+@endphp
     <a class="skip" href="#main">본문 바로가기</a>
 
     <header aria-label="상단 내비게이션">
         <div class="container nav">
             <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈" aria-current="page">
-                <span aria-hidden="true" style="display:inline-flex;width:22px;height:22px;border-radius:6px;background:#111;"></span>
+                <span aria-hidden="true" style="display:inline-flex;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
                 <span>Encore</span>
             </a>
             <div class="nav-right">
+                @if($storyGroups->isNotEmpty())
+                <a class="nav-link" href="#success-stories">성공 사례</a>
+                @endif
                 <a class="nav-link" href="{{ route('inquiry.create') }}">문의</a>
-                <a class="nav-link" href="{{ url('/admin/intakes/list') }}">관리자</a>
                 <span class="badge" aria-label="베타 배지">BETA</span>
             </div>
         </div>
@@ -468,32 +652,32 @@
                 <div class="features" aria-label="핵심 기능 소개">
                     <article class="card">
                         <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                                 <path d="M20 6L9 17l-5-5" />
                             </svg>
                         </span>
                         <div>
                             <h3>간편한 문의</h3>
-                            <p>필수 항목만 입력하면 접수가 끝. 이후 진행 상황은 이메일로 안내드립니다.</p>
+                            <p>핵심 정보 몇 가지만 입력하면 접수 완료, 진행 상황은 실시간으로 메일로 안내합니다.</p>
                         </div>
                     </article>
 
                     <article class="card">
                         <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                                 <circle cx="12" cy="12" r="9" />
                                 <path d="M12 7v5l3 3" />
                             </svg>
                         </span>
                         <div>
                             <h3>빠른 추천</h3>
-                            <p>요청을 바탕으로 후보를 선별해 공유 가능한 페이지로 정리해 드립니다.</p>
+                            <p>요청 조건을 기반으로 MD가 후보를 큐레이션하고, 비교하기 쉬운 카드로 정리해 드립니다.</p>
                         </div>
                     </article>
 
                     <article class="card">
                         <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                 <polyline points="7 10 12 15 17 10" />
                                 <line x1="12" x2="12" y1="15" y2="3" />
@@ -501,17 +685,93 @@
                         </span>
                         <div>
                             <h3>링크로 공유</h3>
-                            <p>공개 링크를 복사·전달하고, 필요 시 즉시 회수하거나 새 링크로 교체할 수 있어요.</p>
+                            <p>링크로 안전하게 공유하고, 필요하면 즉시 회수·재발급으로 보안과 협업을 모두 잡습니다.</p>
                         </div>
                     </article>
                 </div>
 
-                <div class="cta" role="group" aria-label="보조 작업">
-                    <a class="btn btn-primary" href="{{ route('inquiry.create') }}">지금 문의하기</a>
-                    <a class="btn btn-ghost" href="{{ url('/inquiry') }}">문의 양식 미리보기</a>
+            </div>
+        </section>
+
+        @if($storyGroups->isNotEmpty())
+        <section id="success-stories" class="success-stories" aria-labelledby="success-title">
+            <div class="container">
+                <div class="success-head">
+                    <div>
+                        <span class="success-eyebrow">SUCCESS STORIES</span>
+                        <h2 id="success-title" class="success-title">최근 섭외 성공 사례</h2>
+                        <p class="muted" style="margin:8px 0 0; max-width:420px;">실제 고객 프로젝트 중 공개 가능한 일부만 소개합니다. 관리자에서 직접 발행·숨김을 관리할 수 있습니다.</p>
+                    </div>
+                    @if($storyGroups->count() > 1)
+                    <div class="success-tabs" role="tablist">
+                        @foreach($storyGroups->keys() as $idx => $group)
+                            @php $slug = Str::slug($group ?: 'story'); @endphp
+                            <button class="success-tab{{ $idx === 0 ? ' active' : '' }}" data-category="{{ $slug }}" role="tab" aria-selected="{{ $idx === 0 ? 'true' : 'false' }}">{{ $group }}</button>
+                        @endforeach
+                    </div>
+                    @endif
+                </div>
+
+                <div class="stories-frame" data-active="{{ Str::slug($firstCategory ?: 'story') }}">
+                    @foreach($storyGroups as $group => $stories)
+                        @php
+                            $slug = Str::slug($group ?: 'story');
+                            $chunks = $stories->chunk(4);
+                        @endphp
+                        <div class="stories-track{{ $loop->first ? ' active' : '' }}" data-category="{{ $slug }}" data-pages="{{ max(1, $chunks->count()) }}">
+                            @foreach($chunks as $pageIndex => $chunk)
+                                <div class="stories-slide{{ $pageIndex === 0 ? ' current' : '' }}" data-page="{{ $pageIndex }}">
+                                    @foreach($chunk as $story)
+                                        <article class="story-card">
+                                            <figure class="story-thumb">
+                                                @if($story->thumbnail_path)
+                                                    <img src="{{ asset('storage/'.$story->thumbnail_path) }}" alt="{{ $story->title }} 썸네일">
+                                                @else
+                                                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;">이미지 준비중</div>
+                                                @endif
+                                            </figure>
+                                            <div class="story-body">
+                                                <div class="muted" style="font-size:12px; letter-spacing:0.08em; text-transform:uppercase;">{{ $story->category }}</div>
+                                                <h3>{{ $story->title }}</h3>
+                                                @if($story->summary)
+                                                    <p style="margin:0; font-size:14px; color:var(--muted);">{{ $story->summary }}</p>
+                                                @endif
+                                                <div class="story-meta">
+                                                    @if($story->role)
+                                                        <div><strong>구분</strong> {{ $story->role }}</div>
+                                                    @endif
+                                                    @if($story->event_name)
+                                                        <div><strong>행사</strong> {{ $story->event_name }}</div>
+                                                    @endif
+                                                    @if($story->event_date)
+                                                        <div><strong>일자</strong> {{ $story->event_date?->format('Y-m-d') }}</div>
+                                                    @endif
+                                                    @if($story->location)
+                                                        <div><strong>장소</strong> {{ $story->location }}</div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </article>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="stories-controls">
+                    <div>
+                        <span class="muted">페이지</span>
+                        <span class="stories-indicator"><strong>1</strong> / <span class="stories-total">{{ $initialPages }}</span></span>
+                    </div>
+                    <div class="stories-nav">
+                        <button class="stories-btn" type="button" data-dir="prev" aria-label="이전 사례" disabled>&larr;</button>
+                        <button class="stories-btn" type="button" data-dir="next" aria-label="다음 사례">&rarr;</button>
+                    </div>
                 </div>
             </div>
         </section>
+        @endif
 
         <!-- ▼ 신규: 샘플 문의/후기 섹션 -->
         <section class="testimonials" aria-labelledby="testi-title">
@@ -562,12 +822,12 @@
 
         <section aria-label="FAQ 프리뷰">
             <div class="container" style="padding:24px 0 12px;">
-                <details style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-                    <summary style="cursor:pointer;font-weight:600">견적은 어떻게 산정되나요?</summary>
+                <details style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+                    <summary style="cursor:pointer;font-weight:600;color:var(--fg)">견적은 어떻게 산정되나요?</summary>
                     <div style="margin-top:10px;color:var(--muted);font-size:14px">예산, 일정, 행사 성격 등을 고려해 범위를 제안드리고, 확정 시 상세 견적을 제공합니다.</div>
                 </details>
-                <details style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-                    <summary style="cursor:pointer;font-weight:600">추천 결과는 어디서 볼 수 있나요?</summary>
+                <details style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+                    <summary style="cursor:pointer;font-weight:600;color:var(--fg)">추천 결과는 어디서 볼 수 있나요?</summary>
                     <div style="margin-top:10px;color:var(--muted);font-size:14px">전용 공개 페이지 링크로 전달됩니다. 필요하면 링크를 회수하거나 재발급할 수 있어요.</div>
                 </details>
             </div>
@@ -579,7 +839,6 @@
             <span>&copy; {{ date('Y') }} Encore</span>
             <div style="display:flex;gap:12px;align-items:center">
                 <a href="{{ route('inquiry.create') }}" class="btn btn-ghost" style="padding:8px 10px">문의하기</a>
-                <a href="{{ url('/admin/intakes/list') }}" class="btn btn-ghost" style="padding:8px 10px">관리자</a>
             </div>
         </div>
     </footer>
@@ -645,6 +904,73 @@
             document.querySelectorAll('.ab-btn').forEach(btn => {
                 btn.addEventListener('click', () => applyVariant(btn.dataset.variant));
             });
+
+            const frame = document.querySelector('.stories-frame');
+            if (frame) {
+                const tabs = document.querySelectorAll('.success-tab');
+                const btnPrev = document.querySelector('.stories-btn[data-dir="prev"]');
+                const btnNext = document.querySelector('.stories-btn[data-dir="next"]');
+                const indicator = document.querySelector('.stories-indicator strong');
+                const totalEl = document.querySelector('.stories-total');
+
+                let activeCategory = frame.dataset.active || '';
+                let currentPage = 0;
+
+                const getTrack = (slug) => frame.querySelector(`.stories-track[data-category="${slug}"]`);
+                const allTracks = () => Array.from(frame.querySelectorAll('.stories-track'));
+
+                function updateButtons(track) {
+                    const total = parseInt(track?.dataset.pages || '1', 10);
+                    if (btnPrev) btnPrev.disabled = currentPage <= 0;
+                    if (btnNext) btnNext.disabled = currentPage >= total - 1;
+                }
+
+                function setCategory(slug) {
+                    const track = getTrack(slug) || getTrack(activeCategory) || allTracks()[0];
+                    if (!track) return;
+                    activeCategory = track.dataset.category;
+                    frame.dataset.active = activeCategory;
+
+                    allTracks().forEach(t => t.classList.toggle('active', t === track));
+                    const slides = Array.from(track.querySelectorAll('.stories-slide'));
+                    slides.forEach((slide, idx) => slide.classList.toggle('current', idx === 0));
+                    currentPage = 0;
+                    if (indicator) indicator.textContent = '1';
+                    if (totalEl) totalEl.textContent = track.dataset.pages || '1';
+                    tabs.forEach(tab => {
+                        const isActive = tab.dataset.category === activeCategory;
+                        tab.classList.toggle('active', isActive);
+                        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                    });
+                    updateButtons(track);
+                }
+
+                function move(delta) {
+                    const track = getTrack(activeCategory);
+                    if (!track) return;
+                    const slides = Array.from(track.querySelectorAll('.stories-slide'));
+                    const total = parseInt(track.dataset.pages || slides.length || 1, 10);
+                    const next = Math.min(Math.max(currentPage + delta, 0), total - 1);
+                    if (next === currentPage) return;
+                    slides[currentPage]?.classList.remove('current');
+                    slides[next]?.classList.add('current');
+                    currentPage = next;
+                    if (indicator) indicator.textContent = String(currentPage + 1);
+                    updateButtons(track);
+                }
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        if (tab.classList.contains('active')) return;
+                        setCategory(tab.dataset.category);
+                    });
+                });
+
+                btnPrev?.addEventListener('click', () => move(-1));
+                btnNext?.addEventListener('click', () => move(1));
+
+                setCategory(activeCategory || (allTracks()[0]?.dataset.category || ''));
+            }
         })();
     </script>
 </body>

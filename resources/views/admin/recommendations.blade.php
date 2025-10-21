@@ -5,42 +5,74 @@
     <meta charset="utf-8">
     <title>추천안 보기 #{{ $intake->id }}</title>
     <style>
+        :root {
+            --bg: #050912;
+            --surface: #0f1729;
+            --surface-alt: #152033;
+            --border: #1f2b41;
+            --text: #e5ecff;
+            --muted: #98a6c9;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+        }
+
         body {
             font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
             margin: 24px;
-            line-height: 1.5
+            line-height: 1.5;
+            background: var(--bg);
+            color: var(--text);
         }
 
         h1 {
             margin: 0 0 8px;
-            font-size: 22px
+            font-size: 22px;
         }
 
         .muted {
-            color: #6b7280;
-            font-size: 12px
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        a {
+            color: #8da2fb;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #b3c0ff;
+            text-decoration: underline;
         }
 
         .btn {
             display: inline-block;
             padding: 8px 12px;
-            border: 1px solid #111;
+            border: 1px solid var(--accent);
             border-radius: 8px;
-            background: #111;
+            background: var(--accent);
             color: #fff;
             text-decoration: none;
-            cursor: pointer
+            cursor: pointer;
+            font-weight: 600;
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
         }
 
         .btn+.btn {
-            margin-left: 6px
+            margin-left: 6px;
         }
 
         .card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 16px;
-            margin: 14px 0
+            margin: 14px 0;
+            background: var(--surface);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
 
         .row {
@@ -48,36 +80,43 @@
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
-            margin: 8px 0
+            margin: 8px 0;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
-            margin-top: 10px
+            margin-top: 10px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--surface-alt);
         }
 
         th,
         td {
-            border: 1px solid #e5e7eb;
+            border-bottom: 1px solid var(--border);
             padding: 8px;
             font-size: 14px;
-            vertical-align: top
+            vertical-align: top;
         }
 
         th {
-            background: #f9fafb;
-            text-align: left
+            background: rgba(99, 102, 241, 0.14);
+            text-align: left;
+            color: var(--text);
         }
 
         .right {
-            text-align: right
+            text-align: right;
         }
 
         code {
-            background: #f3f4f6;
+            background: rgba(148, 163, 208, 0.16);
             padding: 2px 6px;
-            border-radius: 6px
+            border-radius: 6px;
+            border: 1px solid rgba(148, 163, 208, 0.28);
+            color: var(--muted);
         }
     </style>
 </head>

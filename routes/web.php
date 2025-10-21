@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\RecommendationShareController;
 use App\Http\Controllers\Admin\ArtistController;
 use App\Http\Controllers\Admin\TaxonomyController;
 use App\Http\Controllers\Admin\RecommendationController;
+use App\Http\Controllers\Admin\SuccessStoryController;
 
 use App\Models\IntakeRequest;
 use App\Models\RecommendationSet;
@@ -30,7 +31,7 @@ Route::pattern('intake', '[0-9]+');
 */
 
 // 퍼블릭 홈(필요 시 뷰 준비)
-Route::view('/', 'public.home')->name('home');
+Route::get('/', PublicHomeController::class)->name('home');
 
 // 문의 작성/저장/감사
 Route::get('/inquiry', [InquiryController::class, 'create'])->name('inquiry.create');
@@ -220,4 +221,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     // 아티스트 CRUD
     Route::resource('artists', ArtistController::class);
+    Route::resource('success-stories', SuccessStoryController::class)->except(['show']);
 });

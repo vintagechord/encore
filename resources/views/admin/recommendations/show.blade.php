@@ -11,7 +11,7 @@
 $preUrl = $intake->latest_token ? url('/r/'.$intake->latest_token) : '';
 $canShare = (bool) $intake->latest_set_id;
 @endphp
-<div class="card" style="padding:12px; border:1px solid #e5e7eb; border-radius:8px; margin-bottom:12px;">
+<div class="card" style="padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:12px;">
     <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
         <strong>공유</strong>
         <button type="button" class="btn btn-sm btnShare" data-url="{{ route('admin.recommendations.share',$intake) }}" @disabled(!$canShare)>공유 링크</button>
@@ -25,7 +25,7 @@ $canShare = (bool) $intake->latest_set_id;
 
 {{-- 추천셋 없으면 먼저 생성 --}}
 @if(!$set)
-<div class="card" style="padding:16px; border:1px solid #e5e7eb; border-radius:8px;">
+<div class="card" style="padding:16px; border:1px solid var(--border); border-radius:8px;">
     <p>아직 저장된 추천셋이 없습니다.</p>
     <form method="post" action="{{ route('admin.recommendations.create_set', $intake) }}">
         @csrf
@@ -37,11 +37,11 @@ $canShare = (bool) $intake->latest_set_id;
 <div style="display:grid; grid-template-columns: 1.4fr .9fr; gap:16px; align-items:start;">
 
     {{-- ===== 왼쪽: 현재 담긴 아티스트 + 일괄 편집 + DnD ===== --}}
-    <section style="border:1px solid #e5e7eb; border-radius:8px; padding:12px;">
+    <section style="border:1px solid var(--border); border-radius:8px; padding:12px; background: var(--surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);">
         <h2 style="margin-top:0;">현재 추천 아티스트</h2>
 
         {{-- 일괄 편집(견적 채우기) --}}
-        <div class="card" style="padding:10px; border:1px solid #eee; border-radius:8px; margin-bottom:10px;">
+        <div class="card" style="padding:10px; border:1px solid var(--border); border-radius:8px; margin-bottom:10px;">
             <form method="post" action="{{ route('admin.recommendations.items.bulk', $intake) }}" id="bulkValuesForm" style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
                 @csrf
                 <input type="hidden" name="mode" value="values">
@@ -158,7 +158,7 @@ $canShare = (bool) $intake->latest_set_id;
     </section>
 
     {{-- ===== 오른쪽: 고급 검색/담기 ===== --}}
-    <aside style="border:1px solid #e5e7eb; border-radius:8px; padding:12px;">
+    <aside style="border:1px solid var(--border); border-radius:8px; padding:12px; background: var(--surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);">
         <h2 style="margin-top:0;">아티스트 검색/담기</h2>
 
         <div style="display:grid; gap:8px;">

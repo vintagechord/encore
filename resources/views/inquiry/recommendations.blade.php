@@ -6,18 +6,24 @@
   <title>추천안 | Encore</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta name="color-scheme" content="light">
-  <meta name="theme-color" content="#111111">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#050912">
   <style>
     :root {
-      --bg: #ffffff;
-      --fg: #0b0f19;
-      --muted: #6b7280;
-      --accent: #111111;
-      --accent-hover: #000000;
-      --ring: #2563eb;
-      --card: #f9fafb;
-      --border: #e5e7eb;
+      --bg: #050912;
+      --fg: #e5ecff;
+      --muted: #98a6c9;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --ring: #4f46e5;
+      --card: #0f1729;
+      --card-alt: #152033;
+      --border: #1f2b41;
+      --chip: #1a253d;
+      --chip-border: #273554;
+      --tag-bg: rgba(99, 102, 241, 0.12);
+      --tag-border: rgba(99, 102, 241, 0.35);
+      --tag-text: #c7d2ff;
     }
 
     * {
@@ -46,11 +52,12 @@
     }
 
     a {
-      color: #2563eb;
+      color: #8da2fb;
       text-decoration: none
     }
 
     a:hover {
+      color: #b3c0ff;
       text-decoration: underline
     }
 
@@ -58,7 +65,7 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(255, 255, 255, .85);
+      background: rgba(9, 14, 26, .88);
       backdrop-filter: saturate(180%) blur(10px);
       border-bottom: 1px solid var(--border);
     }
@@ -113,13 +120,14 @@
     }
 
     .card {
-      background: #fff;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 8px
+      gap: 8px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
     }
 
     .card .row {
@@ -135,17 +143,18 @@
       font-size: 12px;
       border-radius: 999px;
       padding: 2px 8px;
-      border: 1px solid var(--border);
-      background: #f9fafb
+      border: 1px solid var(--chip-border);
+      background: var(--chip);
+      color: var(--fg);
     }
 
     .tag {
       display: inline-flex;
       align-items: center;
       font-size: 12px;
-      border: 1px solid #dbeafe;
-      background: #eff6ff;
-      color: #2563eb;
+      border: 1px solid var(--tag-border);
+      background: var(--tag-bg);
+      color: var(--tag-text);
       border-radius: 999px;
       padding: 2px 8px
     }
@@ -162,7 +171,7 @@
       border-radius: 999px;
       padding: 6px 10px;
       font-size: 13px;
-      background: #fff;
+      background: var(--card-alt);
     }
 
     /* 이미지 썸네일 레이아웃 */
@@ -183,7 +192,7 @@
       object-fit: cover;
       border-radius: 10px;
       border: 1px solid var(--border);
-      background: #f3f4f6;
+      background: #0d1628;
     }
 
     .card.media .content {
@@ -203,9 +212,9 @@
       opacity: 0;
       pointer-events: none;
       transition: transform .25s ease, opacity .25s ease;
-      background: #111;
-      color: #fff;
-      border-bottom: 1px solid #000;
+      background: rgba(7, 12, 24, 0.95);
+      color: var(--fg);
+      border-bottom: 1px solid var(--border);
     }
 
     .contact-top.show {
@@ -236,29 +245,40 @@
       gap: 8px;
       padding: 10px 14px;
       border-radius: 12px;
-      border: 1px solid transparent;
+      border: 1px solid var(--chip-border);
+      background: var(--card-alt);
+      color: var(--fg);
       font-weight: 700;
       cursor: pointer;
+      transition: background .2s ease, border-color .2s ease, color .2s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent-hover);
     }
 
     .btn-primary {
-      background: #fff;
-      color: #111;
-      border-color: #fff
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
     }
 
     .btn-primary:hover {
-      background: #f3f4f6
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+      color: #fff;
     }
 
     .btn-ghost {
       background: transparent;
-      color: #fff;
-      border-color: #333
+      color: var(--fg);
+      border-color: var(--chip-border);
     }
 
     .btn-ghost:hover {
-      background: rgba(255, 255, 255, .1)
+      background: rgba(99, 102, 241, .12);
+      color: var(--accent-hover);
     }
 
     /* 하단 고정 플로팅 액션 */
@@ -285,20 +305,22 @@
     .fab-inner {
       display: inline-flex;
       gap: 10px;
-      background: #111;
-      color: #fff;
-      border: 1px solid #000;
+      background: rgba(7, 12, 24, 0.95);
+      color: var(--fg);
+      border: 1px solid var(--border);
       border-radius: 999px;
       padding: 8px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+      box-shadow: 0 12px 30px rgba(2, 4, 10, .55);
     }
 
     .fab-inner .btn {
-      border-color: #2d2d2d
+      border-color: var(--chip-border)
     }
 
     .fab-inner .btn:hover {
-      background: #222
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent-hover);
     }
 
     /* ▼ 요약 박스 스타일 */
@@ -313,8 +335,8 @@
       align-items: center;
       gap: 6px;
       border: 1px solid var(--border);
-      background: #f9fafb;
-      color: #111;
+      background: var(--card-alt);
+      color: var(--fg);
       border-radius: 999px;
       padding: 6px 10px;
       font-size: 13px;
@@ -333,8 +355,9 @@
       gap: 6px;
       padding: 6px 10px;
       border-radius: 10px;
-      background: #111;
-      color: #fff;
+      background: rgba(99, 102, 241, 0.18);
+      border: 1px solid rgba(99, 102, 241, 0.45);
+      color: var(--fg);
       font-weight: 600;
       font-size: 14px;
     }
@@ -353,9 +376,9 @@
       flex-direction: column;
       gap: 2px;
       padding: 8px 10px;
-      border: 1px solid #f0f2f5;
+      border: 1px solid var(--chip-border);
       border-radius: 8px;
-      background: #fafbff;
+      background: var(--card-alt);
     }
 
     .meta-label {
@@ -382,10 +405,10 @@
       align-items: center;
       padding: 4px 8px;
       border-radius: 999px;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
+      background: rgba(99, 102, 241, 0.18);
+      border: 1px solid var(--tag-border);
       font-size: 12px;
-      color: #3730a3;
+      color: var(--tag-text);
     }
 
     .card-actions {
@@ -397,13 +420,14 @@
 
     .btn-outline {
       background: transparent;
-      color: #111;
-      border: 1px solid #cbd5f5;
+      color: var(--accent);
+      border: 1px solid var(--accent);
     }
 
     .btn-outline:hover {
-      background: #eef2ff;
-      border-color: #a5b4fc;
+      background: var(--accent);
+      border-color: var(--accent-hover);
+      color: #fff;
     }
 
     /* ===== 인쇄 최적화 ===== */
@@ -497,7 +521,7 @@
   <header>
     <nav class="nav" aria-label="상단 내비게이션">
       <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈">
-        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:#111;"></span>
+        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:#6366f1;"></span>
         Encore
       </a>
       <div style="display:flex;gap:8px;align-items:center">
@@ -646,18 +670,18 @@
         <h2 id="summary-title" style="margin:0 0 6px">요약</h2>
         <div class="summary-grid" role="list">
           @if($budgetLabel)
-          <div class="chip" role="listitem" aria-label="예산 {{ $budgetLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="예산 {{ $budgetLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg></span><strong>예산</strong> {{ $budgetLabel }}</div>
           @endif
           @if($genresLabel)
-          <div class="chip" role="listitem" aria-label="장르 {{ $genresLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="장르 {{ $genresLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M9 18V5l12-2v13" />
                 <circle cx="6" cy="18" r="3" />
               </svg></span><strong>장르</strong> {{ $genresLabel }}</div>
           @endif
           @if($period)
-          <div class="chip" role="listitem" aria-label="기간 {{ $period }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="기간 {{ $period }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" />
                 <line x1="16" y1="2" x2="16" y2="6" />
                 <line x1="8" y1="2" x2="8" y2="6" />
@@ -665,7 +689,7 @@
               </svg></span><strong>기간</strong> {{ $period }}</div>
           @endif
           @if($count)
-          <div class="chip" role="listitem" aria-label="후보 {{ $count }}개"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="후보 {{ $count }}개"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -673,13 +697,13 @@
               </svg></span><strong>후보</strong> {{ $count }}개</div>
           @endif
           @if($cityLabel)
-          <div class="chip" role="listitem" aria-label="지역 {{ $cityLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="지역 {{ $cityLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M12 21s6-5.686 6-10a6 6 0 0 0-12 0c0 4.314 6 10 6 10z" />
                 <circle cx="12" cy="11" r="2.5" />
               </svg></span><strong>지역</strong> {{ $cityLabel }}</div>
           @endif
           @if($audienceLabel)
-          <div class="chip" role="listitem" aria-label="예상 관객 {{ $audienceLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="예상 관객 {{ $audienceLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M7 21v-2a4 4 0 0 1 4-4h2" />
                 <circle cx="9" cy="7" r="3.5" />
                 <path d="M17 21v-2a4 4 0 0 0-3-3.87" />
@@ -687,25 +711,25 @@
               </svg></span><strong>관객</strong> {{ $audienceLabel }}</div>
           @endif
           @if($performanceLabel)
-          <div class="chip" role="listitem" aria-label="공연 형태 {{ $performanceLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="공연 형태 {{ $performanceLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M9 18V5l12-2v11" />
                 <circle cx="6" cy="18" r="3" />
               </svg></span><strong>형태</strong> {{ $performanceLabel }}</div>
           @endif
           @if($setDurationLabel)
-          <div class="chip" role="listitem" aria-label="세트 길이 {{ $setDurationLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="세트 길이 {{ $setDurationLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 7v6l3 2" />
               </svg></span><strong>세트 길이</strong> {{ $setDurationLabel }}</div>
           @endif
           @if($setsCountLabel)
-          <div class="chip" role="listitem" aria-label="진행 {{ $setsCountLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="진행 {{ $setsCountLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <path d="M4 7h16M4 12h16M4 17h16" />
                 <path d="M8 7v10" />
               </svg></span><strong>세트 수</strong> {{ $setsCountLabel }}</div>
           @endif
           @if($eventFlexLabel)
-          <div class="chip" role="listitem" aria-label="{{ $eventFlexLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2">
+          <div class="chip" role="listitem" aria-label="{{ $eventFlexLabel }}"><span class="ico" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" />
                 <line x1="8" y1="2" x2="8" y2="6" />
                 <line x1="16" y1="2" x2="16" y2="6" />

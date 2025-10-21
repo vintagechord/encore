@@ -11,24 +11,24 @@
 
   <style>
     :root {
-      --bg: #ffffff;
-      --fg: #0b0f19;
-      --muted: #6b7280;
-      --accent: #111111;
-      --accent-hover: #000000;
-      --ring: #2563eb;
-      --card: #f9fafb;
-      --border: #e5e7eb;
-      --ok: #16a34a;
+      --bg: #050912;
+      --fg: #e6edff;
+      --muted: #96a6c6;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --card: #0f1729;
+      --card-alt: #151f33;
+      --border: #1f2b41;
+      --ok: #34d399;
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
     }
 
     html,
     body {
-      height: 100%
+      height: 100%;
     }
 
     body {
@@ -44,15 +44,16 @@
     }
 
     main {
-      flex: 1
+      flex: 1;
     }
 
     header {
       border-bottom: 1px solid var(--border);
-      background: #fff;
+      background: rgba(9, 14, 26, 0.92);
+      backdrop-filter: saturate(180%) blur(12px);
       position: sticky;
       top: 0;
-      z-index: 10
+      z-index: 10;
     }
 
     .nav {
@@ -61,7 +62,7 @@
       padding: 12px 20px;
       display: flex;
       align-items: center;
-      gap: 12px
+      gap: 12px;
     }
 
     .brand {
@@ -70,42 +71,43 @@
       gap: 10px;
       color: inherit;
       text-decoration: none;
-      font-weight: 700
+      font-weight: 700;
     }
 
     .container {
       max-width: 720px;
       margin: 0 auto;
-      padding: 24px 20px
+      padding: 24px 20px;
     }
 
     .card {
-      background: #fff;
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 20px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
     }
 
     h1 {
       margin: 0 0 8px;
       font-size: 24px;
-      letter-spacing: -0.01em
+      letter-spacing: -0.01em;
     }
 
     .lead {
       margin: 0 0 14px;
-      color: var(--muted)
+      color: var(--muted);
     }
 
     .ok {
-      color: var(--ok)
+      color: var(--ok);
     }
 
     .row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 14px
+      margin-top: 14px;
     }
 
     .btn {
@@ -114,36 +116,40 @@
       gap: 8px;
       padding: 12px 16px;
       border-radius: 12px;
-      border: 1px solid transparent;
+      border: 1px solid var(--accent);
       font-weight: 700;
       cursor: pointer;
       background: var(--accent);
       color: #fff;
       text-decoration: none;
+      transition: background .2s ease, border-color .2s ease;
     }
 
     .btn:hover {
-      background: var(--accent-hover)
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
     }
 
     .btn-ghost {
       background: transparent;
-      color: #111;
-      border-color: var(--border)
+      color: var(--fg);
+      border-color: var(--border);
     }
 
     .btn-ghost:hover {
-      background: #f3f4f6
+      background: rgba(99, 102, 241, 0.16);
+      color: var(--accent-hover);
     }
 
     .muted {
       color: var(--muted);
-      font-size: 13px
+      font-size: 13px;
     }
 
     .footer {
       border-top: 1px solid var(--border);
-      margin-top: 24px
+      margin-top: 24px;
+      background: rgba(9, 14, 26, 0.75);
     }
 
     .footer-inner {
@@ -155,7 +161,7 @@
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 8px
+      gap: 8px;
     }
 
     .check {
@@ -165,10 +171,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: #ecfdf5;
-      border: 1px solid #a7f3d0;
-      color: #065f46;
-      margin-bottom: 12px
+      background: rgba(22, 163, 74, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      color: var(--ok);
+      margin-bottom: 12px;
     }
   </style>
 </head>
@@ -177,7 +183,7 @@
   <header>
     <nav class="nav" aria-label="상단 내비게이션">
       <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈">
-        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:#111;"></span>
+        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
         Encore
       </a>
       <span class="muted" aria-hidden="true">/ 문의 완료</span>
@@ -228,7 +234,6 @@
   <footer class="footer" role="contentinfo">
     <div class="footer-inner">
       <span>&copy; {{ date('Y') }} Encore</span>
-      <a href="{{ url('/admin/intakes/list') }}">관리자</a>
     </div>
   </footer>
 </body>

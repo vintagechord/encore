@@ -6,93 +6,160 @@
   <title>문의 목록</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
+    :root {
+      --bg: #050912;
+      --surface: #0f1729;
+      --surface-alt: #152033;
+      --border: #1f2b41;
+      --border-soft: #273554;
+      --text: #e6edff;
+      --muted: #97a6c9;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #34d399;
+    }
+
     body {
       font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      margin: 24px
+      margin: 24px;
+      color: var(--text);
+      background: var(--bg);
     }
 
     h1 {
       margin: 0 0 12px;
-      font-size: 22px
+      font-size: 22px;
     }
 
     p {
-      margin: 0 0 16px
+      margin: 0 0 16px;
+    }
+
+    a {
+      color: #8da2fb;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    a:hover {
+      color: #b3c0ff;
+      text-decoration: underline;
     }
 
     table {
       border-collapse: collapse;
       width: 100%;
-      margin-top: 12px
+      margin-top: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(4, 8, 18, 0.45);
     }
 
     th,
     td {
-      border: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border);
       padding: 10px;
       font-size: 14px;
-      vertical-align: top
+      vertical-align: top;
     }
 
     th {
-      background: #f9fafb;
-      text-align: left
+      background: rgba(99, 102, 241, 0.14);
+      text-align: left;
+      color: var(--text);
     }
 
-    a {
-      color: #2563eb;
-      text-decoration: none
-    }
-
-    a:hover {
-      text-decoration: underline
+    tbody tr:nth-child(even) {
+      background: var(--surface-alt);
     }
 
     .actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      align-items: center
+      align-items: center;
     }
 
     .btn {
       padding: 6px 10px;
-      border: 1px solid #111;
+      border: 1px solid var(--accent);
       border-radius: 6px;
-      background: #111;
+      background: var(--accent);
       color: #fff;
-      cursor: pointer
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .2s ease, border-color .2s ease, opacity .2s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
     }
 
     .btn:disabled {
-      opacity: .5;
-      cursor: not-allowed
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .btn.btnRevoke,
+    .modal .close {
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+
+    .btn.btnRevoke:hover:not(:disabled),
+    .modal .close:hover {
+      background: #f87171;
+      border-color: #f87171;
+    }
+
+    .btn.btnRotate {
+      background: var(--warning);
+      border-color: var(--warning);
+      color: #1f2937;
+    }
+
+    .btn.btnRotate:hover:not(:disabled) {
+      background: #fbbf24;
+      border-color: #fbbf24;
     }
 
     .input {
       min-width: 320px;
       max-width: 100%;
       padding: 6px 8px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      background: var(--surface-alt);
+      color: var(--text);
+    }
+
+    .input:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
     }
 
     .muted {
-      color: #6b7280;
-      font-size: 12px
+      color: var(--muted);
+      font-size: 12px;
     }
 
     .flash {
-      animation: rowflash 1200ms ease-out
+      animation: rowflash 1200ms ease-out;
     }
 
     @keyframes rowflash {
       0% {
-        background: #fff7ed
+        background: rgba(99, 102, 241, 0.25);
       }
 
       100% {
-        background: transparent
+        background: transparent;
       }
     }
 
@@ -100,21 +167,22 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, .45);
+      background: rgba(5, 9, 18, 0.75);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 50
+      z-index: 50;
     }
 
     .modal {
-      background: #fff;
-      border-radius: 10px;
+      background: var(--surface);
+      border-radius: 12px;
       max-width: 800px;
       width: clamp(320px, 92vw, 800px);
       max-height: 80vh;
-      overflow: auto;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, .25)
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 60px rgba(2, 4, 12, 0.6);
     }
 
     .modal header {
@@ -122,28 +190,27 @@
       justify-content: space-between;
       align-items: center;
       padding: 14px 16px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      background: #fff
+      background: rgba(15, 23, 41, 0.95);
+      backdrop-filter: saturate(160%) blur(10px);
     }
 
     .modal h3 {
       margin: 0;
-      font-size: 18px
+      font-size: 18px;
     }
 
     .modal .close {
-      background: #ef4444;
-      border: 1px solid #ef4444;
       color: #fff;
       border-radius: 6px;
       padding: 6px 10px;
-      cursor: pointer
+      cursor: pointer;
     }
 
     .modal .body {
-      padding: 14px 16px
+      padding: 14px 16px;
     }
 
     .tag {
@@ -151,28 +218,33 @@
       font-size: 12px;
       border-radius: 999px;
       padding: 2px 8px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--muted);
     }
 
     .tag.rotated {
-      border-color: #d97706;
-      background: #fff7ed
+      border-color: var(--warning);
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
     }
 
     .tag.shared {
-      border-color: #2563eb;
-      background: #eff6ff
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.2);
+      color: #b3c0ff;
     }
 
     .tag.issued {
-      border-color: #16a34a;
-      background: #ecfdf5
+      border-color: var(--success);
+      background: rgba(52, 211, 153, 0.2);
+      color: var(--success);
     }
 
     .tag.revoked {
-      border-color: #ef4444;
-      background: #fee2e2
+      border-color: var(--danger);
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
     }
 
     .toolbar {
@@ -180,19 +252,27 @@
       gap: 10px;
       align-items: center;
       flex-wrap: wrap;
-      margin: 0 0 8px
+      margin: 0 0 8px;
     }
 
     .toolbar input[type="number"] {
       padding: 6px 8px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      background: var(--surface-alt);
+      color: var(--text);
+    }
+
+    .toolbar input[type="number"]:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
     }
 
     .filters {
       display: flex;
       gap: 8px;
-      align-items: center
+      align-items: center;
     }
 
     .filters label {
@@ -200,15 +280,19 @@
       gap: 4px;
       align-items: center;
       font-size: 12px;
-      color: #374151;
-      border: 1px solid #e5e7eb;
+      color: var(--muted);
+      border: 1px solid var(--border);
       border-radius: 999px;
       padding: 2px 8px;
-      background: #f9fafb
+      background: var(--surface-alt);
+    }
+
+    .filters input[type="checkbox"] {
+      accent-color: var(--accent);
     }
 
     .tzbtn.active {
-      box-shadow: inset 0 0 0 1px #fff;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
     }
   </style>
 </head>

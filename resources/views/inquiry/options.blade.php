@@ -6,94 +6,127 @@
     <title>추천 옵션 미리보기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        :root {
+            --bg: #060913;
+            --surface: #0f1729;
+            --card: #111b30;
+            --card-alt: #152033;
+            --border: #1f2b41;
+            --border-soft: #273554;
+            --text: #e5ecff;
+            --muted: #96a7c9;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+        }
+
         body {
             font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
             margin: 24px;
-            line-height: 1.5
+            line-height: 1.5;
+            background: var(--bg);
+            color: var(--text);
         }
 
         h1 {
             margin: 0 0 6px;
-            font-size: 22px
+            font-size: 22px;
+        }
+
+        a {
+            color: #8da2fb;
+        }
+
+        a:hover {
+            color: #b3c0ff;
         }
 
         .muted {
-            color: #6b7280
+            color: var(--muted);
         }
 
         .btn {
             padding: 9px 12px;
             border-radius: 10px;
-            border: 1px solid #111;
-            background: #111;
+            border: 1px solid var(--accent);
+            background: var(--accent);
             color: #fff;
-            cursor: pointer
+            cursor: pointer;
+            font-weight: 600;
+            transition: background .2s ease, border-color .2s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
         }
 
         .btn.secondary {
-            background: #fff;
-            color: #111
+            background: transparent;
+            color: var(--accent);
         }
 
         .row {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            align-items: center
+            align-items: center;
         }
 
         .card {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 14px;
-            background: #fff
+            background: var(--surface);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
 
         .option {
-            border: 1px solid #e5e7eb;
+            border: 1px solid var(--border);
             border-radius: 12px;
             padding: 14px;
             margin: 12px 0;
-            background: #fcfcfd
+            background: var(--card);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 10px
+            gap: 10px;
         }
 
         .chip {
-            border: 1px solid #d1d5db;
+            border: 1px solid var(--border-soft);
             border-radius: 12px;
             padding: 8px 10px;
-            background: #fff;
+            background: var(--card-alt);
             display: flex;
             gap: 8px;
             align-items: center;
-            justify-content: space-between
+            justify-content: space-between;
         }
 
         .right {
             display: flex;
             gap: 8px;
-            align-items: center
+            align-items: center;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px
+            margin-bottom: 10px;
         }
 
         .kbd {
             font: 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
-            background: #f3f4f6;
-            border: 1px solid #e5e7eb;
+            background: var(--card-alt);
+            border: 1px solid var(--border-soft);
             border-bottom-width: 2px;
             border-radius: 6px;
-            padding: 2px 6px
+            padding: 2px 6px;
+            color: var(--muted);
         }
     </style>
 </head>

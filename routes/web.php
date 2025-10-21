@@ -6,11 +6,11 @@ use App\Http\Controllers\PublicHomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\ProfileController;
 
-Route::get('/', PublicHomeController::class);
+Route::get('/', PublicHomeController::class)->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth','verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -21,4 +21,4 @@ Route::middleware('auth')->group(function () {
 Route::get('/inquiry', [InquiryController::class, 'create'])->name('inquiry.create');
 Route::post('/inquiry', [InquiryController::class, 'store'])->name('inquiry.store');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

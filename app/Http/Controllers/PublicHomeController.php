@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
+use Illuminate\Http\RedirectResponse;
 
 class PublicHomeController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): RedirectResponse
     {
-        // 필요한 뷰로 바꿔도 됨
-        return view('welcome');
+        return redirect()->route('inquiry.create');
     }
 }

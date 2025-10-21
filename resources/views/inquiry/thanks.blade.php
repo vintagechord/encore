@@ -206,7 +206,7 @@
         </p>
 
         <div class="row" role="group" aria-label="다음 작업">
-          <a class="btn" href="{{ url('/r/example') }}">
+          <a class="btn" href="{{ route('share.example') }}">
             <!-- 카드 아이콘 -->
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 4h16v16H4z" />

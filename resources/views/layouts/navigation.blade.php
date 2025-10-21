@@ -20,6 +20,8 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                {{-- [Encore] 문의하기 링크 --}}
+                <a href="{{ route('inquiry.create') }}" class="px-4 py-2 rounded-md border font-medium" data-cqa="inq-link">문의하기</a>
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-slate-200 bg-slate-800 hover:text-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/60 transition ease-in-out duration-150">

@@ -252,22 +252,21 @@
     }
 
     .range-wrap {
-      padding: 10px 12px;
+      padding: 14px;
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       background: var(--card);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
     }
 
-    .range-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .range-row input[type="range"] {
-      width: 280px;
-      accent-color: var(--accent);
-    }
+    .range-row { display:flex; gap:12px; align-items:center; margin:8px 0; }
+    .range-label { width:42px; color: var(--muted); font-weight:600; }
+    .range-field { position:relative; flex:1; min-width:260px; }
+    .range { width:100%; height:10px; border-radius:999px; background: linear-gradient(to right, var(--accent) 0 var(--p,0%), rgba(148,163,184,.25) var(--p,0%)); outline:none; -webkit-appearance:none; appearance:none; }
+    .range::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background: var(--accent); border: 2px solid #fff3; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer; }
+    .range::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background: var(--accent); border: 2px solid #fff3; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer; }
+    .range-bubble { position:absolute; top:-30px; left: var(--p,0%); transform: translateX(-50%); background: var(--card-alt); color: var(--fg); border:1px solid var(--border-alt); padding:2px 8px; border-radius:8px; font-size:12px; white-space:nowrap; }
+    .range-bubble:after { content:''; position:absolute; left:50%; transform:translateX(-50%); bottom:-6px; border:6px solid transparent; border-top-color: var(--border-alt); }
 
     /* 에러 블록 */
     .alert {
@@ -335,6 +334,25 @@
         <div>
           <label for="contact_email">이메일</label>
           <input id="contact_email" name="contact_email" type="email" required value="{{ old('contact_email') }}">
+        </div>
+        <div>
+          <label for="contact_phone">전화번호(선택)</label>
+          <input id="contact_phone" name="contact_phone" type="text" inputmode="tel" placeholder="예: 010-1234-5678" value="{{ old('contact_phone') }}">
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>희망 아티스트(선택)</legend>
+      <div class="row">
+        <div style="flex:1 1 320px;">
+          <label for="requested_artist_name">원하는 아티스트/연예인</label>
+          <input id="requested_artist_name" name="requested_artist_name" type="text" placeholder="예: 아이유, NewJeans, 개그맨 OOO" value="{{ old('requested_artist_name', request('requested')) }}">
+          <div class="muted" style="margin-top:6px; font-size:12px;">특정 아티스트가 있으시면 입력해 주세요. 가능 여부와 예산 가이드를 함께 드립니다.</div>
+          <label style="display:flex; gap:8px; align-items:center; margin-top:10px;">
+            <input type="checkbox" id="intent_confirmed" name="intent_confirmed" value="1">
+            <span class="muted">특정 아티스트 섭외 가능 여부 문의 시, 실제 섭외 의사가 있습니다.</span>
+          </label>
         </div>
       </div>
     </fieldset>
@@ -430,16 +448,20 @@
       <legend>예산 범위 (KRW)</legend>
       <div class="range-wrap">
         <div class="range-row">
-          <span class="muted">최소</span>
-          <input id="range_min" name="budget_min" type="range" min="0" max="300000000" step="100000" value="{{ (int)old('budget_min', 0) }}">
-          <strong id="label_min">{{ number_format((int)old('budget_min', 0)) }}원</strong>
+          <span class="range-label">최소</span>
+          <div class="range-field">
+            <input class="range" id="range_min" name="budget_min" type="range" min="0" max="300000000" step="100000" value="{{ (int)old('budget_min', 0) }}">
+            <output id="bubble_min" class="range-bubble">{{ number_format((int)old('budget_min', 0)) }}원</output>
+          </div>
         </div>
-        <div class="range-row" style="margin-top:8px">
-          <span class="muted">최대</span>
-          <input id="range_max" name="budget_max" type="range" min="0" max="300000000" step="100000" value="{{ (int)old('budget_max', 3000000) }}">
-          <strong id="label_max">{{ number_format((int)old('budget_max', 3000000)) }}원</strong>
+        <div class="range-row">
+          <span class="range-label">최대</span>
+          <div class="range-field">
+            <input class="range" id="range_max" name="budget_max" type="range" min="0" max="300000000" step="100000" value="{{ (int)old('budget_max', 3000000) }}">
+            <output id="bubble_max" class="range-bubble">{{ number_format((int)old('budget_max', 3000000)) }}원</output>
+          </div>
         </div>
-        <div class="muted" style="margin-top:6px">드래그하여 범위를 설정하세요. (0 ~ 300,000,000 / 10만 원 단위)</div>
+        <div class="muted" style="margin-top:8px">0 ~ 300,000,000 (10만 원 단위)</div>
       </div>
     </fieldset>
 
@@ -507,29 +529,58 @@
       const fmt = (n) => (n || 0).toLocaleString('ko-KR') + '원';
       const rmin = document.getElementById('range_min');
       const rmax = document.getElementById('range_max');
-      const lmin = document.getElementById('label_min');
-      const lmax = document.getElementById('label_max');
+      const bmin = document.getElementById('bubble_min');
+      const bmax = document.getElementById('bubble_max');
+
+      function pct(input){
+        const min = parseInt(input.min||'0',10), max = parseInt(input.max||'100',10);
+        const val = parseInt(input.value||'0',10);
+        return Math.min(100, Math.max(0, ((val-min)/(max-min))*100));
+      }
+
+      function paint(input){
+        const p = pct(input);
+        input.style.setProperty('--p', p+'%');
+      }
 
       function syncBudget(e) {
         let a = parseInt(rmin.value || '0', 10);
         let b = parseInt(rmax.value || '0', 10);
         if (a > b) {
-          if (e && e.target === rmin) rmax.value = a;
-          else rmin.value = b;
-          a = parseInt(rmin.value, 10);
-          b = parseInt(rmax.value, 10);
+          if (e && e.target === rmin) rmax.value = a; else rmin.value = b;
+          a = parseInt(rmin.value, 10); b = parseInt(rmax.value, 10);
         }
-        lmin.textContent = fmt(a);
-        lmax.textContent = fmt(b);
+        if (bmin) { bmin.textContent = fmt(a); bmin.parentElement.style.setProperty('--p', pct(rmin)+'%'); }
+        if (bmax) { bmax.textContent = fmt(b); bmax.parentElement.style.setProperty('--p', pct(rmax)+'%'); }
+        paint(rmin); paint(rmax);
       }
-      rmin.addEventListener('input', syncBudget);
-      rmax.addEventListener('input', syncBudget);
+      ['input','change'].forEach(ev=>{ rmin.addEventListener(ev, syncBudget); rmax.addEventListener(ev, syncBudget); });
       syncBudget();
+
+      // 요청 의사 확인(특정 아티스트 입력 시 필수)
+      const reqInput = document.getElementById('requested_artist_name');
+      const intent = document.getElementById('intent_confirmed');
+      function enforceIntent() {
+        const need = (reqInput && reqInput.value.trim().length > 0);
+        if (intent) intent.required = need;
+      }
+      reqInput?.addEventListener('input', enforceIntent);
+      enforceIntent();
     })();
   </script>
 
-  <footer class="site-footer">
-    <span>&copy; {{ date('Y') }} Encore. 필요한 정보를 편하게 남겨주세요.</span>
+  <footer class="site-footer" style="margin-top:24px; padding:16px; border-top:1px solid var(--border); color: var(--muted); font-size:12px;">
+    <div style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;">
+      <div style="display:flex; gap:8px; align-items:center; font-weight:700; color: var(--text);">
+        <span class="logo-dot" aria-hidden="true"></span>Encore
+      </div>
+      <div>
+        (주)빈티지하우스 대표. 정준영<br>
+        주소. 경기도 김포시 사우동 880 시그마프라자 7층<br>
+        이메일. help@vhouse.co.kr 사업자등록번호. 748-88-01472 통신판매업신고번호. 2023-경기김포-1524<br>
+        &copy; 2025 VintageHouse, Inc., All Rights Reserved.
+      </div>
+    </div>
   </footer>
 </body>
 

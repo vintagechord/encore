@@ -33,7 +33,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
     <meta name="theme-color" content="#050912">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="dark light">
 
     <style>
         :root {
@@ -48,6 +48,21 @@
             --border: #1f2b41;
             --chip: rgba(99, 102, 241, 0.18);
             --chip-border: rgba(99, 102, 241, 0.35);
+        }
+
+        /* Light theme overrides */
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --fg: #0f1729;
+            --muted: #475569;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --ring: #4f46e5;
+            --card: #ffffff;
+            --card-alt: #f1f5f9;
+            --border: #d7dce2;
+            --chip: rgba(79, 70, 229, 0.10);
+            --chip-border: rgba(79, 70, 229, 0.28);
         }
 
         * {
@@ -103,6 +118,8 @@
             border-bottom: 1px solid var(--border);
         }
 
+        [data-theme="light"] header { background: rgba(255,255,255,.85); backdrop-filter:saturate(180%) blur(10px); }
+
         .nav {
             display: flex;
             align-items: center;
@@ -136,6 +153,24 @@
             gap: 8px;
             flex-wrap: wrap
         }
+
+        .theme-toggle { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
+        .banner-area { border-bottom:1px solid var(--border); background: var(--card); }
+        .banner-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+        .banner { display:block; overflow:hidden; border-radius:12px; border:1px solid var(--border); }
+        .banner img { display:block; width:100%; height:auto; }
+
+        /* Direct request box */
+        .request-card { background: var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+        .request-form { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+        .request-input { height:44px; padding:0 14px; border-radius:12px; border:1px solid var(--border); background: var(--card-alt); color: var(--fg); min-width:280px; }
+        .request-input::placeholder { color: var(--muted); opacity:.9; }
+        .request-btn { height:44px; padding:0 16px; border-radius:12px; }
+
+        /* Light specific readability tweaks */
+        [data-theme="light"] .hero { background: linear-gradient(180deg,#ffffff 0%, #f1f5fb 100%); border-bottom:1px solid var(--border); }
+        [data-theme="light"] .card { box-shadow: 0 12px 28px rgba(2, 6, 23, 0.06); }
+        [data-theme="light"] .btn-ghost { border-color: #c6ced8; }
 
         .nav-link {
             padding: 8px 10px;
@@ -621,11 +656,28 @@
                 @endif
                 <a class="nav-link" href="{{ route('inquiry.create') }}">문의</a>
                 <span class="badge" aria-label="베타 배지">BETA</span>
+                <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환"><span class="tlabel">Dark</span></button>
             </div>
         </div>
     </header>
 
     <main id="main" aria-live="polite">
+        @if(isset($banners) && $banners->isNotEmpty())
+        <section class="banner-area" aria-label="공지 배너">
+            <div class="container" style="padding:10px 0;">
+                <div class="banner-grid">
+                    @foreach($banners as $b)
+                        @php $img = $b->image_path ? asset('storage/'.$b->image_path) : null; @endphp
+                        @if($img)
+                        <a class="banner" href="{{ $b->link_url ?: '#' }}" @if($b->link_url) target="_blank" rel="noopener" @endif>
+                            <img src="{{ $img }}" alt="{{ $b->title }}">
+                        </a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+        </section>
+        @endif
         <section class="hero" aria-labelledby="home-title">
             <div class="container hero-inner">
                 <h1 id="home-title"><span id="copy-title">행사에 딱 맞는 아티스트,<br>바로 추천받으세요.</span></h1>
@@ -640,7 +692,7 @@
                         </svg>
                         <span class="cta-text">문의하기</span>
                     </a>
-                    <a class="btn btn-ghost" href="{{ url('/r/example') }}" aria-label="공유 예시 페이지 (샘플)">
+                    <a class="btn btn-ghost" href="{{ route('share.example') }}" aria-label="공유 예시 페이지 (샘플)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 4h16v16H4z" />
                             <path d="M4 9h16" />
@@ -773,6 +825,26 @@
         </section>
         @endif
 
+        <!-- ▼ 희망 아티스트 직접 요청 섹션 -->
+        <section class="testimonials" aria-labelledby="request-title">
+            <div class="container">
+                <h2 id="request-title" class="sr-only">특정 아티스트 직접 요청</h2>
+                <div class="request-card" role="group" aria-label="특정 아티스트 요청">
+                    <div class="row" style="justify-content:space-between; gap:12px; align-items:center;">
+                        <div>
+                            <span class="t-kind">직접 요청</span>
+                            <h3 class="t-title" style="margin-top:6px">원하는 아티스트가 있나요?</h3>
+                            <p class="muted" style="margin:4px 0 0; max-width:560px;">이름을 남겨주세요. 내부 네트워크로 가능 여부와 예산 가이드를 확인해 연락드립니다.</p>
+                        </div>
+                        <form class="request-form" method="get" action="{{ route('inquiry.create') }}">
+                            <input class="request-input" type="text" name="requested" placeholder="예: NewJeans / 아이유 / MC 홍길동" aria-label="희망 아티스트 입력">
+                            <button class="btn btn-primary request-btn" type="submit">섭외 요청하기</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ▼ 신규: 샘플 문의/후기 섹션 -->
         <section class="testimonials" aria-labelledby="testi-title">
             <div class="container">
@@ -835,10 +907,16 @@
     </main>
 
     <footer class="footer" role="contentinfo">
-        <div class="container footer-inner">
-            <span>&copy; {{ date('Y') }} Encore</span>
-            <div style="display:flex;gap:12px;align-items:center">
-                <a href="{{ route('inquiry.create') }}" class="btn btn-ghost" style="padding:8px 10px">문의하기</a>
+        <div class="container footer-inner" style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;justify-content:space-between;">
+            <div style="display:flex;gap:10px;align-items:center;font-weight:700;">
+                <span aria-hidden="true" style="display:inline-flex;width:18px;height:18px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
+                <span>Encore</span>
+            </div>
+            <div class="muted" style="font-size:12px; line-height:1.7;">
+                (주)빈티지하우스 대표. 정준영<br>
+                주소. 경기도 김포시 사우동 880 시그마프라자 7층<br>
+                이메일. help@vhouse.co.kr 사업자등록번호. 748-88-01472 통신판매업신고번호. 2023-경기김포-1524<br>
+                &copy; 2025 VintageHouse, Inc., All Rights Reserved.
             </div>
         </div>
     </footer>
@@ -854,6 +932,7 @@
     <script>
         (function() {
             const STORAGE_KEY = 'homeCopyVariant';
+            const THEME_KEY = 'enc_theme';
             const $title = document.getElementById('copy-title');
             const $desc = document.getElementById('copy-desc');
             const $cta = document.getElementById('copy-cta')?.querySelector('.cta-text');
@@ -904,6 +983,19 @@
             document.querySelectorAll('.ab-btn').forEach(btn => {
                 btn.addEventListener('click', () => applyVariant(btn.dataset.variant));
             });
+
+            // Theme init + toggle
+            const root = document.documentElement;
+            const btnTheme = document.getElementById('themeToggle');
+            const setTheme = (t) => {
+                root.setAttribute('data-theme', t);
+                try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
+                const label = btnTheme?.querySelector('.tlabel');
+                if (label) label.textContent = t === 'light' ? 'Light' : 'Dark';
+            };
+            const savedTheme = (() => { try { return localStorage.getItem(THEME_KEY) || ''; } catch(e) { return ''; } })();
+            setTheme(savedTheme === 'light' ? 'light' : 'dark');
+            btnTheme?.addEventListener('click', () => setTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
 
             const frame = document.querySelector('.stories-frame');
             if (frame) {

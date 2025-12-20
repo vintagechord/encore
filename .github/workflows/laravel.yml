@@ -39,3 +39,12 @@ jobs:
       - name: Run tests
         run: php artisan test -v
 
+- name: Run tests
+  run: php artisan test -v
+  env:
+    APP_ENV: testing
+    DB_CONNECTION: sqlite
+    DB_DATABASE: database/database.sqlite
+    CACHE_DRIVER: array
+    SESSION_DRIVER: array
+    QUEUE_CONNECTION: sync

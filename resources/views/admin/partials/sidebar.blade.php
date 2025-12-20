@@ -38,6 +38,7 @@
       <a href="{{ route('admin.artists.index') }}" @if(request()->routeIs('admin.artists.*')) aria-current="page" @endif>아티스트 관리</a>
       <a href="{{ route('admin.taxonomies.index') }}" @if(request()->routeIs('admin.taxonomies.*')) aria-current="page" @endif>분류(분야/장르/태그)</a>
       <a href="{{ route('admin.success-stories.index') }}" @if(request()->routeIs('admin.success-stories.*')) aria-current="page" @endif>섭외 성공사례</a>
+      <a href="{{ route('admin.testimonials.index') }}" @if(request()->routeIs('admin.testimonials.*')) aria-current="page" @endif>샘플 문의/후기</a>
       <a href="{{ route('admin.banners.index') }}" @if(request()->routeIs('admin.banners.*')) aria-current="page" @endif>배너 관리</a>
       <a href="{{ route('admin.notices.index') }}" @if(request()->routeIs('admin.notices.*')) aria-current="page" @endif>공지사항</a>
     </nav>

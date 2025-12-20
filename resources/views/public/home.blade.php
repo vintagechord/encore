@@ -48,6 +48,8 @@
             --border: #1f2b41;
             --chip: rgba(99, 102, 241, 0.18);
             --chip-border: rgba(99, 102, 241, 0.35);
+            --hero-overlay: linear-gradient(180deg, rgba(5, 9, 18, 0.15) 0%, rgba(5, 9, 18, 0.65) 65%, rgba(5, 9, 18, 0.88) 100%);
+            --hero-video-filter: saturate(1.05) contrast(1.05) brightness(0.72);
         }
 
         /* Light theme overrides */
@@ -63,6 +65,8 @@
             --border: #d7dce2;
             --chip: rgba(79, 70, 229, 0.10);
             --chip-border: rgba(79, 70, 229, 0.28);
+            --hero-overlay: linear-gradient(180deg, rgba(248, 250, 252, 0.85) 0%, rgba(248, 250, 252, 0.55) 70%, rgba(248, 250, 252, 0.25) 100%);
+            --hero-video-filter: saturate(1.02) contrast(1.02) brightness(1.05);
         }
 
         * {
@@ -206,7 +210,36 @@
         }
 
         .hero-inner {
+            position: relative;
+            z-index: 1;
             padding: 72px 0 56px
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .hero-media::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--hero-overlay);
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: var(--hero-video-filter);
+            transform: scale(1.02);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-video { display: none; }
         }
 
         .hero h1 {
@@ -309,13 +342,61 @@
 
         /* ▼ Testimonials */
         .testimonials {
-            padding: 8px 0 28px
+            padding: 16px 0 36px;
+            border-top: 1px solid var(--border);
         }
 
-        .testi-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 14px
+        .testi-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .testi-eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+            display: inline-flex;
+        }
+
+        .testi-title {
+            margin: 0;
+            font-size: clamp(20px, 3.2vw, 26px);
+        }
+
+        .testi-marquee {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            padding: 6px 0;
+            border: 1px solid var(--border);
+            background: linear-gradient(120deg, rgba(99, 102, 241, 0.14), rgba(15, 23, 42, 0.05));
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+
+        .testi-track {
+            display: flex;
+            width: max-content;
+            align-items: stretch;
+            gap: 14px;
+            animation: testiScroll var(--testi-duration, 36s) linear infinite;
+            will-change: transform;
+        }
+
+        .testi-set {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .testi-marquee:hover .testi-track {
+            animation-play-state: paused;
         }
 
         .success-stories {
@@ -456,13 +537,26 @@
         .stories-nav, .stories-btn { display: none !important; }
 
         .t-card {
+            position: relative;
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 14px;
+            border-radius: 16px 16px 14px 14px;
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px
+            gap: 10px;
+            min-width: clamp(220px, 34vw, 320px);
+            flex: 0 0 auto;
+        }
+
+        .t-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.7), rgba(236, 72, 153, 0.7));
+            opacity: 0.7;
         }
 
         .t-kind {
@@ -508,6 +602,16 @@
             color: #facc15;
         }
 
+        @keyframes testiScroll {
+            to { transform: translateX(calc(var(--testi-offset, 0px) * -1)); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .testi-track {
+                animation: none;
+            }
+        }
+
         .sr-only {
             position: absolute;
             left: -9999px;
@@ -524,11 +628,6 @@
 
             .hero-inner {
                 padding: 96px 0 72px
-            }
-
-            .testi-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px
             }
 
             .stories-slide {
@@ -737,6 +836,12 @@
         </section>
         @endif
         <section class="hero" aria-labelledby="home-title">
+            <div class="hero-media" aria-hidden="true">
+                <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{ asset('videos/hero-poster.jpg') }}">
+                    <source src="{{ asset('videos/hero.webm') }}" type="video/webm">
+                    <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
+                </video>
+            </div>
             <div class="container hero-inner">
                 <h1 id="home-title"><span id="copy-title">행사에 딱 맞는 아티스트,<br>바로 추천받으세요.</span></h1>
                 <p id="copy-desc">
@@ -744,48 +849,194 @@
                     공유 링크로 전달합니다. 필요하면 언제든 새 링크로 회수·재발급도 가능해요.
                 </p>
                 <style>
-                  .optgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-top:10px; }
-                  .optcard{ position:relative; display:flex; flex-direction:column; min-height:200px; border:1px solid var(--border); border-radius:14px; background:var(--card); padding:20px; cursor:pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .08s ease; text-decoration:none; color:inherit; }
-                  .optcard:hover{ border-color: var(--chip-border); box-shadow: inset 0 0 0 2px rgba(99,102,241,.15); }
-                  .optcard.active{ border-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(99,102,241,.35); }
+                  .optgrid{
+                    position: relative;
+                    display: grid;
+                    place-items: center;
+                    margin-top: 18px;
+                    min-height: 250px;
+                    perspective: 1000px;
+                  }
+                  .optcard{
+                    --slot: 0;
+                    --shift: clamp(140px, 20vw, 260px);
+                    --tilt: 10deg;
+                    --scale: 0.94;
+                    position: absolute;
+                    width: min(320px, 90vw);
+                    min-height: 210px;
+                    border: 1px solid var(--border);
+                    border-radius: 18px;
+                    background: var(--card);
+                    padding: 20px;
+                    cursor: pointer;
+                    transition: transform .6s cubic-bezier(0.2,0.8,0.2,1), box-shadow .25s ease, border-color .25s ease, filter .25s ease;
+                    transform: translateX(calc(var(--slot) * var(--shift))) scale(var(--scale)) rotateY(calc(var(--slot) * var(--tilt)));
+                    box-shadow: 0 14px 28px rgba(15,23,42,.32);
+                    text-decoration: none;
+                    color: inherit;
+                    filter: saturate(0.9) brightness(0.98);
+                    transform-style: preserve-3d;
+                  }
+                  .optcard::after{
+                    content:"";
+                    position:absolute;
+                    inset:-8px;
+                    border-radius:22px;
+                    border:1px solid transparent;
+                    opacity:0;
+                    transition: opacity .25s ease;
+                    pointer-events:none;
+                  }
+                  .optcard[data-slot="-1"]{ --slot:-1; z-index:1; }
+                  .optcard[data-slot="0"]{
+                    --slot:0;
+                    --scale:1.07;
+                    z-index:3;
+                    border-color: var(--accent);
+                    filter: saturate(1) brightness(1);
+                    box-shadow: 0 22px 46px rgba(15,23,42,.38);
+                  }
+                  .optcard[data-slot="0"]::after{
+                    border-color: rgba(99,102,241,.45);
+                    box-shadow: 0 0 0 6px rgba(99,102,241,.12);
+                    opacity:1;
+                  }
+                  .optcard[data-slot="1"]{ --slot:1; z-index:1; }
+                  .optcard:hover{ border-color: var(--chip-border); }
+                  .optcard:focus-visible{
+                    outline:none;
+                    border-color: var(--accent);
+                    box-shadow: 0 0 0 3px rgba(99,102,241,.35), 0 22px 46px rgba(15,23,42,.38);
+                  }
                   .optcard h3{ margin:0 0 8px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
                   .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
                   .optcard .btn{ margin-top:auto; border:1px solid var(--chip-border); background: var(--card-alt); color: var(--accent); }
-                  .optcard:not(.active) .btn{ background: var(--card-alt); color: var(--accent); border-color: var(--chip-border); }
-                  .optcard.active .btn{ background: var(--accent); color:#fff; border-color: var(--accent); }
+                  .optcard[data-slot="0"] .btn{ background: var(--accent); color:#fff; border-color: var(--accent); }
+                  .optcard-face{
+                    display:flex;
+                    flex-direction:column;
+                    height:100%;
+                    backface-visibility: hidden;
+                  }
+                  .optcard.is-spinning .optcard-face{
+                    animation: optSpin .55s cubic-bezier(0.2,0.8,0.2,1);
+                    transform-origin: center;
+                  }
+                  @keyframes optSpin{
+                    0%{ transform: rotateY(-160deg) scale(0.94); }
+                    60%{ transform: rotateY(18deg) scale(1.02); }
+                    100%{ transform: rotateY(0) scale(1); }
+                  }
+                  @media (max-width: 860px){
+                    .optgrid{
+                      position: relative;
+                      display: grid;
+                      grid-template-columns: 1fr;
+                      gap: 12px;
+                      min-height: auto;
+                      perspective: none;
+                    }
+                    .optcard{
+                      position: relative;
+                      width: 100%;
+                      transform: none !important;
+                    }
+                    .optcard::after{ display:none; }
+                  }
+                  @media (prefers-reduced-motion: reduce){
+                    .optcard{ transition: none; }
+                    .optcard.is-spinning .optcard-face{ animation: none; }
+                  }
                 </style>
                 <div class="optgrid" id="homeOptGrid" role="tablist" aria-label="문의 옵션">
-                  <div class="optcard active" data-mode="instant" role="tab" aria-selected="true">
-                    <h3>1초 Set</h3>
-                    <p>옵션 입력 즉시 3가지 추천안 자동 생성. 마음에 들지 않으면 재생성 가능.</p>
-                    <a class="btn" href="{{ route('inquiry.create', ['mode'=>'instant']) }}">추천셋 즉시 생성</a>
+                  <div class="optcard active" data-mode="instant" data-slot="0" role="tab" aria-selected="true" tabindex="0">
+                    <div class="optcard-face">
+                      <h3>1초 Set</h3>
+                      <p>옵션 입력 즉시 3가지 추천안 자동 생성. 마음에 들지 않으면 재생성 가능.</p>
+                      <a class="btn" href="{{ route('inquiry.create', ['mode'=>'instant']) }}">추천셋 즉시 생성</a>
+                    </div>
                   </div>
-                  <div class="optcard" data-mode="one_day" role="tab" aria-selected="false">
-                    <h3>1일 Set</h3>
-                    <p>요구사항을 작성해 보내주시면 관리자가 큐레이션한 3가지 셋을 1일 내 전달.</p>
-                    <a class="btn" href="{{ route('inquiry.create', ['mode'=>'one_day']) }}">관리자의 추천셋</a>
+                  <div class="optcard" data-mode="one_day" data-slot="1" role="tab" aria-selected="false" tabindex="0">
+                    <div class="optcard-face">
+                      <h3>1일 Set</h3>
+                      <p>요구사항을 작성해 보내주시면 관리자가 큐레이션한 3가지 셋을 1일 내 전달.</p>
+                      <a class="btn" href="{{ route('inquiry.create', ['mode'=>'one_day']) }}">관리자의 추천셋</a>
+                    </div>
                   </div>
-                  <div class="optcard" data-mode="direct" role="tab" aria-selected="false">
-                    <h3>아티스트 맞춤형</h3>
-                    <p>원하는 아티스트를 지정해 섭외 요청하기.</p>
-                    <a class="btn" href="{{ route('inquiry.create', ['mode'=>'direct']) }}">아티스트 지정 섭외</a>
+                  <div class="optcard" data-mode="direct" data-slot="-1" role="tab" aria-selected="false" tabindex="0">
+                    <div class="optcard-face">
+                      <h3>아티스트 맞춤형</h3>
+                      <p>원하는 아티스트를 지정해 섭외 요청하기.</p>
+                      <a class="btn" href="{{ route('inquiry.create', ['mode'=>'direct']) }}">아티스트 지정 섭외</a>
+                    </div>
                   </div>
                 </div>
                 <script>
                   (function(){
                     const grid = document.getElementById('homeOptGrid');
                     if(!grid) return;
+                    const cards = Array.from(grid.querySelectorAll('.optcard'));
+                    if(!cards.length) return;
+                    let centerIndex = cards.findIndex(c => c.classList.contains('active'));
+                    if(centerIndex < 0) centerIndex = 0;
+
+                    function applySlots(){
+                      const len = cards.length;
+                      cards.forEach((card, idx) => {
+                        let offset = idx - centerIndex;
+                        if (offset > 1) offset -= len;
+                        if (offset < -1) offset += len;
+                        card.dataset.slot = String(offset);
+                        const active = offset === 0;
+                        card.classList.toggle('active', active);
+                        card.setAttribute('aria-selected', active ? 'true' : 'false');
+                      });
+                    }
+
+                    function spin(card){
+                      card.classList.add('is-spinning');
+                      card.addEventListener('animationend', () => {
+                        card.classList.remove('is-spinning');
+                      }, { once: true });
+                    }
+
+                    function setCenter(card){
+                      const idx = cards.indexOf(card);
+                      if (idx < 0 || idx === centerIndex) return;
+                      centerIndex = idx;
+                      spin(card);
+                      applySlots();
+                    }
+
                     grid.addEventListener('click', function(e){
                       const card = e.target.closest('.optcard');
                       if(!card) return;
-                      // 내부 버튼 클릭은 활성화만 유지하고 기본 이동 허용
                       if (e.target.closest('a.btn')) return;
-                      // 카드 클릭 시 활성화 토글만 수행
-                      grid.querySelectorAll('.optcard').forEach(c=>{ c.classList.remove('active'); c.setAttribute('aria-selected','false'); });
-                      card.classList.add('active');
-                      card.setAttribute('aria-selected','true');
+                      setCenter(card);
                       e.preventDefault();
                     });
+
+                    grid.addEventListener('keydown', function(e){
+                      const card = e.target.closest('.optcard');
+                      if(!card) return;
+                      if (e.target.closest('a.btn')) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        setCenter(card);
+                        e.preventDefault();
+                        return;
+                      }
+                      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                        const dir = e.key === 'ArrowLeft' ? -1 : 1;
+                        centerIndex = (centerIndex + dir + cards.length) % cards.length;
+                        const next = cards[centerIndex];
+                        spin(next);
+                        applySlots();
+                        e.preventDefault();
+                      }
+                    });
+
+                    applySlots();
                   })();
                 </script>
 
@@ -870,48 +1121,68 @@
         @endif
 
         <!-- ▼ 신규: 샘플 문의/후기 섹션 -->
+        @php
+            $fallbackTestimonials = collect([
+                [
+                    'kind' => '샘플 문의',
+                    'title' => '대학 축제 · 힙합/R&B · 1,500만 원',
+                    'body' => '9월 말 저녁 타임, 40분 내외 공연. 남녀 혼성 혹은 콜라보 가능 아티스트 위주로 후보 부탁드립니다.',
+                    'meta' => '예상 응답: 익일 오전 후보 6팀',
+                    'rating' => 4.8,
+                ],
+                [
+                    'kind' => '후기',
+                    'title' => '기업 세미나 애프터파티',
+                    'body' => '내부 승인까지 시간이 촉박했는데, 링크로 후보 공유가 빨라서 결정이 쉬웠습니다. 예산 범위도 명확했어요.',
+                    'meta' => '마케팅팀 B실장',
+                    'rating' => 5.0,
+                ],
+                [
+                    'kind' => '후기',
+                    'title' => '리테일 팝업 기념 공연',
+                    'body' => '타깃 연령대에 맞춘 추천이 정확했습니다. 공유 링크 회수/재발급으로 보안 걱정도 줄었어요.',
+                    'meta' => '브랜드 매니저 K',
+                    'rating' => 4.9,
+                ],
+            ])->map(fn($item) => (object) $item);
+            $testiItems = (isset($testimonials) && $testimonials->isNotEmpty()) ? $testimonials : $fallbackTestimonials;
+        @endphp
         <section class="testimonials" aria-labelledby="testi-title">
             <div class="container">
-                <h2 id="testi-title" class="sr-only">고객 문의 샘플 및 후기</h2>
-                <div class="testi-grid" role="list">
-                    <!-- 1) 샘플 문의 -->
-                    <article class="t-card" role="listitem" aria-labelledby="t1-title">
-                        <span class="t-kind" aria-label="유형">샘플 문의</span>
-                        <h3 id="t1-title" class="t-title">대학 축제 · 힙합/R&B · 1,500만 원</h3>
-                        <blockquote cite="#" aria-label="문의 상세">
-                            9월 말 저녁 타임, 40분 내외 공연. 남녀 혼성 혹은 콜라보 가능 아티스트 위주로 후보 부탁드립니다.
-                        </blockquote>
-                        <div class="t-meta">
-                            <span>예상 응답: 익일 오전 후보 6팀</span>
-                            <span class="stars" aria-label="만족도 예시 별점 5점 만점 4.8점">★★★★★<span class="sr-only">평균 4.8/5</span></span>
+                <div class="testi-head">
+                    <div>
+                        <span class="testi-eyebrow">Samples</span>
+                        <h2 id="testi-title" class="testi-title">샘플 문의/후기</h2>
+                    </div>
+                </div>
+                <div class="testi-marquee">
+                    <div class="testi-track" id="testiTrack">
+                        <div class="testi-set" role="list">
+                            @foreach($testiItems as $t)
+                                @php
+                                    $rating = isset($t->rating) ? (float) $t->rating : null;
+                                    $stars = $rating ? str_repeat('★', (int) round($rating)) : '';
+                                @endphp
+                                <article class="t-card" role="listitem" aria-label="{{ $t->title }}">
+                                    <span class="t-kind" aria-label="유형">{{ $t->kind ?? '후기' }}</span>
+                                    <h3 class="t-title">{{ $t->title }}</h3>
+                                    <blockquote cite="#" aria-label="내용">{{ $t->body }}</blockquote>
+                                    @if(!empty($t->meta) || $rating)
+                                        <div class="t-meta">
+                                            @if(!empty($t->meta))
+                                                <span>{{ $t->meta }}</span>
+                                            @endif
+                                            @if($rating)
+                                                <span class="stars" aria-label="별점 5점 만점 {{ number_format($rating, 1) }}점">
+                                                    {{ $stars }}<span class="sr-only">{{ number_format($rating, 1) }}/5</span>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </article>
+                            @endforeach
                         </div>
-                    </article>
-
-                    <!-- 2) 후기 -->
-                    <article class="t-card" role="listitem" aria-labelledby="t2-title">
-                        <span class="t-kind" aria-label="유형">후기</span>
-                        <h3 id="t2-title" class="t-title">기업 세미나 애프터파티</h3>
-                        <blockquote cite="#" aria-label="고객 후기">
-                            내부 승인까지 시간이 촉박했는데, 링크로 후보 공유가 빨라서 결정이 쉬웠습니다. 예산 범위도 명확했어요.
-                        </blockquote>
-                        <div class="t-meta">
-                            <span><cite>마케팅팀 B실장</cite></span>
-                            <span class="stars" aria-label="별점 5점">★★★★★<span class="sr-only">5/5</span></span>
-                        </div>
-                    </article>
-
-                    <!-- 3) 후기 -->
-                    <article class="t-card" role="listitem" aria-labelledby="t3-title">
-                        <span class="t-kind" aria-label="유형">후기</span>
-                        <h3 id="t3-title" class="t-title">리테일 팝업 기념 공연</h3>
-                        <blockquote cite="#" aria-label="고객 후기">
-                            타깃 연령대에 맞춘 추천이 정확했습니다. 공유 링크 회수/재발급으로 보안 걱정도 줄었어요.
-                        </blockquote>
-                        <div class="t-meta">
-                            <span><cite>브랜드 매니저 K</cite></span>
-                            <span class="stars" aria-label="별점 5점 만점 4.9점">★★★★★<span class="sr-only">4.9/5</span></span>
-                        </div>
-                    </article>
+                    </div>
                 </div>
             </div>
         </section>
@@ -996,6 +1267,49 @@
             const savedTheme = (() => { try { return localStorage.getItem(THEME_KEY) || ''; } catch(e) { return ''; } })();
             setTheme(savedTheme === 'light' ? 'light' : 'dark');
             btnTheme?.addEventListener('click', () => setTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
+
+            const testiTrack = document.getElementById('testiTrack');
+            const testiMarquee = document.querySelector('.testi-marquee');
+            if (testiTrack && testiMarquee) {
+                const buildTesti = () => {
+                    const set = testiTrack.querySelector('.testi-set');
+                    if (!set) return;
+                    const origCount = parseInt(set.dataset.origCount || set.children.length, 10);
+                    if (!set.dataset.origCount) set.dataset.origCount = String(origCount);
+
+                    while (set.children.length > origCount) set.removeChild(set.lastChild);
+                    while (testiTrack.children.length > 1) testiTrack.removeChild(testiTrack.lastChild);
+
+                    const originals = Array.from(set.children);
+                    let safety = 0;
+                    while (set.scrollWidth < testiMarquee.clientWidth && safety < 6) {
+                        originals.forEach(node => {
+                            const cloneNode = node.cloneNode(true);
+                            cloneNode.setAttribute('aria-hidden', 'true');
+                            set.appendChild(cloneNode);
+                        });
+                        safety += 1;
+                    }
+
+                    const clone = set.cloneNode(true);
+                    clone.setAttribute('aria-hidden', 'true');
+                    testiTrack.appendChild(clone);
+
+                    const offset = set.scrollWidth;
+                    if (offset > 0) {
+                        const duration = Math.max(24, Math.round(offset / 35));
+                        testiTrack.style.setProperty('--testi-offset', `${offset}px`);
+                        testiTrack.style.setProperty('--testi-duration', `${duration}s`);
+                    }
+                };
+
+                buildTesti();
+                let rszTimer = 0;
+                window.addEventListener('resize', () => {
+                    clearTimeout(rszTimer);
+                    rszTimer = setTimeout(buildTesti, 150);
+                });
+            }
 
             const frame = document.querySelector('.stories-frame');
             if (frame) {

@@ -42,6 +42,19 @@ class PublicHomeController extends Controller
             $banners = collect();
         }
 
-        return view('public.home', compact('storyGroups', 'banners'));
+        $testimonials = collect();
+        try {
+            if (class_exists(\App\Models\Testimonial::class) && Schema::hasTable('testimonials')) {
+                $testimonials = \App\Models\Testimonial::query()
+                    ->where('is_active', true)
+                    ->orderBy('display_order')
+                    ->orderByDesc('id')
+                    ->get();
+            }
+        } catch (\Throwable $e) {
+            $testimonials = collect();
+        }
+
+        return view('public.home', compact('storyGroups', 'banners', 'testimonials'));
     }
 }

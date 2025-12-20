@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\RecommendationExportController as AdminRecommenda
 use App\Http\Controllers\Admin\ArtistController as AdminArtistController;
 use App\Http\Controllers\Admin\TaxonomyController as AdminTaxonomyController;
 use App\Http\Controllers\Admin\SuccessStoryController as AdminSuccessStoryController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\DirectRequestController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ArtistPublicController;
@@ -219,6 +220,14 @@ Route::prefix('eadmincore')->name('admin.')->group(function () {
     // Accept both PUT and PATCH for broader form compatibility
     Route::match(['put','patch'], '/success-stories/{success_story}', [AdminSuccessStoryController::class, 'update'])->name('success-stories.update');
     Route::delete('/success-stories/{success_story}', [AdminSuccessStoryController::class, 'destroy'])->name('success-stories.destroy');
+
+    // 샘플 문의/후기
+    Route::get('/testimonials', [AdminTestimonialController::class, 'index'])->name('testimonials.index');
+    Route::get('/testimonials/create', [AdminTestimonialController::class, 'create'])->name('testimonials.create');
+    Route::post('/testimonials', [AdminTestimonialController::class, 'store'])->name('testimonials.store');
+    Route::get('/testimonials/{testimonial}/edit', [AdminTestimonialController::class, 'edit'])->name('testimonials.edit');
+    Route::patch('/testimonials/{testimonial}', [AdminTestimonialController::class, 'update'])->name('testimonials.update');
+    Route::delete('/testimonials/{testimonial}', [AdminTestimonialController::class, 'destroy'])->name('testimonials.destroy');
 
     // 배너 관리
     Route::get('/banners', [\App\Http\Controllers\Admin\BannerController::class, 'index'])->name('banners.index');

@@ -1,6 +1,7 @@
 FROM composer:2 AS vendor
 WORKDIR /app
 COPY . .
+ENV COMPOSER_PLATFORM_PHP=8.2.0
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 FROM node:20-alpine AS assets

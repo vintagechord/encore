@@ -2,36 +2,45 @@
 <style id="enc-theme-vars">
   /* Global theme variables for all public pages */
   :root {
-    --bg: #050912;
-    --fg: #e6edff;
-    --muted: #97a6c9;
-    --accent: #6366f1;
-    --accent-hover: #818cf8;
-    --ring: #4f46e5;
-    --card: #0f1729;
-    --card-alt: #152033;
-    --border: #1f2b41;
-    --chip: rgba(99, 102, 241, 0.18);
-    --chip-border: rgba(99, 102, 241, 0.35);
+    --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+      radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+      #0b090a;
+    --fg: #f7f1e9;
+    --muted: #b6a89a;
+    --accent: #f3c652;
+    --accent-hover: #f0b840;
+    --accent-2: #8d1f2d;
+    --ring: #8d1f2d;
+    --card: #151012;
+    --card-alt: #1b1316;
+    --border: #2a1c22;
+    --chip: rgba(141, 31, 45, 0.2);
+    --chip-border: rgba(141, 31, 45, 0.4);
+    --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
   }
   [data-theme="light"] {
-    --bg: #f8fafc;
-    --fg: #0f1729;
-    --muted: #475569;
-    --accent: #4f46e5;
-    --accent-hover: #4338ca;
-    --ring: #4f46e5;
-    --card: #ffffff;
-    --card-alt: #f1f5f9;
-    --border: #d7dce2;
-    --chip: rgba(79, 70, 229, 0.10);
-    --chip-border: rgba(79, 70, 229, 0.28);
+    --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
+      linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%);
+    --fg: #2b1b1b;
+    --muted: #6b5b53;
+    --accent: #e3b648;
+    --accent-hover: #d5a63b;
+    --accent-2: #7a1e2e;
+    --ring: #7a1e2e;
+    --card: #fffdf8;
+    --card-alt: #f6ecdd;
+    --border: #e6d4c0;
+    --chip: rgba(122, 30, 46, 0.12);
+    --chip-border: rgba(122, 30, 46, 0.28);
   }
 </style>
 
 <style id="enc-shared-header-styles">
-  header.enc-top { position: sticky; top:0; z-index:20; background: rgba(7,12,24,.88); backdrop-filter: saturate(200%) blur(12px); border-bottom:1px solid var(--border); }
+  header.enc-top { position: sticky; top:0; z-index:20; background: rgba(11,9,10,.88); backdrop-filter: saturate(200%) blur(12px); border-bottom:1px solid var(--border); }
   [data-theme="light"] header.enc-top { background: rgba(255,255,255,.85); backdrop-filter:saturate(180%) blur(10px); }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--fg); }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
   .enc-container { max-width:1120px; margin:0 auto; padding:0 20px; }
   .enc-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0; flex-wrap:wrap; }
   .enc-brand { display:flex; align-items:center; gap:10px; font-weight:700; color:inherit; text-decoration:none; }
@@ -41,19 +50,20 @@
   }
   .enc-nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .enc-link { padding:8px 10px; border-radius:8px; border:1px solid transparent; color: var(--muted); text-decoration:none; }
-  .enc-link:hover { background: rgba(99,102,241,.12); color: var(--fg); border-color: rgba(99,102,241,.35); }
-  .enc-badge { display:inline-flex; align-items:center; font-size:12px; color:#7dd3fc; background: rgba(14,165,233,.12); border:1px solid rgba(14,165,233,.32); padding:2px 8px; border-radius:999px; }
+  .enc-link:hover { background: rgba(141,31,45,.12); color: var(--fg); border-color: rgba(141,31,45,.35); }
+  .enc-badge { display:inline-flex; align-items:center; font-size:12px; color:#f5e2b2; background: rgba(141,31,45,.18); border:1px solid rgba(141,31,45,.4); padding:2px 8px; border-radius:999px; }
+  [data-theme="light"] .enc-badge { background: var(--accent-2); border-color: var(--accent-2); color:#fff; }
   .theme-toggle { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
   [data-theme="light"] .theme-toggle { background:#ffffff; color:#1f2937; border-color:#d7dce2; }
   /* Mypage pill button (brand tone) */
   .enc-mypage{
     display:inline-flex; align-items:center; gap:6px;
     height: 36px; padding:0 10px; border-radius:999px;
-    background: var(--accent); border:1px solid var(--accent); color:#fff; font-weight:700; text-decoration:none;
-    box-shadow: 0 4px 12px rgba(99,102,241,.22);
+    background: var(--accent); border:1px solid var(--accent); color:#1b130f; font-weight:700; text-decoration:none;
+    box-shadow: 0 4px 12px rgba(243,198,82,.22);
     transition: transform .08s ease, background .2s ease, box-shadow .2s ease;
   }
-  .enc-mypage:hover{ background: var(--accent-hover); border-color: var(--accent-hover); color:#fff; text-decoration:none; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(99,102,241,.26); }
+  .enc-mypage:hover{ background: var(--accent-hover); border-color: var(--accent-hover); color:#1b130f; text-decoration:none; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(243,198,82,.3); }
   /* Date input: ensure calendar icon visible per theme (global) */
   [data-theme="dark"] input[type="date"] { color-scheme: dark !important; }
   [data-theme="light"] input[type="date"] { color-scheme: light !important; }

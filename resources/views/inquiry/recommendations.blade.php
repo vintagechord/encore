@@ -7,20 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b090a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fff7e6" media="(prefers-color-scheme: light)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
     /* Use global tokens from shared header; define only page-specific ones. */
     :root {
-      --tag-bg: rgba(99, 102, 241, 0.12);
-      --tag-border: rgba(99, 102, 241, 0.35);
-      --tag-text: #c7d2ff;
+      --tag-bg: rgba(141, 31, 45, 0.12);
+      --tag-border: rgba(141, 31, 45, 0.35);
+      --tag-text: #f5e2b2;
     }
 
     [data-theme="light"] {
-      --tag-bg: rgba(79, 70, 229, 0.10);
-      --tag-border: rgba(79, 70, 229, 0.28);
-      --tag-text: #4338ca;
+      --tag-bg: rgba(122, 30, 46, 0.12);
+      --tag-border: rgba(122, 30, 46, 0.28);
+      --tag-text: #7a1e2e;
     }
 
     * {
@@ -37,7 +40,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
+      font-family: var(--font-sans, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif);
       color: var(--fg);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;

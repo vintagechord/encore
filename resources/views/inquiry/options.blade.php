@@ -6,35 +6,43 @@
     <title>추천 옵션 미리보기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark light">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #060913;
-            --surface: #0f1729;
-            --card: #111b30;
-            --card-alt: #152033;
-            --border: #1f2b41;
-            --border-soft: #273554;
-            --text: #e5ecff;
-            --muted: #96a7c9;
-            --accent: #6366f1;
-            --accent-hover: #818cf8;
+            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+                radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+                #0b090a;
+            --surface: #151012;
+            --card: #1a1316;
+            --card-alt: #1b1316;
+            --border: #2a1c22;
+            --border-soft: #352029;
+            --text: #f7f1e9;
+            --muted: #b6a89a;
+            --accent: #f3c652;
+            --accent-hover: #f0b840;
+            --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
         }
 
         [data-theme="light"] {
-            --bg: #f8fafc;
-            --surface: #ffffff;
-            --card: #ffffff;
-            --card-alt: #f1f5f9;
-            --border: #d7dce2;
-            --border-soft: #c6ced8;
-            --text: #0f1729;
-            --muted: #475569;
-            --accent: #4f46e5;
-            --accent-hover: #4338ca;
+            --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
+                linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%);
+            --surface: #fffdf8;
+            --card: #fff9f0;
+            --card-alt: #f6ecdd;
+            --border: #e6d4c0;
+            --border-soft: #d7c5b3;
+            --text: #2b1b1b;
+            --muted: #6b5b53;
+            --accent: #e3b648;
+            --accent-hover: #d5a63b;
         }
 
         body {
-            font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--font-sans);
             margin: 24px;
             line-height: 1.5;
             background: var(--bg);
@@ -47,11 +55,11 @@
         }
 
         a {
-            color: #8da2fb;
+            color: var(--accent);
         }
 
         a:hover {
-            color: #b3c0ff;
+            color: var(--accent-hover);
         }
 
         .muted {
@@ -63,7 +71,7 @@
             border-radius: 10px;
             border: 1px solid var(--accent);
             background: var(--accent);
-            color: #fff;
+            color: #1b130f;
             cursor: pointer;
             font-weight: 600;
             transition: background .2s ease, border-color .2s ease;

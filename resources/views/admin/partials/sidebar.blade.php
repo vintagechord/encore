@@ -29,7 +29,7 @@
 <div class="adm-shell">
   <aside class="adm-side">
     <div class="logo">
-      <span aria-hidden="true" style="display:inline-flex;width:16px;height:16px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
+      <span aria-hidden="true" style="display:inline-flex;width:16px;height:16px;border-radius:6px;background:linear-gradient(135deg,#8d1f2d,#f3c652);"></span>
       <span>Encore Admin</span>
     </div>
     <nav class="adm-menu" aria-label="관리자 메뉴">

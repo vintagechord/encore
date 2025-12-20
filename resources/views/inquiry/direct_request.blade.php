@@ -5,10 +5,13 @@
   <title>특정 아티스트 직접 요청</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
-    :root { --bg:#050912; --fg:#e6edff; --muted:#97a6c9; --border:#1f2b41; --card:#0f1729; --card-alt:#152033; --accent:#6366f1; --accent-hover:#818cf8; }
-    [data-theme="light"] { --bg:#f8fafc; --fg:#0f1729; --muted:#475569; --border:#d7dce2; --card:#ffffff; --card-alt:#f1f5f9; --accent:#4f46e5; --accent-hover:#4338ca; }
-    body { margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    :root { --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%), radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%), #0b090a; --fg:#f7f1e9; --muted:#b6a89a; --border:#2a1c22; --card:#151012; --card-alt:#1b1316; --accent:#f3c652; --accent-hover:#f0b840; --font-sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif; }
+    [data-theme="light"] { --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%), linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%); --fg:#2b1b1b; --muted:#6b5b53; --border:#e6d4c0; --card:#fffdf8; --card-alt:#f6ecdd; --accent:#e3b648; --accent-hover:#d5a63b; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .page { max-width: 820px; margin: 0 auto; padding: 24px 20px 24px; }
     h1 { margin: 12px 0; font-size: 22px; }
     fieldset { border:1px solid var(--border); border-radius:12px; padding:16px; margin:12px 0; background:var(--card); }
@@ -19,7 +22,7 @@
     input, select { height:44px; }
     .row { display:flex; gap:12px; flex-wrap:wrap; }
     .half { flex:1 1 320px; }
-    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#fff; font-weight:700; cursor:pointer; text-decoration:none; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#1b130f; font-weight:700; cursor:pointer; text-decoration:none; }
     input[type="checkbox"]{ width:16px; height:16px; accent-color: var(--accent); }
     .muted { color:var(--muted); font-size:13px; }
   </style>
@@ -30,7 +33,7 @@
     <h1>특정 아티스트 직접 요청</h1>
 
     @if ($errors->any())
-      <div style="border:1px solid #4338ca; background:rgba(99,102,241,.15); padding:10px; border-radius:10px; margin:12px 0;">
+      <div style="border:1px solid #8d1f2d; background:rgba(141,31,45,.15); padding:10px; border-radius:10px; margin:12px 0;">
         <strong>입력값을 확인해 주세요.</strong>
         <ul style="margin:6px 0 0 18px;">
         @foreach ($errors->all() as $e) <li>{{ $e }}</li> @endforeach

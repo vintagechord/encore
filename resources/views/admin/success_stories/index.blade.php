@@ -9,7 +9,7 @@
     .adm-toolbar .btn.ghost{ background:transparent; color:var(--fg); border-color: var(--border); }
     table.adm-table{ width:100%; border-collapse:collapse; background: var(--surface, var(--card)); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
     table.adm-table th, table.adm-table td{ padding:12px; border-bottom:1px solid var(--border); vertical-align:top; }
-    table.adm-table thead th{ background: rgba(99,102,241,.14); text-align:left; }
+    table.adm-table thead th{ background: rgba(141,31,45,.16); text-align:left; }
     .row-actions{ display:flex; gap:6px; flex-wrap:wrap; }
     .btn.sm{ padding:6px 10px; border-radius:8px; font-size:13px; border:1px solid var(--accent); background: var(--accent); color:#fff; }
     .btn.danger{ background:#ef4444; border-color:#ef4444; }

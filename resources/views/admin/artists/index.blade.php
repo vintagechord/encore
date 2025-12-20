@@ -10,7 +10,7 @@
 
     table.adm-table{ width:100%; border-collapse:collapse; background: var(--surface, var(--card)); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
     table.adm-table th, table.adm-table td{ padding:12px; border-bottom:1px solid var(--border); vertical-align:top; }
-    table.adm-table thead th{ background: rgba(99,102,241,.14); text-align:left; }
+    table.adm-table thead th{ background: rgba(141,31,45,.16); text-align:left; }
     .chips{ display:flex; gap:6px; flex-wrap:wrap; }
     .chip{ display:inline-flex; align-items:center; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--border); background: var(--card-alt); color: var(--muted); }
     .row-actions{ display:flex; gap:6px; flex-wrap:wrap; }

@@ -9,28 +9,36 @@
   <!-- 완료 페이지는 검색 노출 불필요 -->
   <meta name="robots" content="noindex,follow">
   <meta name="description" content="문의 접수가 완료되었습니다. 빠르게 후보를 검토하여 공유드리겠습니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #050912;
-      --fg: #e6edff;
-      --muted: #96a6c6;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
-      --card: #0f1729;
-      --card-alt: #151f33;
-      --border: #1f2b41;
+      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+        radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+        #0b090a;
+      --fg: #f7f1e9;
+      --muted: #b6a89a;
+      --accent: #f3c652;
+      --accent-hover: #f0b840;
+      --card: #151012;
+      --card-alt: #1b1316;
+      --border: #2a1c22;
       --ok: #34d399;
+      --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
     }
     [data-theme="light"] {
-      --bg: #f8fafc;
-      --fg: #0f1729;
-      --muted: #475569;
-      --accent: #4f46e5;
-      --accent-hover: #4338ca;
-      --card: #ffffff;
-      --card-alt: #f1f5f9;
-      --border: #d7dce2;
+      --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
+        linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%);
+      --fg: #2b1b1b;
+      --muted: #6b5b53;
+      --accent: #e3b648;
+      --accent-hover: #d5a63b;
+      --card: #fffdf8;
+      --card-alt: #f6ecdd;
+      --border: #e6d4c0;
     }
 
     * {
@@ -47,7 +55,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
+      font-family: var(--font-sans);
       color: var(--fg);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;
@@ -131,7 +139,7 @@
       font-weight: 700;
       cursor: pointer;
       background: var(--accent);
-      color: #fff;
+      color: #1b130f;
       text-decoration: none;
       transition: background .2s ease, border-color .2s ease;
     }
@@ -148,7 +156,7 @@
     }
 
     .btn-ghost:hover {
-      background: rgba(99, 102, 241, 0.16);
+      background: rgba(141, 31, 45, 0.12);
       color: var(--accent-hover);
     }
 
@@ -157,7 +165,7 @@
       font-size: 13px;
     }
 
-    .footer { border-top: 1px solid var(--border); margin-top: 24px; background: rgba(9, 14, 26, 0.75); }
+    .footer { border-top: 1px solid var(--border); margin-top: 24px; background: rgba(11, 9, 10, 0.75); }
     [data-theme="light"] .footer { background: rgba(255, 255, 255, 0.75); }
 
     .footer-inner {

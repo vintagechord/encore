@@ -7,34 +7,42 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #060913;
-      --surface: #0f1729;
-      --surface-alt: #152038;
-      --card: #111b30;
-      --border: #1e2a40;
-      --border-alt: #273554;
-      --text: #e5ecff;
-      --muted: #94a3c4;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
+      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+        radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+        #0b090a;
+      --surface: #151012;
+      --surface-alt: #1b1316;
+      --card: #1a1316;
+      --border: #2a1c22;
+      --border-alt: #352029;
+      --text: #f7f1e9;
+      --muted: #b6a89a;
+      --accent: #f3c652;
+      --accent-hover: #f0b840;
       --danger-bg: rgba(248, 113, 113, 0.18);
       --danger-border: rgba(248, 113, 113, 0.45);
+      --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
     }
 
     [data-theme="light"] {
-      --bg: #f8fafc;
-      --surface: #ffffff;
-      --surface-alt: #f1f5f9;
-      --card: #ffffff;
-      --border: #d7dce2;
-      --border-alt: #c6ced8;
-      --text: #0f1729;
-      --muted: #475569;
-      --accent: #4f46e5;
-      --accent-hover: #4338ca;
+      --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
+        linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%);
+      --surface: #fffdf8;
+      --surface-alt: #f6ecdd;
+      --card: #fff9f0;
+      --border: #e6d4c0;
+      --border-alt: #d7c5b3;
+      --text: #2b1b1b;
+      --muted: #6b5b53;
+      --accent: #e3b648;
+      --accent-hover: #d5a63b;
       --danger-bg: rgba(248, 113, 113, 0.10);
       --danger-border: rgba(248, 113, 113, 0.35);
     }
@@ -44,7 +52,7 @@
     }
 
     body {
-      font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-sans);
       margin: 0;
       line-height: 1.5;
       background: var(--bg);
@@ -107,7 +115,7 @@
       width: 18px;
       height: 18px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #6366f1, #ec4899);
+      background: linear-gradient(135deg, #8d1f2d, #f3c652);
       display: inline-flex;
     }
 
@@ -229,7 +237,7 @@
       border-radius: 10px;
       border: 1px solid var(--accent);
       background: var(--accent);
-      color: #fff;
+      color: #1b130f;
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
@@ -332,8 +340,8 @@
     <style>
       .optgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; margin-bottom:10px; }
       .optcard{ position:relative; display:flex; flex-direction:column; min-height:200px; border:1px solid var(--border); border-radius:14px; background:var(--card); padding:20px; cursor:pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .08s ease; }
-      .optcard:hover{ border-color: var(--chip-border); box-shadow: inset 0 0 0 2px rgba(99,102,241,.15); }
-      .optcard.active{ border-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(99,102,241,.35); }
+      .optcard:hover{ border-color: var(--border-alt); box-shadow: inset 0 0 0 2px rgba(141,31,45,.18); }
+      .optcard.active{ border-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(243,198,82,.35); }
       .optcard h3{ margin:0 0 8px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
       .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
       .optcard .btn{ margin-top:auto; border:1px solid var(--chip-border); background: var(--card-alt); color: var(--accent); }

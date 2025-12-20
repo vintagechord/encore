@@ -4,22 +4,25 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     :root {
-      --bg: #050912;
-      --surface: #0f1729;
-      --surface-alt: #152033;
-      --border: #1f2b41;
-      --border-soft: #273554;
-      --text: #e6edff;
-      --muted: #97a6c9;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
+      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+        radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+        #0b090a;
+      --surface: #151012;
+      --surface-alt: #1b1316;
+      --border: #2a1c22;
+      --border-soft: #352029;
+      --text: #f7f1e9;
+      --muted: #b6a89a;
+      --accent: #f3c652;
+      --accent-hover: #f0b840;
       --danger: #ef4444;
       --warning: #f59e0b;
       --success: #34d399;
+      --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     }
 
     body {
-      font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: var(--font-sans);
       color: var(--text);
       background: var(--bg);
     }
@@ -34,13 +37,13 @@
     }
 
     a {
-      color: #8da2fb;
+      color: var(--accent);
       text-decoration: none;
       transition: color .2s ease;
     }
 
     a:hover {
-      color: #b3c0ff;
+      color: var(--accent-hover);
       text-decoration: underline;
     }
 
@@ -227,8 +230,8 @@
 
     .tag.shared {
       border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.2);
-      color: #b3c0ff;
+      background: rgba(243, 198, 82, 0.2);
+      color: #f5e2b2;
     }
 
     .tag.issued {

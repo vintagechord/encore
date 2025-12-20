@@ -14,7 +14,7 @@ jobs:
       APP_ENV: testing
       APP_DEBUG: true
       DB_CONNECTION: sqlite
-      DB_DATABASE: database/database.sqlite
+      DB_DATABASE: ${{ github.workspace }}/database/database.sqlite
       CACHE_DRIVER: array
       SESSION_DRIVER: array
       QUEUE_CONNECTION: sync
@@ -45,7 +45,7 @@ jobs:
           cp .env.example .env
           php artisan key:generate
           chmod -R 777 storage bootstrap/cache
-          touch database/database.sqlite
+          touch "${DB_DATABASE}"
           php artisan migrate --force
 
       - name: Run tests

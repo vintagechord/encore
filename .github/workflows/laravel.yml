@@ -37,4 +37,4 @@ jobs:
           php artisan migrate --force || true
 
       - name: Run tests
-        run: php artisan test -q
+        run: php artisan test --verbose

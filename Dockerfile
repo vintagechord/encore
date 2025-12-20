@@ -1,7 +1,13 @@
-FROM composer:2 AS vendor
+FROM php:8.2-cli AS vendor
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        unzip \
+        libzip-dev \
+    && docker-php-ext-install zip \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 COPY . .
-ENV COMPOSER_PLATFORM_PHP=8.2.0
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts
 
 FROM node:20-alpine AS assets

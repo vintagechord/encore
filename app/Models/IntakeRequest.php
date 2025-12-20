@@ -15,6 +15,7 @@ class IntakeRequest extends Model
         'contact_email',
         'contact_phone',
         'org_name',
+        'biz_cert_path',
 
         // 단일 날짜(레거시 입력 대응)
         'event_date',

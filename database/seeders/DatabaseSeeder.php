@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        // Encore base taxonomies
+        $this->call(DisciplineGenreTagSeeder::class);
+        // Sample artists (music/dance/mc 20 teams each)
+        $this->call(SampleArtistsSeeder::class);
     }
 }
-
-$this->call(\Database\Seeders\DisciplineGenreTagSeeder::class);

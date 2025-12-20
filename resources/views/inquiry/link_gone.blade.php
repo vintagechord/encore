@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>링크가 만료되었습니다</title>
     <meta name="robots" content="noindex, nofollow">
+    <meta name="color-scheme" content="dark light">
     <style>
         :root {
             --bg: #050912;
@@ -14,6 +15,16 @@
             --border: #1f2b41;
             --accent: #6366f1;
             --accent-hover: #818cf8;
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --fg: #0f1729;
+            --muted: #475569;
+            --card: #ffffff;
+            --border: #d7dce2;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
         }
 
         body {
@@ -73,6 +84,7 @@
 </head>
 
 <body>
+    <script>(function(){try{var t=(localStorage.getItem('enc_theme')==='light') ? 'light' : 'dark';document.documentElement.setAttribute('data-theme', t);}catch(e){}})();</script>
     <h1>링크가 만료되었습니다</h1>
     <div class="card">
         <p>요청하신 공개 링크는 더 이상 유효하지 않습니다.</p>

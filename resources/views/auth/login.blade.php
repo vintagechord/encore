@@ -1,4 +1,11 @@
 <x-guest-layout>
+    <div class="auth-head">
+        <h1 style="margin:0 0 12px; font-size:22px; letter-spacing:-0.01em">로그인</h1>
+        <div class="muted" style="margin-bottom:10px">
+            Encore 계정으로 로그인하거나 <a href="{{ route('register') }}">회원가입</a>을 진행하세요.
+        </div>
+    </div>
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -32,14 +39,17 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-between mt-4">
+            <a class="underline text-sm text-indigo-300 hover:text-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('register') }}">
+                아직 회원이 아니신가요?
+            </a>
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-indigo-300 hover:text-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button class="ms-3 primary">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

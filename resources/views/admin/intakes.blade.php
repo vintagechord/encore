@@ -1,9 +1,6 @@
-<!doctype html>
-<html lang="ko">
+@extends('layouts.admin')
 
-<head>
-  <meta charset="utf-8">
-  <title>문의 목록</title>
+@push('head')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     :root {
@@ -23,7 +20,6 @@
 
     body {
       font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      margin: 24px;
       color: var(--text);
       background: var(--bg);
     }
@@ -295,9 +291,9 @@
       box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
     }
   </style>
-</head>
+@endpush
 
-<body>
+@section('content')
   <h1>문의 목록</h1>
   <p><a href="{{ route('inquiry.create') }}">새 문의</a></p>
 
@@ -319,6 +315,7 @@
         <th>성함</th>
         <th>이메일</th>
         <th>접수일</th>
+        <th>상태</th>
         <th>액션</th>
       </tr>
     </thead>
@@ -331,6 +328,21 @@
         <td>
           @php $isoCreated = optional($i->created_at)?->toIso8601String(); @endphp
           <span class="dt" data-iso="{{ $isoCreated }}">{{ $isoCreated }}</span>
+        </td>
+        <td>
+          <form method="post" action="{{ route('admin.intakes.status', ['intake'=>$i->id]) }}" style="display:flex;gap:6px;align-items:center">
+            @csrf
+            <select name="status" style="background:var(--surface-alt);color:var(--text);border:1px solid var(--border-soft);border-radius:6px;padding:4px 6px">
+              @php $st=$i->status ?: 'new'; @endphp
+              <option value="new" @selected($st==='new')>접수 완료</option>
+              <option value="processing" @selected($st==='processing')>견적 확인</option>
+              <option value="recommended" @selected($st==='recommended')>결제 하기</option>
+              <option value="closed" @selected($st==='closed')>결제 완료</option>
+              <option value="booked" @selected($st==='booked')>섭외 완료</option>
+              <option value="completed" @selected($st==='completed')>행사 완료</option>
+            </select>
+            <button class="btn" type="submit">저장</button>
+          </form>
         </td>
         <td>
           <div class="actions">
@@ -435,7 +447,9 @@
     </div>
   </div>
 
-  <!-- Rocket Loader 무시 -->
+@endsection
+
+@push('scripts')
   <script data-cfasync="false">
     (function() {
       const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
@@ -720,6 +734,4 @@
       initTZ();
     })();
   </script>
-</body>
-
-</html>
+@endpush

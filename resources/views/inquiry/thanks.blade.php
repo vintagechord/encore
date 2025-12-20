@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>문의 접수 완료 | Encore</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
   <!-- 완료 페이지는 검색 노출 불필요 -->
   <meta name="robots" content="noindex,follow">
   <meta name="description" content="문의 접수가 완료되었습니다. 빠르게 후보를 검토하여 공유드리겠습니다.">
@@ -20,6 +21,16 @@
       --card-alt: #151f33;
       --border: #1f2b41;
       --ok: #34d399;
+    }
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --fg: #0f1729;
+      --muted: #475569;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --card: #ffffff;
+      --card-alt: #f1f5f9;
+      --border: #d7dce2;
     }
 
     * {
@@ -146,11 +157,8 @@
       font-size: 13px;
     }
 
-    .footer {
-      border-top: 1px solid var(--border);
-      margin-top: 24px;
-      background: rgba(9, 14, 26, 0.75);
-    }
+    .footer { border-top: 1px solid var(--border); margin-top: 24px; background: rgba(9, 14, 26, 0.75); }
+    [data-theme="light"] .footer { background: rgba(255, 255, 255, 0.75); }
 
     .footer-inner {
       max-width: 1120px;
@@ -180,15 +188,7 @@
 </head>
 
 <body>
-  <header>
-    <nav class="nav" aria-label="상단 내비게이션">
-      <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈">
-        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-        Encore
-      </a>
-      <span class="muted" aria-hidden="true">/ 문의 완료</span>
-    </nav>
-  </header>
+  @include('public.partials.header')
 
   <main id="main">
     <div class="container">
@@ -201,8 +201,7 @@
         </div>
         <h1>문의가 접수되었습니다.</h1>
         <p class="lead">
-          보통 <strong>영업일 기준 1일 내</strong> 후보를 정리해 <span class="ok">공유 링크</span>로 보내드립니다.
-          확인 메일도 함께 발송했으니, <strong>수신함/스팸함</strong>을 확인해주세요.
+          보통 <strong>영업일 기준 1일 내</strong> 후보를 <strong>마이페이지의 추천셋</strong>에서 볼 수 있습니다.
         </p>
 
         <div class="row" role="group" aria-label="다음 작업">
@@ -231,11 +230,7 @@
     </div>
   </main>
 
-  <footer class="footer" role="contentinfo">
-    <div class="footer-inner">
-      <span>&copy; {{ date('Y') }} Encore</span>
-    </div>
-  </footer>
+  @include('public.partials.footer')
 </body>
 
 </html>

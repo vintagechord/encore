@@ -6,24 +6,21 @@
   <title>추천안 | Encore</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#050912">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#050912" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
   <style>
+    /* Use global tokens from shared header; define only page-specific ones. */
     :root {
-      --bg: #050912;
-      --fg: #e5ecff;
-      --muted: #98a6c9;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
-      --ring: #4f46e5;
-      --card: #0f1729;
-      --card-alt: #152033;
-      --border: #1f2b41;
-      --chip: #1a253d;
-      --chip-border: #273554;
       --tag-bg: rgba(99, 102, 241, 0.12);
       --tag-border: rgba(99, 102, 241, 0.35);
       --tag-text: #c7d2ff;
+    }
+
+    [data-theme="light"] {
+      --tag-bg: rgba(79, 70, 229, 0.10);
+      --tag-border: rgba(79, 70, 229, 0.28);
+      --tag-text: #4338ca;
     }
 
     * {
@@ -51,49 +48,15 @@
       flex: 1
     }
 
-    a {
-      color: #8da2fb;
-      text-decoration: none
-    }
+    a { color: inherit; text-decoration: none }
+    a:hover { color: var(--accent-hover); text-decoration: underline }
 
-    a:hover {
-      color: #b3c0ff;
-      text-decoration: underline
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(9, 14, 26, .88);
-      backdrop-filter: saturate(180%) blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: inherit;
-      text-decoration: none;
-      font-weight: 700
-    }
+    /* 헤더/내비게이션은 공통 partial 사용. 페이지 상단 전용 스타일은 제거 */
 
     .container {
       max-width: 1120px;
       margin: 0 auto;
-      padding: 20px
+      padding: 24px
     }
 
     .meta {
@@ -194,6 +157,7 @@
       border: 1px solid var(--border);
       background: #0d1628;
     }
+    [data-theme="light"] .thumb { background: #eef2f9; }
 
     .card.media .content {
       flex: 1;
@@ -216,6 +180,7 @@
       color: var(--fg);
       border-bottom: 1px solid var(--border);
     }
+    [data-theme="light"] .contact-top { background: rgba(255, 255, 255, 0.94); }
 
     .contact-top.show {
       transform: translateY(0);
@@ -312,6 +277,7 @@
       padding: 8px;
       box-shadow: 0 12px 30px rgba(2, 4, 10, .55);
     }
+    [data-theme="light"] .fab-inner { background: rgba(255, 255, 255, 0.95); box-shadow: 0 12px 30px rgba(2, 6, 23, .1); }
 
     .fab-inner .btn {
       border-color: var(--chip-border)
@@ -518,23 +484,9 @@
 </head>
 
 <body>
-  <header>
-    <nav class="nav" aria-label="상단 내비게이션">
-      <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈">
-        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:#6366f1;"></span>
-        Encore
-      </a>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button type="button" class="pill no-print" id="printBtn" title="이 페이지 인쇄">인쇄</button>
-        <a class="pill" href="{{ route('inquiry.create') }}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          문의하기
-        </a>
-      </div>
-    </nav>
+  @include('public.partials.header')
 
+  <div class="page-head">
     <div class="contact-top" id="contactTop" role="region" aria-label="빠른 연락 배너">
       <div class="inner">
         <span class="title">추천안이 도움이 되셨나요?</span>
@@ -550,7 +502,7 @@
         </div>
       </div>
     </div>
-  </header>
+  </div>
 
   <main id="main">
     <div class="container">
@@ -977,12 +929,7 @@
     </div>
   </main>
 
-  <footer>
-    <div class="footer-inner">
-      <span class="muted">&copy; {{ date('Y') }} Encore</span>
-      <a href="{{ route('inquiry.create') }}">문의하기</a>
-    </div>
-  </footer>
+  @include('public.partials.footer')
 
   <div class="contact-fab" id="contactFab" role="region" aria-label="빠른 연락 버튼">
     <div class="fab-inner">

@@ -108,6 +108,9 @@
             margin: 0 auto;
             padding: 0 20px
         }
+        @media (max-width: 768px) {
+            .container { padding-left: 18px; padding-right: 18px; }
+        }
 
         header {
             position: sticky;
@@ -369,25 +372,38 @@
         .stories-frame {
             position: relative;
             overflow: hidden;
+            cursor: grab;
+            touch-action: pan-y;
+            user-select: none;
         }
 
         .stories-track {
             display: none;
+            overflow: hidden; /* mask overflowing cards */
         }
 
         .stories-track.active {
             display: block;
         }
 
+        /* Default: show current page as grid (fallback when JS not transforming to flow) */
         .stories-slide {
             display: none;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
         }
+        .stories-slide.current { display: grid; }
 
-        .stories-slide.current {
-            display: grid;
+        /* Flow row: horizontally scrolling cards */
+        .stories-row {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+            will-change: transform;
         }
+
+        /* Make card width consistent for smooth flow */
+        .stories-row .story-card { width: clamp(220px, 28vw, 280px); flex: 0 0 auto; }
 
         .story-card {
             background: var(--card);
@@ -436,43 +452,8 @@
             color: var(--fg);
         }
 
-        .stories-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 18px;
-            gap: 12px;
-            color: var(--muted);
-        }
-
-        .stories-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .stories-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--fg);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: background .2s ease, border-color .2s ease;
-        }
-
-        .stories-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.35);
-        }
-
-        .stories-btn:disabled {
-            opacity: .4;
-            cursor: not-allowed;
-        }
+        .stories-controls { display: none !important; }
+        .stories-nav, .stories-btn { display: none !important; }
 
         .t-card {
             background: var(--card);
@@ -493,6 +474,12 @@
             padding: 2px 8px;
             display: inline-flex;
             width: max-content
+        }
+        /* Light theme: make badges fully legible (brand filled) */
+        [data-theme="light"] .t-kind {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
         }
 
         .t-title {
@@ -645,17 +632,25 @@
     <a class="skip" href="#main">본문 바로가기</a>
 
     <header aria-label="상단 내비게이션">
-        <div class="container nav">
+            <div class="container nav">
             <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈" aria-current="page">
                 <span aria-hidden="true" style="display:inline-flex;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
                 <span>Encore</span>
             </a>
             <div class="nav-right">
-                @if($storyGroups->isNotEmpty())
-                <a class="nav-link" href="#success-stories">성공 사례</a>
-                @endif
-                <a class="nav-link" href="{{ route('inquiry.create') }}">문의</a>
                 <span class="badge" aria-label="베타 배지">BETA</span>
+                @guest
+                  <a class="nav-link" href="{{ route('register') }}">회원가입</a>
+                  <a class="nav-link" href="{{ route('login') }}">로그인</a>
+                @endguest
+                @auth
+                  <style>.enc-mypage{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:var(--accent);border:1px solid var(--accent);color:#fff;font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(99,102,241,.25);transition:transform .08s ease,background .2s ease,box-shadow .2s ease}.enc-mypage:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#fff;text-decoration:none;transform:translateY(-1px);box-shadow:0 10px 22px rgba(99,102,241,.28)}</style>
+                  <a class="enc-mypage" href="{{ route('member.dashboard') }}">Mypage</a>
+                  <form method="post" action="{{ route('logout') }}" style="display:inline">
+                    @csrf
+                    <button class="nav-link" style="background:none;border:none;padding:8px 10px;cursor:pointer" type="submit">로그아웃</button>
+                  </form>
+                @endauth
                 <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환"><span class="tlabel">Dark</span></button>
             </div>
         </div>
@@ -663,19 +658,82 @@
 
     <main id="main" aria-live="polite">
         @if(isset($banners) && $banners->isNotEmpty())
-        <section class="banner-area" aria-label="공지 배너">
-            <div class="container" style="padding:10px 0;">
-                <div class="banner-grid">
-                    @foreach($banners as $b)
-                        @php $img = $b->image_path ? asset('storage/'.$b->image_path) : null; @endphp
-                        @if($img)
-                        <a class="banner" href="{{ $b->link_url ?: '#' }}" @if($b->link_url) target="_blank" rel="noopener" @endif>
-                            <img src="{{ $img }}" alt="{{ $b->title }}">
-                        </a>
-                        @endif
-                    @endforeach
-                </div>
+        <section class="banner-area" aria-label="메인 배너" id="encMainBanner">
+          <style>
+            .bn-wrap{ max-width: 920px; margin: 0 auto; position:relative; }
+            .bn-viewport{ overflow:hidden; border-radius:14px; border:1px solid var(--border); background: var(--card); position:relative; }
+            .bn-track{ display:flex; transition: transform .35s ease; }
+            .bn-item{ flex: 0 0 100%; display:block; text-align:center; }
+            .bn-item img{ display:block; max-width:100%; height:auto; }
+            .bn-nav{ position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
+            .bn-btn{ pointer-events:auto; width:40px; height:40px; border-radius:999px; border:1px solid var(--border); background: rgba(15,23,41,.8); color: var(--fg); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+            .bn-btn:hover{ background: rgba(99,102,241,.2); border-color: var(--chip-border); }
+            /* Floating close bar at bottom center */
+            .bn-closebar{ position:absolute; left:50%; transform:translateX(-50%); bottom:8px; display:flex; justify-content:center; width:100%; pointer-events:none; z-index:2; }
+            .bn-closebar .bn-toggle{ pointer-events:auto; }
+            .bn-toggle{ display:inline-flex; align-items:center; gap:6px; background: rgba(99,102,241,.12); border:1px solid var(--chip-border); color: var(--fg); border-radius:999px; padding:6px 12px; cursor:pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
+            .bn-toggle:hover{ background: rgba(99,102,241,.2); }
+            /* Light theme: solid accent for clear contrast */
+            [data-theme="light"] .bn-toggle{ background: var(--accent); border-color: var(--accent); color:#fff; }
+            [data-theme="light"] .bn-toggle:hover{ background: var(--accent-hover); border-color: var(--accent-hover); color:#fff; }
+            .bn-toggle .chev{ transition: transform .2s ease; }
+            .bn-reopen{ position: sticky; top: 0; display:none; justify-content:center; padding:8px 0; }
+            [data-collapsed="true"] .bn-wrap{ display:none; }
+            [data-collapsed="true"] .bn-reopen{ display:flex; }
+            [data-collapsed="true"] .bn-toggle .chev{ transform: rotate(180deg); }
+            /* Section spacing: add symmetric breathing room */
+            .banner-area{ padding: 8px 0 16px; }
+          </style>
+          <div class="bn-wrap">
+            <div class="bn-viewport" id="bnViewport">
+              <div class="bn-track" id="bnTrack">
+                @foreach($banners as $b)
+                  @php $img = $b->image_path ? asset('storage/'.$b->image_path) : null; @endphp
+                  @if($img)
+                    <a class="bn-item" href="{{ $b->link_url ?: '#' }}" @if($b->link_url) target="_blank" rel="noopener" @endif>
+                      <img src="{{ $img }}" alt="{{ $b->title }}">
+                    </a>
+                  @endif
+                @endforeach
+              </div>
+              @if($banners->count() > 1)
+              <div class="bn-nav" aria-hidden="true">
+                <button class="bn-btn" type="button" id="bnPrev" aria-label="이전">‹</button>
+                <button class="bn-btn" type="button" id="bnNext" aria-label="다음">›</button>
+              </div>
+              @endif
+              <div class="bn-closebar" aria-hidden="false">
+                <button class="bn-toggle" type="button" id="bnCloseBtn" aria-label="배너 닫기"><span class="chev">▴</span> 배너 닫기</button>
+              </div>
             </div>
+          </div>
+          <div class="bn-reopen" id="bnReopen"><button class="bn-toggle" type="button"><span class="chev">▾</span> 배너 열기</button></div>
+          <script>
+            (function(){
+              const key='enc_banner_closed';
+              const sec=document.getElementById('encMainBanner');
+              const wrap=sec?.querySelector('.bn-wrap');
+              const reopen=document.getElementById('bnReopen');
+              const isClosed=()=>{ try{return localStorage.getItem(key)==='1';}catch(e){return false;} };
+              const setClosed=(v)=>{ try{localStorage.setItem(key, v?'1':'0');}catch(e){} };
+              function applyVis(){ if(!sec) return; sec.setAttribute('data-collapsed', isClosed() ? 'true' : 'false'); }
+              applyVis();
+              document.getElementById('bnCloseBtn')?.addEventListener('click', (ev)=>{ ev.preventDefault(); setClosed(true); applyVis(); });
+              reopen?.querySelector('button')?.addEventListener('click', (ev)=>{ ev.preventDefault(); setClosed(false); applyVis(); });
+
+              // slider
+              const track=document.getElementById('bnTrack');
+              const vp=document.getElementById('bnViewport');
+              const items=track?Array.from(track.children):[];
+              let idx=0; function clamp(i){ return (i+items.length)%items.length; }
+              function go(i){ idx=clamp(i); const w = vp?.clientWidth || 0; const x = -idx * w; track.style.transform = 'translateX('+x+'px)'; }
+              window.addEventListener('resize', ()=>go(idx));
+              document.getElementById('bnPrev')?.addEventListener('click', ()=>go(idx-1));
+              document.getElementById('bnNext')?.addEventListener('click', ()=>go(idx+1));
+              // init
+              if(track){ go(0); }
+            })();
+          </script>
         </section>
         @endif
         <section class="hero" aria-labelledby="home-title">
@@ -685,62 +743,53 @@
                     간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해
                     공유 링크로 전달합니다. 필요하면 언제든 새 링크로 회수·재발급도 가능해요.
                 </p>
-                <div class="cta" role="group" aria-label="주요 작업">
-                    <a id="copy-cta" class="btn btn-primary" href="{{ route('inquiry.create') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14M5 12h14" />
-                        </svg>
-                        <span class="cta-text">문의하기</span>
-                    </a>
-                    <a class="btn btn-ghost" href="{{ route('share.example') }}" aria-label="공유 예시 페이지 (샘플)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16v16H4z" />
-                            <path d="M4 9h16" />
-                        </svg>
-                        공유 예시 보기
-                    </a>
+                <style>
+                  .optgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px; margin-top:10px; }
+                  .optcard{ position:relative; display:flex; flex-direction:column; min-height:200px; border:1px solid var(--border); border-radius:14px; background:var(--card); padding:20px; cursor:pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .08s ease; text-decoration:none; color:inherit; }
+                  .optcard:hover{ border-color: var(--chip-border); box-shadow: inset 0 0 0 2px rgba(99,102,241,.15); }
+                  .optcard.active{ border-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(99,102,241,.35); }
+                  .optcard h3{ margin:0 0 8px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
+                  .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
+                  .optcard .btn{ margin-top:auto; border:1px solid var(--chip-border); background: var(--card-alt); color: var(--accent); }
+                  .optcard:not(.active) .btn{ background: var(--card-alt); color: var(--accent); border-color: var(--chip-border); }
+                  .optcard.active .btn{ background: var(--accent); color:#fff; border-color: var(--accent); }
+                </style>
+                <div class="optgrid" id="homeOptGrid" role="tablist" aria-label="문의 옵션">
+                  <div class="optcard active" data-mode="instant" role="tab" aria-selected="true">
+                    <h3>1초 Set</h3>
+                    <p>옵션 입력 즉시 3가지 추천안 자동 생성. 마음에 들지 않으면 재생성 가능.</p>
+                    <a class="btn" href="{{ route('inquiry.create', ['mode'=>'instant']) }}">추천셋 즉시 생성</a>
+                  </div>
+                  <div class="optcard" data-mode="one_day" role="tab" aria-selected="false">
+                    <h3>1일 Set</h3>
+                    <p>요구사항을 작성해 보내주시면 관리자가 큐레이션한 3가지 셋을 1일 내 전달.</p>
+                    <a class="btn" href="{{ route('inquiry.create', ['mode'=>'one_day']) }}">관리자의 추천셋</a>
+                  </div>
+                  <div class="optcard" data-mode="direct" role="tab" aria-selected="false">
+                    <h3>아티스트 맞춤형</h3>
+                    <p>원하는 아티스트를 지정해 섭외 요청하기.</p>
+                    <a class="btn" href="{{ route('inquiry.create', ['mode'=>'direct']) }}">아티스트 지정 섭외</a>
+                  </div>
                 </div>
+                <script>
+                  (function(){
+                    const grid = document.getElementById('homeOptGrid');
+                    if(!grid) return;
+                    grid.addEventListener('click', function(e){
+                      const card = e.target.closest('.optcard');
+                      if(!card) return;
+                      // 내부 버튼 클릭은 활성화만 유지하고 기본 이동 허용
+                      if (e.target.closest('a.btn')) return;
+                      // 카드 클릭 시 활성화 토글만 수행
+                      grid.querySelectorAll('.optcard').forEach(c=>{ c.classList.remove('active'); c.setAttribute('aria-selected','false'); });
+                      card.classList.add('active');
+                      card.setAttribute('aria-selected','true');
+                      e.preventDefault();
+                    });
+                  })();
+                </script>
 
-                <div class="features" aria-label="핵심 기능 소개">
-                    <article class="card">
-                        <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
-                                <path d="M20 6L9 17l-5-5" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3>간편한 문의</h3>
-                            <p>핵심 정보 몇 가지만 입력하면 접수 완료, 진행 상황은 실시간으로 메일로 안내합니다.</p>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M12 7v5l3 3" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3>빠른 추천</h3>
-                            <p>요청 조건을 기반으로 MD가 후보를 큐레이션하고, 비교하기 쉬운 카드로 정리해 드립니다.</p>
-                        </div>
-                    </article>
-
-                    <article class="card">
-                        <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" x2="12" y1="15" y2="3" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3>링크로 공유</h3>
-                            <p>링크로 안전하게 공유하고, 필요하면 즉시 회수·재발급으로 보안과 협업을 모두 잡습니다.</p>
-                        </div>
-                    </article>
-                </div>
+                {{-- (삭제) 기능 카드 3개 섹션 --}}
 
             </div>
         </section>
@@ -752,16 +801,7 @@
                     <div>
                         <span class="success-eyebrow">SUCCESS STORIES</span>
                         <h2 id="success-title" class="success-title">최근 섭외 성공 사례</h2>
-                        <p class="muted" style="margin:8px 0 0; max-width:420px;">실제 고객 프로젝트 중 공개 가능한 일부만 소개합니다. 관리자에서 직접 발행·숨김을 관리할 수 있습니다.</p>
                     </div>
-                    @if($storyGroups->count() > 1)
-                    <div class="success-tabs" role="tablist">
-                        @foreach($storyGroups->keys() as $idx => $group)
-                            @php $slug = Str::slug($group ?: 'story'); @endphp
-                            <button class="success-tab{{ $idx === 0 ? ' active' : '' }}" data-category="{{ $slug }}" role="tab" aria-selected="{{ $idx === 0 ? 'true' : 'false' }}">{{ $group }}</button>
-                        @endforeach
-                    </div>
-                    @endif
                 </div>
 
                 <div class="stories-frame" data-active="{{ Str::slug($firstCategory ?: 'story') }}">
@@ -825,25 +865,9 @@
         </section>
         @endif
 
-        <!-- ▼ 희망 아티스트 직접 요청 섹션 -->
-        <section class="testimonials" aria-labelledby="request-title">
-            <div class="container">
-                <h2 id="request-title" class="sr-only">특정 아티스트 직접 요청</h2>
-                <div class="request-card" role="group" aria-label="특정 아티스트 요청">
-                    <div class="row" style="justify-content:space-between; gap:12px; align-items:center;">
-                        <div>
-                            <span class="t-kind">직접 요청</span>
-                            <h3 class="t-title" style="margin-top:6px">원하는 아티스트가 있나요?</h3>
-                            <p class="muted" style="margin:4px 0 0; max-width:560px;">이름을 남겨주세요. 내부 네트워크로 가능 여부와 예산 가이드를 확인해 연락드립니다.</p>
-                        </div>
-                        <form class="request-form" method="get" action="{{ route('inquiry.create') }}">
-                            <input class="request-input" type="text" name="requested" placeholder="예: NewJeans / 아이유 / MC 홍길동" aria-label="희망 아티스트 입력">
-                            <button class="btn btn-primary request-btn" type="submit">섭외 요청하기</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+        @if(false)
+        <!-- (삭제됨) 희망 아티스트 직접 요청 섹션 -->
+        @endif
 
         <!-- ▼ 신규: 샘플 문의/후기 섹션 -->
         <section class="testimonials" aria-labelledby="testi-title">
@@ -892,34 +916,10 @@
             </div>
         </section>
 
-        <section aria-label="FAQ 프리뷰">
-            <div class="container" style="padding:24px 0 12px;">
-                <details style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-                    <summary style="cursor:pointer;font-weight:600;color:var(--fg)">견적은 어떻게 산정되나요?</summary>
-                    <div style="margin-top:10px;color:var(--muted);font-size:14px">예산, 일정, 행사 성격 등을 고려해 범위를 제안드리고, 확정 시 상세 견적을 제공합니다.</div>
-                </details>
-                <details style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-                    <summary style="cursor:pointer;font-weight:600;color:var(--fg)">추천 결과는 어디서 볼 수 있나요?</summary>
-                    <div style="margin-top:10px;color:var(--muted);font-size:14px">전용 공개 페이지 링크로 전달됩니다. 필요하면 링크를 회수하거나 재발급할 수 있어요.</div>
-                </details>
-            </div>
-        </section>
+        {{-- 홈 본문 FAQ 프리뷰 제거 (FAQ는 /faq 별도 페이지로 이동) --}}
     </main>
 
-    <footer class="footer" role="contentinfo">
-        <div class="container footer-inner" style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;justify-content:space-between;">
-            <div style="display:flex;gap:10px;align-items:center;font-weight:700;">
-                <span aria-hidden="true" style="display:inline-flex;width:18px;height:18px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-                <span>Encore</span>
-            </div>
-            <div class="muted" style="font-size:12px; line-height:1.7;">
-                (주)빈티지하우스 대표. 정준영<br>
-                주소. 경기도 김포시 사우동 880 시그마프라자 7층<br>
-                이메일. help@vhouse.co.kr 사업자등록번호. 748-88-01472 통신판매업신고번호. 2023-경기김포-1524<br>
-                &copy; 2025 VintageHouse, Inc., All Rights Reserved.
-            </div>
-        </div>
-    </footer>
+    @include('public.partials.footer')
 
     <!-- AB 토글 -->
     <div class="ab-toggle" role="group" aria-label="카피 A/B 테스트 토글" title="로컬에서만 적용됩니다">
@@ -1000,66 +1000,115 @@
             const frame = document.querySelector('.stories-frame');
             if (frame) {
                 const tabs = document.querySelectorAll('.success-tab');
-                const btnPrev = document.querySelector('.stories-btn[data-dir="prev"]');
-                const btnNext = document.querySelector('.stories-btn[data-dir="next"]');
-                const indicator = document.querySelector('.stories-indicator strong');
-                const totalEl = document.querySelector('.stories-total');
-
                 let activeCategory = frame.dataset.active || '';
-                let currentPage = 0;
+                const GAP = 14;
+                const SPEED = 0.35; // px per frame
 
                 const getTrack = (slug) => frame.querySelector(`.stories-track[data-category="${slug}"]`);
                 const allTracks = () => Array.from(frame.querySelectorAll('.stories-track'));
 
-                function updateButtons(track) {
-                    const total = parseInt(track?.dataset.pages || '1', 10);
-                    if (btnPrev) btnPrev.disabled = currentPage <= 0;
-                    if (btnNext) btnNext.disabled = currentPage >= total - 1;
+                let raf = 0;
+                let offset = 0;
+                let baseWidth = 0;
+                let dragging = false;
+                let startX = 0;
+                let startOffset = 0;
+                let row = null;
+
+                function sumWidth(els, count) {
+                    const arr = Array.from(els).slice(0, count);
+                    let w = 0;
+                    arr.forEach((el, idx) => {
+                        w += el.getBoundingClientRect().width;
+                        if (idx < arr.length - 1) w += GAP;
+                    });
+                    return Math.max(1, Math.round(w));
+                }
+
+                function buildRow(track) {
+                    let existing = track.querySelector('.stories-row');
+                    if (existing) return existing;
+                    const originals = Array.from(track.querySelectorAll('.story-card'));
+                    const origCount = originals.length;
+                    if (!origCount) return null;
+                    track.dataset.origCount = String(origCount);
+
+                    const r = document.createElement('div');
+                    r.className = 'stories-row';
+                    originals.forEach(card => r.appendChild(card));
+                    track.querySelectorAll('.stories-slide').forEach(s => s.remove());
+                    track.appendChild(r);
+
+                    baseWidth = sumWidth(r.children, origCount);
+                    const minTotal = frame.clientWidth * 2 + baseWidth;
+                    while (r.scrollWidth < minTotal) {
+                        for (let i = 0; i < origCount; i++) r.appendChild(r.children[i].cloneNode(true));
+                    }
+                    return r;
+                }
+
+                function tick() {
+                    if (!dragging && row) {
+                        offset += SPEED;
+                        if (baseWidth > 0) {
+                            if (offset >= baseWidth) offset -= baseWidth;
+                            row.style.transform = `translateX(${-offset}px)`;
+                        }
+                    }
+                    raf = requestAnimationFrame(tick);
                 }
 
                 function setCategory(slug) {
+                    if (raf) cancelAnimationFrame(raf);
                     const track = getTrack(slug) || getTrack(activeCategory) || allTracks()[0];
                     if (!track) return;
                     activeCategory = track.dataset.category;
                     frame.dataset.active = activeCategory;
-
                     allTracks().forEach(t => t.classList.toggle('active', t === track));
-                    const slides = Array.from(track.querySelectorAll('.stories-slide'));
-                    slides.forEach((slide, idx) => slide.classList.toggle('current', idx === 0));
-                    currentPage = 0;
-                    if (indicator) indicator.textContent = '1';
-                    if (totalEl) totalEl.textContent = track.dataset.pages || '1';
                     tabs.forEach(tab => {
                         const isActive = tab.dataset.category === activeCategory;
                         tab.classList.toggle('active', isActive);
                         tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
                     });
-                    updateButtons(track);
+                    row = buildRow(track);
+                    const orig = parseInt(track.dataset.origCount || '0', 10);
+                    baseWidth = row ? sumWidth(row.children, Math.max(1, orig)) : 0;
+                    offset = 0;
+                    tick();
                 }
 
-                function move(delta) {
-                    const track = getTrack(activeCategory);
-                    if (!track) return;
-                    const slides = Array.from(track.querySelectorAll('.stories-slide'));
-                    const total = parseInt(track.dataset.pages || slides.length || 1, 10);
-                    const next = Math.min(Math.max(currentPage + delta, 0), total - 1);
-                    if (next === currentPage) return;
-                    slides[currentPage]?.classList.remove('current');
-                    slides[next]?.classList.add('current');
-                    currentPage = next;
-                    if (indicator) indicator.textContent = String(currentPage + 1);
-                    updateButtons(track);
-                }
+                tabs.forEach(tab => tab.addEventListener('click', () => {
+                    if (!tab.classList.contains('active')) setCategory(tab.dataset.category);
+                }));
 
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        if (tab.classList.contains('active')) return;
-                        setCategory(tab.dataset.category);
-                    });
+                frame.addEventListener('pointerdown', (e) => {
+                    dragging = true;
+                    startX = e.clientX;
+                    startOffset = offset;
+                    frame.setPointerCapture?.(e.pointerId);
+                    frame.style.cursor = 'grabbing';
                 });
+                frame.addEventListener('pointermove', (e) => {
+                    if (!dragging || !row) return;
+                    const dx = e.clientX - startX;
+                    offset = startOffset - dx;
+                    if (baseWidth > 0) {
+                        while (offset < 0) offset += baseWidth;
+                        while (offset >= baseWidth) offset -= baseWidth;
+                    }
+                    row.style.transform = `translateX(${-offset}px)`;
+                });
+                ['pointerup','pointercancel','mouseleave'].forEach(evt => frame.addEventListener(evt, (e) => {
+                    dragging = false;
+                    frame.releasePointerCapture?.(e.pointerId);
+                    frame.style.cursor = 'grab';
+                }));
 
-                btnPrev?.addEventListener('click', () => move(-1));
-                btnNext?.addEventListener('click', () => move(1));
+                let rszTimer = 0;
+                window.addEventListener('resize', () => {
+                    clearTimeout(rszTimer);
+                    rszTimer = setTimeout(() => setCategory(activeCategory), 150);
+                });
 
                 setCategory(activeCategory || (allTracks()[0]?.dataset.category || ''));
             }

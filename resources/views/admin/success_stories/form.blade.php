@@ -25,10 +25,25 @@ $title = $isEdit ? '섭외 사례 수정' : '새 섭외 사례 등록';
         @csrf
         @if($isEdit) @method('put') @endif
 
+        @php
+            // 고정 선택값으로 입력 편차를 제거합니다.
+            $categoryOptions = ['섭외 확정', '섭외 대기', '기타'];
+            $currentCategory = old('category', $story->category);
+            if (!$currentCategory) { $currentCategory = '섭외 확정'; }
+            if (!in_array($currentCategory, $categoryOptions, true)) {
+                array_unshift($categoryOptions, $currentCategory);
+            }
+        @endphp
+
         <div style="display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
             <label>
                 <span class="muted">카테고리</span>
-                <input type="text" name="category" value="{{ old('category', $story->category) }}" placeholder="예: 섭외 확정">
+                <select name="category">
+                    @foreach($categoryOptions as $opt)
+                        <option value="{{ $opt }}" @selected($currentCategory === $opt)>{{ $opt }}</option>
+                    @endforeach
+                </select>
+                <small class="muted">메인 성공 사례 탭 구분에 사용됩니다. 기본 탭(전체)에는 항상 모두 노출됩니다.</small>
             </label>
 
             <label>

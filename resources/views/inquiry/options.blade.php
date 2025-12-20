@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>추천 옵션 미리보기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
     <style>
         :root {
             --bg: #060913;
@@ -17,6 +18,19 @@
             --muted: #96a7c9;
             --accent: #6366f1;
             --accent-hover: #818cf8;
+        }
+
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --card: #ffffff;
+            --card-alt: #f1f5f9;
+            --border: #d7dce2;
+            --border-soft: #c6ced8;
+            --text: #0f1729;
+            --muted: #475569;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
         }
 
         body {
@@ -132,6 +146,7 @@
 </head>
 
 <body>
+    <script>(function(){try{var t=(localStorage.getItem('enc_theme')==='light') ? 'light' : 'dark';document.documentElement.setAttribute('data-theme', t);}catch(e){}})();</script>
     <div class="header">
         <div>
             <h1>추천 옵션</h1>
@@ -196,10 +211,16 @@
                     <div><strong>#{{ $aid }}</strong> {{ $a?->stage_name ?? 'Unknown' }}</div>
                     <div class="muted" style="font-size:12px">
                         @if($a)
-                        {{ number_format($a->min_fee) }} ~ {{ number_format($a->max_fee) }}원
-                        @if(is_array($a->genres))
-                        &middot; 장르: {{ implode(', ', $a->genres) }}
+                        @php $fee = $a->fee_range ?? null; @endphp
+                        @if($fee)
+                          {{ number_format($fee['min'] ?? 0) }} ~ {{ number_format($fee['max'] ?? 0) }}원
                         @endif
+                        @php
+                          $genreOut = '';
+                          if (is_array($a->genres ?? null))      { $genreOut = implode(', ', array_filter($a->genres)); }
+                          elseif (method_exists($a,'genresRelation')) { $genreOut = $a->genresRelation->pluck('name')->implode(', '); }
+                        @endphp
+                        @if($genreOut !== '') &middot; 장르: {{ $genreOut }} @endif
                         @endif
                     </div>
                 </div>

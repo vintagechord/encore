@@ -4,6 +4,7 @@
   /* Mobile: brand → nav → biz → copy (회사정보를 탭 아래 배치) */
   .enc-footer-inner { max-width:1120px; margin:0 auto; padding:22px 20px; display:grid; gap:8px; grid-template-columns: 1fr; grid-template-areas: 'brand' 'nav' 'biz' 'copy'; }
   .enc-footer .brand { display:flex; align-items:center; gap:10px; font-weight:800; color: var(--fg); text-decoration:none; grid-area: brand; align-self:start; }
+  .enc-footer .brand-logo { height: 18px; width: auto; display:block; }
   .enc-footer .navlinks { display:flex; gap:22px; flex-wrap:wrap; align-items:flex-start; justify-content:flex-end; grid-area: nav; align-self:start; }
   .enc-footer a { color: var(--muted); text-decoration:none; }
   .enc-footer a:hover { color: var(--fg); text-decoration:underline; }
@@ -20,8 +21,7 @@
 <footer class="enc-footer" role="contentinfo">
   <div class="enc-footer-inner">
     <a class="brand" href="{{ route('home') }}" aria-label="Encore 홈">
-      <span aria-hidden="true" style="display:inline-flex;width:18px;height:18px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-      <span>Encore</span>
+      <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
     </a>
     <nav class="navlinks" aria-label="바로가기">
       <a href="{{ route('faq') }}">FAQ</a>

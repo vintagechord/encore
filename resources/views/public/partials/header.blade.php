@@ -35,6 +35,10 @@
   .enc-container { max-width:1120px; margin:0 auto; padding:0 20px; }
   .enc-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0; flex-wrap:wrap; }
   .enc-brand { display:flex; align-items:center; gap:10px; font-weight:700; color:inherit; text-decoration:none; }
+  .enc-brand .brand-logo { height: 24px; width: auto; display:block; }
+  @media (max-width: 768px) {
+    .enc-brand .brand-logo { height: 20px; }
+  }
   .enc-nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .enc-link { padding:8px 10px; border-radius:8px; border:1px solid transparent; color: var(--muted); text-decoration:none; }
   .enc-link:hover { background: rgba(99,102,241,.12); color: var(--fg); border-color: rgba(99,102,241,.35); }
@@ -106,8 +110,7 @@
 <header class="enc-top" aria-label="상단 내비게이션">
   <div class="enc-container enc-nav">
     <a class="enc-brand" href="{{ url('/') }}" aria-label="Encore 홈">
-      <span aria-hidden="true" style="display:inline-flex;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-      <span>Encore</span>
+      <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
     </a>
     <div class="enc-nav-right">
       <span class="enc-badge" aria-label="베타">BETA</span>

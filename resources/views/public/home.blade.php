@@ -142,6 +142,14 @@
             gap: 10px;
             font-weight: 700
         }
+        .brand-logo {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .brand-logo { height: 20px; }
+        }
 
         .badge {
             display: inline-flex;
@@ -733,8 +741,7 @@
     <header aria-label="상단 내비게이션">
             <div class="container nav">
             <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈" aria-current="page">
-                <span aria-hidden="true" style="display:inline-flex;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-                <span>Encore</span>
+                <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
             </a>
             <div class="nav-right">
                 <span class="badge" aria-label="베타 배지">BETA</span>

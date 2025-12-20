@@ -22,7 +22,9 @@
     input, select { height:44px; }
     .row { display:flex; gap:12px; flex-wrap:wrap; }
     .half { flex:1 1 320px; }
-    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#1b130f; font-weight:700; cursor:pointer; text-decoration:none; }
+    .btn { display:inline-block; padding:10px 14px; border-radius:10px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); font-weight:700; cursor:pointer; text-decoration:none; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
+    .btn.ghost{ background:transparent; border-color:var(--border); color:var(--fg); }
     input[type="checkbox"]{ width:16px; height:16px; accent-color: var(--accent); }
     .muted { color:var(--muted); font-size:13px; }
   </style>
@@ -119,7 +121,7 @@
 
       <div style="margin-top:12px; display:flex; gap:8px;">
         <button class="btn">요청 보내기</button>
-        <a class="btn" href="{{ route('home') }}" style="background:transparent;color:var(--accent)">홈으로</a>
+        <a class="btn ghost" href="{{ route('home') }}">홈으로</a>
       </div>
     </form>
   </main>

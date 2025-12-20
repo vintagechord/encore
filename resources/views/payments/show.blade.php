@@ -6,20 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <style>
-    body{ margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,Apple SD Gothic Neo,Malgun Gothic,sans-serif; }
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:920px; margin:0 auto; padding:24px 20px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
     .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px; }
     .thumb{ width:100%; aspect-ratio:4/3; border-radius:10px; border:1px solid var(--border); object-fit:cover; background:var(--card-alt); }
     .muted{ color:var(--muted); }
-    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
+    .btn.ghost{ background:transparent; border-color:var(--border); color:var(--fg); }
+    .enc-modal{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:60; }
+    .enc-modal[aria-hidden="false"]{ display:flex; }
+    .enc-modal .win{ width:min(420px,90vw); background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; box-shadow:0 18px 40px rgba(0,0,0,.4); }
+    .enc-modal .actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
   </style>
 </head>
 <body>
   @include('public.partials.header')
   <main class="enc-container">
     @if(session('ok'))
-      <script>setTimeout(function(){ alert(@json(session('ok'))); }, 10);</script>
+      <div class="enc-modal" id="noticeModal" aria-hidden="false" role="dialog" aria-modal="true" aria-label="결제 안내">
+        <div class="win">
+          <h2 style="margin:0 0 6px; font-size:18px;">결제 안내</h2>
+          <p class="muted" style="margin:0">{{ session('ok') }}</p>
+          <div class="actions">
+            <button class="btn ghost" type="button" id="noticeClose">닫기</button>
+          </div>
+        </div>
+      </div>
     @endif
     <h1 style="margin:0 0 12px">결제 상세</h1>
     <section class="card">
@@ -87,12 +101,37 @@
     <section class="card" style="margin-top:12px">
       <h2 style="margin:0 0 8px">현금영수증</h2>
       <p class="muted" style="margin:0 0 8px">데모: 번호 입력 후 발급 버튼을 누르면 발급된 것으로 처리합니다.</p>
-      <form method="post" action="#" onsubmit="event.preventDefault();alert('현금영수증이 발급되었습니다');">
+      <form id="cashForm" method="post" action="#">
         <input placeholder="휴대폰번호 또는 사업자번호" style="padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--card-alt);color:var(--fg)">
         <button class="btn" type="submit">발급</button>
+        <span class="muted" id="cashMsg" style="margin-left:8px; display:none">현금영수증이 발급되었습니다.</span>
       </form>
     </section>
   </main>
   @include('public.partials.footer')
+  @if(session('ok'))
+    <script>
+      (function(){
+        const modal = document.getElementById('noticeModal');
+        const closeBtn = document.getElementById('noticeClose');
+        const close = () => modal?.setAttribute('aria-hidden','true');
+        closeBtn?.addEventListener('click', close);
+        modal?.addEventListener('click', (e) => { if (e.target === modal) close(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+      })();
+    </script>
+  @endif
+  <script>
+    (function(){
+      const form = document.getElementById('cashForm');
+      const msg = document.getElementById('cashMsg');
+      form?.addEventListener('submit', function(e){
+        e.preventDefault();
+        if (!msg) return;
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 2400);
+      });
+    })();
+  </script>
 </body>
 </html>

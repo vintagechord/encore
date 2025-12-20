@@ -7,7 +7,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="color-scheme" content="dark light">
   <style>
-    body{ margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,Apple SD Gothic Neo,Malgun Gothic,sans-serif; }
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:1120px; margin:0 auto; padding:24px 20px; }
     .head{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; }
     .muted{ color:var(--muted); }
@@ -16,7 +16,8 @@
     .a{ display:flex; flex-direction:column; gap:8px; }
     .thumb{ width:100%; aspect-ratio: 4/3; border-radius:10px; border:1px solid var(--border); object-fit:cover; background:var(--card-alt); }
     .price{ font-weight:700; }
-    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
     .btn.ghost{ background:transparent; color:var(--fg); border-color:var(--border); }
   </style>
 </head>

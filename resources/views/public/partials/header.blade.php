@@ -10,7 +10,11 @@
     --accent: #f3c652;
     --accent-hover: #f0b840;
     --accent-2: #8d1f2d;
+    --accent-text: #1b130f;
     --ring: #8d1f2d;
+    --btn: #8d1f2d;
+    --btn-hover: #a12639;
+    --btn-text: #f7f1e9;
     --card: #151012;
     --card-alt: #1b1316;
     --border: #2a1c22;
@@ -27,7 +31,11 @@
     --accent: #e3b648;
     --accent-hover: #d5a63b;
     --accent-2: #7a1e2e;
+    --accent-text: #1b130f;
     --ring: #7a1e2e;
+    --btn: #7a1e2e;
+    --btn-hover: #8b2638;
+    --btn-text: #fff7e6;
     --card: #fffdf8;
     --card-alt: #f6ecdd;
     --border: #e6d4c0;
@@ -49,21 +57,21 @@
     .enc-brand .brand-logo { height: 20px; }
   }
   .enc-nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .enc-link { padding:8px 10px; border-radius:8px; border:1px solid transparent; color: var(--muted); text-decoration:none; }
+  .enc-link { display:inline-flex; align-items:center; justify-content:center; height:36px; padding:0 12px; border-radius:999px; border:1px solid transparent; color: var(--muted); text-decoration:none; font-weight:600; }
   .enc-link:hover { background: rgba(141,31,45,.12); color: var(--fg); border-color: rgba(141,31,45,.35); }
   .enc-badge { display:inline-flex; align-items:center; font-size:12px; color:#f5e2b2; background: rgba(141,31,45,.18); border:1px solid rgba(141,31,45,.4); padding:2px 8px; border-radius:999px; }
   [data-theme="light"] .enc-badge { background: var(--accent-2); border-color: var(--accent-2); color:#fff; }
-  .theme-toggle { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
+  .theme-toggle { display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
   [data-theme="light"] .theme-toggle { background:#ffffff; color:#1f2937; border-color:#d7dce2; }
   /* Mypage pill button (brand tone) */
   .enc-mypage{
     display:inline-flex; align-items:center; gap:6px;
-    height: 36px; padding:0 10px; border-radius:999px;
-    background: var(--accent); border:1px solid var(--accent); color:#1b130f; font-weight:700; text-decoration:none;
-    box-shadow: 0 4px 12px rgba(243,198,82,.22);
+    height: 36px; padding:0 12px; border-radius:999px;
+    background: var(--btn); border:1px solid var(--btn); color:var(--btn-text); font-weight:700; text-decoration:none;
+    box-shadow: 0 4px 12px rgba(141,31,45,.22);
     transition: transform .08s ease, background .2s ease, box-shadow .2s ease;
   }
-  .enc-mypage:hover{ background: var(--accent-hover); border-color: var(--accent-hover); color:#1b130f; text-decoration:none; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(243,198,82,.3); }
+  .enc-mypage:hover{ background: var(--btn-hover); border-color: var(--btn-hover); color:var(--btn-text); text-decoration:none; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(141,31,45,.3); }
   /* Date input: ensure calendar icon visible per theme (global) */
   [data-theme="dark"] input[type="date"] { color-scheme: dark !important; }
   [data-theme="light"] input[type="date"] { color-scheme: light !important; }
@@ -101,7 +109,7 @@
     .container, .page { padding-left: 18px !important; padding-right: 18px !important; }
     .enc-nav { gap: 12px; padding: 12px 0; }
     .enc-nav-right { gap: 6px; }
-    .theme-toggle, .enc-link { padding: 6px 8px; border-radius: 10px; }
+    .theme-toggle, .enc-link { height: 34px; padding: 0 10px; border-radius: 999px; }
 
     /* Common components used throughout pages */
     .grid { grid-template-columns: 1fr !important; }
@@ -132,7 +140,7 @@
         <a class="enc-mypage" href="{{ route('member.dashboard') }}">Mypage</a>
         <form method="post" action="{{ route('logout') }}" style="display:inline">
           @csrf
-          <button class="enc-link" style="background:none;border:none;padding:8px 10px;cursor:pointer" type="submit">로그아웃</button>
+          <button class="enc-link" style="background:none;border:none;cursor:pointer" type="submit">로그아웃</button>
         </form>
       @endauth
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환"><span class="tlabel">Dark</span></button>

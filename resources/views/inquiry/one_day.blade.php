@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <style>
-    body{ margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,Apple SD Gothic Neo,Malgun Gothic,sans-serif; }
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:920px; margin:0 auto; padding:24px 20px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
     .row{ display:flex; gap:12px; flex-wrap:wrap; }
     label{ display:block; font-weight:600; margin:6px 0; }
     input, textarea{ width:100%; padding:10px; border-radius:10px; border:1px solid var(--border); background:var(--card-alt); color:var(--fg); }
-    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; cursor:pointer; }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; cursor:pointer; font-weight:600; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
+    .btn.ghost{ background:transparent; border-color:var(--border); color:var(--fg); }
   </style>
 </head>
 <body>
@@ -63,7 +65,7 @@
       </div>
 
       <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end">
-        <a class="btn" style="background:transparent;border-color:var(--border);color:var(--fg)" href="{{ route('home') }}">취소</a>
+        <a class="btn ghost" href="{{ route('home') }}">취소</a>
         <button class="btn" type="submit">접수하기</button>
       </div>
     </form>
@@ -71,4 +73,3 @@
   @include('public.partials.footer')
 </body>
 </html>
-

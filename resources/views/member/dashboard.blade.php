@@ -7,7 +7,7 @@
   <meta name="color-scheme" content="dark light">
   <style>
     /* Use shared theme variables from public/partials/header */
-    body { margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:1120px; margin:0 auto; padding:24px 20px; }
     .grid{ display:grid; grid-template-columns:1fr; gap:12px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
@@ -15,14 +15,16 @@
     a{ color:inherit; text-decoration:none; }
     a:hover{ color:var(--accent-hover); text-decoration:underline; }
     .row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; font-weight:600; line-height:1; box-sizing:border-box; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; line-height:1; box-sizing:border-box; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
     .btn.ghost{ background:transparent; color:var(--fg); border-color:var(--border); }
+    .status-btn{ min-width:108px; justify-content:center; text-align:center; }
     /* pagination */
     .pager{ display:flex; justify-content:center; margin-top:12px; }
     .pager nav{ display:inline-flex; gap:6px; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:999px; padding:6px; }
     .pager nav a, .pager nav span{ display:inline-flex; min-width:34px; height:34px; padding:0 10px; align-items:center; justify-content:center; border-radius:999px; border:1px solid transparent; color:var(--fg); text-decoration:none; }
     .pager nav a:hover{ border-color:var(--chip-border); background:var(--card-alt); }
-    .pager nav span[aria-current="page"], .pager nav .active{ background:var(--accent); color:#fff; }
+    .pager nav span[aria-current="page"], .pager nav .active{ background:var(--btn); color:var(--btn-text); border-color:var(--btn); }
     .pager nav .disabled{ opacity:.45; cursor:not-allowed; }
     /* mobile tweaks */
     @media (max-width: 640px){
@@ -40,7 +42,7 @@
       .subtabs{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px; }
       .subtabs .tab{ display:inline-flex; align-items:center; height:34px; padding:0 12px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); text-decoration:none; font-weight:600; }
       .subtabs .tab:hover{ background: var(--card-alt); border-color: var(--chip-border); }
-      .subtabs .tab.active{ background: var(--accent); border-color: var(--accent); color:#fff; }
+      .subtabs .tab.active{ background: var(--btn); border-color: var(--btn); color:var(--btn-text); }
     </style>
     @php $t = request()->query('type') ?: 'instant'; @endphp
     <nav class="subtabs" aria-label="추천셋 세부 분류">
@@ -101,7 +103,7 @@
                       );
                     @endphp
                     @if($btnUrl)
-                      <a class="btn" href="{{ $btnUrl }}">추천안 보기</a>
+                      <a class="btn status-btn" href="{{ $btnUrl }}">추천안 보기</a>
                     @endif
                   </div>
                 </div>

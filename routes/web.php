@@ -22,6 +22,7 @@ use App\Http\Controllers\NoticeController as PublicNoticeController;
 
 Route::get('/', PublicHomeController::class)->name('home');
 // FAQ & Notices
+Route::view('/about', 'public.about')->name('about');
 Route::view('/faq', 'public.faq')->name('faq');
 Route::get('/notices', [PublicNoticeController::class, 'index'])->name('notices.index');
 Route::get('/notices/{notice}', [PublicNoticeController::class, 'show'])->name('notices.show');

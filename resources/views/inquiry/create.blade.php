@@ -128,9 +128,9 @@
     }
 
     .site-nav .nav-link:hover {
-      background: rgba(99, 102, 241, 0.18);
+      background: rgba(141, 31, 45, 0.16);
       color: var(--text);
-      border-color: rgba(99, 102, 241, 0.35);
+      border-color: rgba(141, 31, 45, 0.35);
     }
 
     fieldset {
@@ -180,8 +180,8 @@
     input[type="date"]:focus,
     input[type="number"]:focus,
     select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+      border-color: var(--btn);
+      box-shadow: 0 0 0 2px rgba(141, 31, 45, 0.3);
       outline: none;
     }
 
@@ -235,9 +235,9 @@
     .btn {
       padding: 10px 14px;
       border-radius: 10px;
-      border: 1px solid var(--accent);
-      background: var(--accent);
-      color: #1b130f;
+      border: 1px solid var(--btn);
+      background: var(--btn);
+      color: var(--btn-text);
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
@@ -246,13 +246,14 @@
     }
 
     .btn:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
+      background: var(--btn-hover);
+      border-color: var(--btn-hover);
     }
 
     .btn.secondary {
       background: transparent;
-      color: var(--accent);
+      color: var(--fg);
+      border-color: var(--border);
     }
 
     .panel {
@@ -341,13 +342,12 @@
       .optgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; margin-bottom:10px; }
       .optcard{ position:relative; display:flex; flex-direction:column; min-height:200px; border:1px solid var(--border); border-radius:14px; background:var(--card); padding:20px; cursor:pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .08s ease; }
       .optcard:hover{ border-color: var(--border-alt); box-shadow: inset 0 0 0 2px rgba(141,31,45,.18); }
-      .optcard.active{ border-color: var(--accent); box-shadow: inset 0 0 0 2px rgba(243,198,82,.35); }
+      .optcard.active{ border-color: var(--btn); box-shadow: inset 0 0 0 2px rgba(141,31,45,.35); }
       .optcard h3{ margin:0 0 8px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
       .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
-      .optcard .btn{ margin-top:auto; border:1px solid var(--chip-border); background: var(--card-alt); color: var(--accent); }
+      .optcard .btn{ margin-top:auto; border:1px solid var(--btn); background: var(--btn); color: var(--btn-text); }
       .optcard .btn[disabled]{ opacity:.6; cursor:not-allowed; }
-      .optcard:not(.active) .btn{ background: var(--card-alt); color: var(--accent); border-color: var(--chip-border); }
-      .optcard.active .btn{ background: var(--accent); color:#fff; border-color: var(--accent); }
+      .optcard .btn:hover{ background: var(--btn-hover); border-color: var(--btn-hover); }
     </style>
 
     <div class="optgrid" role="tablist" aria-label="문의 유형">

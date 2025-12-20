@@ -49,7 +49,11 @@
             --accent: #f3c652;
             --accent-hover: #f0b840;
             --accent-2: #8d1f2d;
+            --accent-text: #1b130f;
             --ring: #8d1f2d;
+            --btn: #8d1f2d;
+            --btn-hover: #a12639;
+            --btn-text: #f7f1e9;
             --card: #151012;
             --card-alt: #1b1316;
             --border: #2a1c22;
@@ -70,7 +74,11 @@
             --accent: #e3b648;
             --accent-hover: #d5a63b;
             --accent-2: #7a1e2e;
+            --accent-text: #1b130f;
             --ring: #7a1e2e;
+            --btn: #7a1e2e;
+            --btn-hover: #8b2638;
+            --btn-text: #fff7e6;
             --card: #fffdf8;
             --card-alt: #f6ecdd;
             --border: #e6d4c0;
@@ -190,7 +198,7 @@
             flex-wrap: wrap
         }
 
-        .theme-toggle { display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
+        .theme-toggle { display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
         .banner-area { border-bottom:1px solid var(--border); background: var(--card); }
         .banner-grid { display:grid; grid-template-columns:1fr; gap:10px; }
         .banner { display:block; overflow:hidden; border-radius:12px; border:1px solid var(--border); }
@@ -209,11 +217,19 @@
         [data-theme="light"] .btn-ghost { border-color: #c6ced8; }
 
         .nav-link {
-            padding: 8px 10px;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 999px;
             border: 1px solid transparent;
             color: var(--muted);
+            font-weight: 600;
             transition: background .2s ease, color .2s ease, border-color .2s ease;
+        }
+        @media (max-width: 768px) {
+            .nav-link { height: 34px; padding: 0 10px; }
         }
 
         .nav-link:hover {
@@ -275,13 +291,18 @@
             margin: 0 0 12px;
             font-size: clamp(28px, 5vw, 44px);
             line-height: 1.12;
-            letter-spacing: -0.02em
+            letter-spacing: -0.03em;
+            font-weight: 700;
+            font-family: var(--font-display);
         }
 
         .hero p {
             margin: 0 0 24px;
             color: var(--muted);
             font-size: clamp(16px, 2.8vw, 18px)
+        }
+        @media (max-width: 768px) {
+            #copy-desc { display: none; }
         }
 
         .cta {
@@ -297,25 +318,34 @@
             gap: 8px;
             padding: 12px 16px;
             border-radius: 12px;
-            border: 1px solid transparent;
+            border: 1px solid var(--btn);
             font-weight: 600;
             cursor: pointer;
-            transition: transform .04s ease, background .2s ease, border-color .2s ease;
+            background: var(--btn);
+            color: var(--btn-text);
+            transition: transform .04s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
             user-select: none;
         }
 
         .btn:active {
             transform: translateY(1px)
         }
+        .btn:hover {
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
+            box-shadow: 0 10px 22px rgba(141, 31, 45, 0.3);
+        }
 
         .btn-primary {
-            background: var(--accent);
-            color: #1b130f;
-            border-color: var(--accent)
+            background: var(--btn);
+            color: var(--btn-text);
+            border-color: var(--btn)
         }
 
         .btn-primary:hover {
-            background: var(--accent-hover)
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
+            box-shadow: 0 10px 22px rgba(141, 31, 45, 0.35);
         }
 
         .btn-ghost {
@@ -400,32 +430,32 @@
 
         .testi-marquee {
             position: relative;
-            overflow: hidden;
+            overflow-x: auto;
             border-radius: 18px;
-            padding: 6px 0;
-            border: 1px solid var(--border);
-            background: linear-gradient(120deg, rgba(141, 31, 45, 0.16), rgba(243, 198, 82, 0.08));
-            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.18);
+            background: #0d0d0d;
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            touch-action: pan-y;
+            overscroll-behavior-x: contain;
         }
+        .testi-marquee.is-dragging { cursor: grabbing; }
+        .testi-marquee::-webkit-scrollbar { display:none; }
 
         .testi-track {
             display: flex;
             width: max-content;
             align-items: stretch;
-            gap: 14px;
-            animation: testiScroll var(--testi-duration, 36s) linear infinite;
-            will-change: transform;
+            gap: 12px;
         }
 
         .testi-set {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             align-items: stretch;
-        }
-
-        .testi-marquee:hover .testi-track {
-            animation-play-state: paused;
         }
 
         .success-stories {
@@ -474,9 +504,9 @@
         }
 
         .success-tab.active {
-            background: rgba(243, 198, 82, 0.22);
-            color: var(--fg);
-            border-color: rgba(243, 198, 82, 0.45);
+            background: var(--btn);
+            color: var(--btn-text);
+            border-color: var(--btn);
         }
 
         .stories-frame {
@@ -567,54 +597,60 @@
 
         .t-card {
             position: relative;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px 16px 14px 14px;
-            padding: 16px;
+            background: #f8f8f8;
+            border: 1px solid #111;
+            border-radius: 16px;
+            padding: 14px 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            min-width: clamp(220px, 34vw, 320px);
+            justify-content: space-between;
+            gap: 8px;
+            width: clamp(160px, 22vw, 220px);
+            aspect-ratio: 1 / 1.618;
             flex: 0 0 auto;
+            color: #0b0b0b;
+            box-shadow: 0 8px 18px rgba(0,0,0,.18);
+            scroll-snap-align: center;
         }
 
         .t-card::before {
             content: "";
             position: absolute;
             inset: 0 0 auto 0;
-            height: 3px;
+            height: 4px;
             border-radius: 16px 16px 0 0;
-            background: linear-gradient(90deg, rgba(141, 31, 45, 0.8), rgba(243, 198, 82, 0.8));
-            opacity: 0.7;
+            background: #111;
+            opacity: 0.85;
         }
 
         .t-kind {
-            font-size: 12px;
-            color: #f5e2b2;
-            background: rgba(141, 31, 45, 0.16);
-            border: 1px solid rgba(141, 31, 45, 0.35);
+            font-size: 11px;
+            color: #ffffff;
+            background: #111;
+            border: 1px solid #111;
             border-radius: 999px;
-            padding: 2px 8px;
+            padding: 3px 8px;
             display: inline-flex;
             width: max-content
         }
-        /* Light theme: make badges fully legible (brand filled) */
-        [data-theme="light"] .t-kind {
-            background: var(--accent-2);
-            border-color: var(--accent-2);
-            color: #fff;
-        }
+        [data-theme="light"] .t-kind { background:#111; border-color:#111; color:#fff; }
 
         .t-title {
             margin: 0;
-            font-size: 16px
+            font-size: 15px;
+            color: #0b0b0b;
+            font-weight: 700;
         }
 
         blockquote {
             margin: 0;
-            color: var(--fg);
-            font-size: 14px;
-            line-height: 1.6
+            color: #111;
+            font-size: 13px;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .t-meta {
@@ -622,23 +658,13 @@
             justify-content: space-between;
             align-items: center;
             gap: 10px;
-            color: var(--muted);
-            font-size: 12px
+            color: #333;
+            font-size: 12px;
         }
 
         .stars {
             letter-spacing: 1px;
-            color: #facc15;
-        }
-
-        @keyframes testiScroll {
-            to { transform: translateX(calc(var(--testi-offset, 0px) * -1)); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .testi-track {
-                animation: none;
-            }
+            color: #111;
         }
 
         .sr-only {
@@ -771,11 +797,11 @@
                   <a class="nav-link" href="{{ route('login') }}">로그인</a>
                 @endguest
                 @auth
-                  <style>.enc-mypage{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:var(--accent);border:1px solid var(--accent);color:#1b130f;font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(243,198,82,.25);transition:transform .08s ease,background .2s ease,box-shadow .2s ease}.enc-mypage:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#1b130f;text-decoration:none;transform:translateY(-1px);box-shadow:0 10px 22px rgba(243,198,82,.3)}</style>
+                  <style>.enc-mypage{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px;border-radius:999px;background:var(--btn);border:1px solid var(--btn);color:var(--btn-text);font-weight:700;text-decoration:none;box-shadow:0 6px 16px rgba(141,31,45,.25);transition:transform .08s ease,background .2s ease,box-shadow .2s ease}.enc-mypage:hover{background:var(--btn-hover);border-color:var(--btn-hover);color:var(--btn-text);text-decoration:none;transform:translateY(-1px);box-shadow:0 10px 22px rgba(141,31,45,.32)}</style>
                   <a class="enc-mypage" href="{{ route('member.dashboard') }}">Mypage</a>
                   <form method="post" action="{{ route('logout') }}" style="display:inline">
                     @csrf
-                    <button class="nav-link" style="background:none;border:none;padding:8px 10px;cursor:pointer" type="submit">로그아웃</button>
+                    <button class="nav-link" style="background:none;border:none;cursor:pointer" type="submit">로그아웃</button>
                   </form>
                 @endauth
                 <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환"><span class="tlabel">Dark</span></button>
@@ -871,10 +897,10 @@
                 </video>
             </div>
             <div class="container hero-inner">
-                <h1 id="home-title"><span id="copy-title">행사에 딱 맞는 아티스트,<br>바로 추천받으세요.</span></h1>
+                <h1 id="home-title"><span id="copy-title">행사에 딱 맞는 아티스트,<br>바로 추천받으세요</span></h1>
                 <p id="copy-desc">
-                    간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해
-                    공유 링크로 전달합니다. 필요하면 언제든 새 링크로 회수·재발급도 가능해요.
+                    간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해 공유 링크로 전달합니다.<br>
+                    필요하면 언제든 새 링크로 회수·재발급도 가능해요.
                 </p>
                 <style>
                   .optgrid{
@@ -889,7 +915,6 @@
                     --slot: 0;
                     --shift: clamp(140px, 20vw, 260px);
                     --tilt: 10deg;
-                    --scale: 0.92;
                     position: absolute;
                     width: min(320px, 90vw);
                     min-height: 210px;
@@ -899,7 +924,7 @@
                     padding: 20px;
                     cursor: pointer;
                     transition: transform .6s cubic-bezier(0.2,0.8,0.2,1), box-shadow .25s ease, border-color .25s ease, filter .25s ease;
-                    transform: translateX(calc(var(--slot) * var(--shift))) scale(var(--scale)) rotateY(calc(var(--slot) * var(--tilt)));
+                    transform: translateX(calc(var(--slot) * var(--shift))) rotateY(calc(var(--slot) * var(--tilt)));
                     box-shadow: 0 14px 28px rgba(15,23,42,.32);
                     text-decoration: none;
                     color: inherit;
@@ -920,7 +945,6 @@
                   .optcard[data-slot="-1"]{ --slot:-1; z-index:1; }
                   .optcard[data-slot="0"]{
                     --slot:0;
-                    --scale:1;
                     z-index:3;
                     border-color: var(--accent);
                     filter: saturate(1) brightness(1);
@@ -945,16 +969,16 @@
                   .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
                   .optcard .btn{
                     margin-top:auto;
-                    border:1px solid var(--accent);
-                    background: var(--accent);
-                    color: #1b130f;
+                    border:1px solid var(--btn);
+                    background: var(--btn);
+                    color: var(--btn-text);
                     transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
                   }
                   .optcard .btn:hover{
-                    background: var(--accent-hover);
-                    border-color: var(--accent-hover);
+                    background: var(--btn-hover);
+                    border-color: var(--btn-hover);
                     transform: translateY(-1px);
-                    box-shadow: 0 10px 22px rgba(243,198,82,.35), 0 0 0 2px rgba(141,31,45,.2) inset;
+                    box-shadow: 0 10px 22px rgba(141,31,45,.35), 0 0 0 2px rgba(141,31,45,.2) inset;
                   }
                   .optcard-face{
                     display:flex;
@@ -974,17 +998,30 @@
                   @media (max-width: 860px){
                     .optgrid{
                       position: relative;
-                      display: grid;
-                      grid-template-columns: 1fr;
-                      gap: 12px;
+                      display: flex;
+                      gap: 10px;
                       min-height: auto;
                       perspective: none;
+                      overflow-x: auto;
+                      padding: 0 4px 10px;
+                      scroll-snap-type: x proximity;
+                      justify-content: center;
+                      scrollbar-width: none;
+                      -webkit-overflow-scrolling: touch;
                     }
+                    .optgrid::-webkit-scrollbar{ display:none; }
                     .optcard{
                       position: relative;
-                      width: 100%;
+                      flex: 0 0 calc((100% - 20px) / 3);
+                      min-width: 120px;
+                      width: auto;
                       transform: none !important;
+                      filter: none;
+                      scroll-snap-align: center;
                     }
+                    .optcard h3{ font-size: 14px; }
+                    .optcard p{ font-size: 12px; min-height: 46px; }
+                    .optcard .btn{ height: 32px; padding: 0 8px; font-size: 12px; border-radius: 10px; }
                     .optcard::after{ display:none; }
                   }
                   @media (prefers-reduced-motion: reduce){
@@ -1050,6 +1087,9 @@
                       centerIndex = idx;
                       spin(card);
                       applySlots();
+                      if (window.matchMedia('(max-width: 860px)').matches) {
+                        card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                      }
                     }
 
                     grid.addEventListener('click', function(e){
@@ -1253,18 +1293,18 @@
 
             const variants = {
                 A: {
-                    title: '행사에 딱 맞는 아티스트,<br>바로 추천받으세요.',
-                    desc: '간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해 공유 링크로 전달합니다. 필요하면 언제든 새 링크로 회수·재발급도 가능해요.',
+                    title: '행사에 딱 맞는 아티스트,<br>바로 추천받으세요',
+                    descHtml: '간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해 공유 링크로 전달합니다.<br>필요하면 언제든 새 링크로 회수·재발급도 가능해요.',
                     cta: '문의하기'
                 },
                 B: {
-                    title: '기획서에 꽂히는 섭외 후보,<br>내일 아침까지.',
-                    desc: '핵심 조건만 남기면 밤사이 후보를 추려 정리합니다. 예산 가이드를 함께 드려 의사결정을 빠르게.',
+                    title: '기획서에 꽂히는 섭외 후보,<br>내일 아침까지',
+                    descHtml: '핵심 조건만 남기면 밤사이 후보를 추려 정리합니다.<br>예산 가이드를 함께 드려 의사결정을 빠르게.',
                     cta: '바로 문의'
                 },
                 C: {
-                    title: '예산·콘셉트·타깃 맞춤 추천,<br>링크로 깔끔하게 공유.',
-                    desc: '공개 링크 발급/회수/재발급까지 한 번에. 내부 검토·외부 공유가 쉬워집니다.',
+                    title: '예산·콘셉트·타깃 맞춤 추천,<br>링크로 깔끔하게 공유',
+                    descHtml: '공개 링크 발급/회수/재발급까지 한 번에.<br>내부 검토·외부 공유가 쉬워집니다.',
                     cta: '추천 받아보기'
                 }
             };
@@ -1272,7 +1312,7 @@
             function applyVariant(key) {
                 const v = variants[key] || variants.A;
                 if ($title) $title.innerHTML = v.title;
-                if ($desc) $desc.textContent = v.desc;
+                if ($desc) $desc.innerHTML = v.descHtml || v.desc || '';
                 if ($cta) $cta.textContent = v.cta;
                 document.querySelectorAll('.ab-btn').forEach(b => {
                     b.classList.toggle('active', b.dataset.variant === key);
@@ -1314,44 +1354,98 @@
             const testiTrack = document.getElementById('testiTrack');
             const testiMarquee = document.querySelector('.testi-marquee');
             if (testiTrack && testiMarquee) {
+                let baseWidth = 0;
+                const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
                 const buildTesti = () => {
                     const set = testiTrack.querySelector('.testi-set');
                     if (!set) return;
-                    const origCount = parseInt(set.dataset.origCount || set.children.length, 10);
-                    if (!set.dataset.origCount) set.dataset.origCount = String(origCount);
-
-                    while (set.children.length > origCount) set.removeChild(set.lastChild);
                     while (testiTrack.children.length > 1) testiTrack.removeChild(testiTrack.lastChild);
 
-                    const originals = Array.from(set.children);
                     let safety = 0;
-                    while (set.scrollWidth < testiMarquee.clientWidth && safety < 6) {
-                        originals.forEach(node => {
-                            const cloneNode = node.cloneNode(true);
-                            cloneNode.setAttribute('aria-hidden', 'true');
-                            set.appendChild(cloneNode);
-                        });
+                    while (testiTrack.scrollWidth < testiMarquee.clientWidth * 2 && safety < 6) {
+                        const clone = set.cloneNode(true);
+                        clone.setAttribute('aria-hidden', 'true');
+                        testiTrack.appendChild(clone);
                         safety += 1;
                     }
-
-                    const clone = set.cloneNode(true);
-                    clone.setAttribute('aria-hidden', 'true');
-                    testiTrack.appendChild(clone);
-
-                    const offset = set.scrollWidth;
-                    if (offset > 0) {
-                        const duration = Math.max(24, Math.round(offset / 35));
-                        testiTrack.style.setProperty('--testi-offset', `${offset}px`);
-                        testiTrack.style.setProperty('--testi-duration', `${duration}s`);
+                    baseWidth = set.scrollWidth || 0;
+                    if (baseWidth === 0) {
+                        baseWidth = Math.max(1, Math.floor(testiTrack.scrollWidth / Math.max(1, testiTrack.children.length)));
                     }
                 };
 
                 buildTesti();
+                window.addEventListener('load', buildTesti);
                 let rszTimer = 0;
                 window.addEventListener('resize', () => {
                     clearTimeout(rszTimer);
                     rszTimer = setTimeout(buildTesti, 150);
                 });
+
+                let paused = false;
+                let isDragging = false;
+                let startX = 0;
+                let startScroll = 0;
+                let resumeTimer = 0;
+                const SPEED = 0.35; // px per frame @60fps
+
+                const pause = () => {
+                    paused = true;
+                    clearTimeout(resumeTimer);
+                };
+                const scheduleResume = () => {
+                    clearTimeout(resumeTimer);
+                    resumeTimer = setTimeout(() => { paused = false; }, 1200);
+                };
+
+                const onPointerDown = (e) => {
+                    isDragging = true;
+                    pause();
+                    startX = e.clientX;
+                    startScroll = testiMarquee.scrollLeft;
+                    testiMarquee.classList.add('is-dragging');
+                    testiMarquee.setPointerCapture?.(e.pointerId);
+                };
+                const onPointerMove = (e) => {
+                    if (!isDragging) return;
+                    const delta = e.clientX - startX;
+                    testiMarquee.scrollLeft = startScroll - delta;
+                };
+                const onPointerUp = (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    testiMarquee.classList.remove('is-dragging');
+                    testiMarquee.releasePointerCapture?.(e.pointerId);
+                    scheduleResume();
+                };
+
+                testiMarquee.addEventListener('pointerdown', onPointerDown);
+                testiMarquee.addEventListener('pointermove', onPointerMove);
+                testiMarquee.addEventListener('pointerup', onPointerUp);
+                testiMarquee.addEventListener('pointerleave', onPointerUp);
+                testiMarquee.addEventListener('mouseenter', pause);
+                testiMarquee.addEventListener('mouseleave', scheduleResume);
+                testiMarquee.addEventListener('wheel', () => { pause(); scheduleResume(); }, { passive: true });
+                testiMarquee.addEventListener('scroll', () => { pause(); scheduleResume(); }, { passive: true });
+
+                let lastTs = 0;
+                const tick = (ts) => {
+                    if (!prefersReduced && !paused && !isDragging) {
+                        if (!lastTs) lastTs = ts;
+                        const delta = ts - lastTs;
+                        lastTs = ts;
+                        const step = SPEED * (delta / 16.67);
+                        testiMarquee.scrollLeft += step;
+                        if (baseWidth > 0 && testiMarquee.scrollLeft >= baseWidth) {
+                            testiMarquee.scrollLeft -= baseWidth;
+                        }
+                    } else {
+                        lastTs = ts;
+                    }
+                    requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
             }
 
             const frame = document.querySelector('.stories-frame');

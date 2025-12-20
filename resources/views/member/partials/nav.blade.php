@@ -2,9 +2,9 @@
   .member-nav { border-bottom:1px solid var(--border); background: transparent; margin-bottom: 16px; }
   .member-nav .wrap { max-width:1120px; margin:0 auto; padding:14px 20px; display:flex; gap:8px; flex-wrap:wrap; }
   .mitem { display:inline-flex; align-items:center; gap:8px; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); text-decoration:none; font-weight:600; transition: background .2s ease, color .2s ease, border-color .2s ease; }
-  .mitem:hover { border-color: var(--chip-border); color: var(--accent-hover); background: var(--card-alt); }
+  .mitem:hover { border-color: var(--btn-hover); color: var(--fg); background: rgba(141,31,45,.12); }
   /* Active tab: filled brand color for clear current-page indication */
-  .mitem[aria-current="page"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .mitem[aria-current="page"] { background: var(--btn); border-color: var(--btn); color: var(--btn-text); }
 </style>
 <nav class="member-nav" aria-label="회원 메뉴">
   <div class="wrap">

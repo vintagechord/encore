@@ -25,9 +25,9 @@
       .auth-card textarea { background: var(--card-alt) !important; color: var(--fg) !important; border-color: var(--border) !important; }
       .auth-card label { color: var(--fg); }
       .auth-card button[type="submit"],
-      .auth-card .primary { background: var(--accent) !important; border-color: var(--accent) !important; color: #1b130f !important; }
+      .auth-card .primary { background: var(--btn) !important; border-color: var(--btn) !important; color: var(--btn-text) !important; }
       .auth-card button[type="submit"]:hover,
-      .auth-card .primary:hover { background: var(--accent-hover) !important; }
+      .auth-card .primary:hover { background: var(--btn-hover) !important; }
     </style>
   </head>
   <body>

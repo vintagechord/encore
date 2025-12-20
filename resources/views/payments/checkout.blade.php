@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <style>
-    body{ margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,Apple SD Gothic Neo,Malgun Gothic,sans-serif; }
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:920px; margin:0 auto; padding:24px 20px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
     .row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
     .field{ display:flex; gap:10px; align-items:center; }
     .muted{ color:var(--muted); }
-    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
+    .btn.ghost{ background:transparent; border-color:var(--border); color:var(--fg); }
     input[type="text"], input[type="number"]{ padding:10px; border-radius:8px; border:1px solid var(--border); background:var(--card-alt); color:var(--fg); }
   </style>
 </head>
@@ -43,10 +45,11 @@
       <div class="field" style="margin-top:10px">
         <label class="muted" style="min-width:80px">쿠폰번호</label>
         <input type="text" placeholder="예: ENCORE10">
-        <button type="button" class="btn" onclick="alert('데모: 쿠폰 기능은 예시입니다')">사용하기</button>
+        <button type="button" class="btn" id="couponBtn">사용하기</button>
+        <span class="muted" id="couponMsg" style="display:none">데모: 쿠폰 기능은 예시입니다.</span>
       </div>
 
-      <div class="card" style="margin-top:12px">
+    <div class="card" style="margin-top:12px">
         <div class="row" style="justify-content:space-between">
           <div>
             <div class="muted">합계</div>
@@ -60,24 +63,24 @@
           </div>
         </div>
         <div class="row" style="justify-content:flex-end; margin-top:12px">
-          <a href="{{ route('member.dashboard') }}" class="btn" style="background:transparent;border-color:var(--border);color:var(--fg)">주문취소</a>
-          <button id="orderBtn" class="btn" style="background:#ef4444;border-color:#ef4444">주문하기</button>
+          <a href="{{ route('member.dashboard') }}" class="btn ghost">주문취소</a>
+          <button id="orderBtn" class="btn">주문하기</button>
         </div>
       </div>
     </form>
 
-    <!-- KG Mobilians Demo Modal -->
+    <!-- KG 이니시스 Demo Modal -->
     <style>
-      .kg-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50}
-      .kg-modal .win{width:min(520px,92vw);border-radius:12px;border:1px solid var(--border);background:var(--card);padding:16px}
+      .kg-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50}
+      .kg-modal .win{width:min(520px,92vw);border-radius:12px;border:1px solid var(--border);background:var(--card);padding:16px;box-shadow:0 18px 40px rgba(0,0,0,.4)}
       .kg-modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
     </style>
-    <div class="kg-modal" id="kgModal" role="dialog" aria-modal="true" aria-label="KG Mobilians 결제">
+    <div class="kg-modal" id="kgModal" role="dialog" aria-modal="true" aria-label="KG 이니시스 결제">
       <div class="win">
-        <h2 style="margin:0 0 6px">KG Mobilians (데모)</h2>
+        <h2 style="margin:0 0 6px">KG 이니시스 (데모)</h2>
         <p class="muted" style="margin:0">실결제 연동 전 데모 모듈입니다. “결제 진행”을 누르면 결제가 완료로 처리됩니다.</p>
         <div class="row">
-          <button id="kgClose" class="btn" style="background:transparent;border-color:var(--border);color:var(--fg)">취소</button>
+          <button id="kgClose" class="btn ghost">취소</button>
           <button id="kgPay" class="btn">결제 진행</button>
         </div>
       </div>
@@ -96,6 +99,12 @@
         // proceed to server to create a paid record
         mClose();
         form.submit();
+      });
+      document.getElementById('couponBtn')?.addEventListener('click', function(){
+        const msg = document.getElementById('couponMsg');
+        if (!msg) return;
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 2200);
       });
       form.addEventListener('submit', function(e){
         // intercept only for card

@@ -7,14 +7,15 @@
   <meta name="color-scheme" content="dark light">
   <style>
     /* Use shared theme variables from public/partials/header */
-    body { margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif; }
+    body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:1120px; margin:0 auto; padding:24px 20px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
     .muted{ color:var(--muted); }
     .row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
     a{ color:inherit; text-decoration:none; }
     a:hover{ color:var(--accent-hover); text-decoration:underline; }
-    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; text-decoration:none; font-weight:600; line-height:1; box-sizing:border-box; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; line-height:1; box-sizing:border-box; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
     .btn.ghost{ background:transparent; color:var(--fg); border-color:var(--border); }
     /* 동일 배치 내 상태 버튼은 고정 폭으로 균일화 */
     .status-btn{ min-width: 108px; justify-content:center; text-align:center; }
@@ -23,10 +24,15 @@
     .pager nav{ display:inline-flex; gap:6px; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:999px; padding:6px; }
     .pager nav a, .pager nav span{ display:inline-flex; min-width:34px; height:34px; padding:0 10px; align-items:center; justify-content:center; border-radius:999px; border:1px solid transparent; color:var(--fg); text-decoration:none; }
     .pager nav a:hover{ border-color:var(--chip-border); background:var(--card-alt); }
-    .pager nav span[aria-current="page"], .pager nav .active{ background:var(--accent); color:#fff; }
+    .pager nav span[aria-current="page"], .pager nav .active{ background:var(--btn); color:var(--btn-text); border-color:var(--btn); }
     .pager nav .disabled{ opacity:.45; cursor:not-allowed; }
     @media (max-width: 640px){ .enc-container{ padding:16px 14px; } .btn{ height:34px; padding:0 10px; border-radius:10px; line-height:1; } }
     .list{ list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+    .enc-modal{ position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:60; }
+    .enc-modal[aria-hidden="false"]{ display:flex; }
+    .enc-modal .win{ width:min(420px, 90vw); background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; box-shadow:0 18px 40px rgba(0,0,0,.4); }
+    .enc-modal .win h2{ margin:0 0 6px; font-size:18px; }
+    .enc-modal .actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
   </style>
 </head>
 <body>
@@ -36,7 +42,7 @@
       .subtabs{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px; }
       .subtabs .tab{ display:inline-flex; align-items:center; height:34px; padding:0 12px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); text-decoration:none; font-weight:600; }
       .subtabs .tab:hover{ background: var(--card-alt); border-color: var(--chip-border); }
-      .subtabs .tab.active{ background: var(--accent); border-color: var(--accent); color:#fff; }
+      .subtabs .tab.active{ background: var(--btn); border-color: var(--btn); color:var(--btn-text); }
     </style>
     @php $t = $type ?? request()->query('type'); @endphp
     <nav class="subtabs" aria-label="의뢰내역 세부 분류">
@@ -203,15 +209,45 @@
       </section>
     @endif
   </main>
+  <div class="enc-modal" id="statusModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="진행 상태 안내">
+    <div class="win">
+      <h2>진행 상태 안내</h2>
+      <p class="muted" id="statusModalMsg" style="margin:0">상태 안내 메시지</p>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="statusModalClose">닫기</button>
+      </div>
+    </div>
+  </div>
   @include('public.partials.footer')
   <script>
-    // 접수완료 상태 안내: 클릭 시 간단 팝업
-    document.addEventListener('click', function(e){
-      const btn = e.target.closest('.js-status-info');
-      if (!btn) return;
-      const msg = btn.getAttribute('data-message') || '아티스트 섭외 관련 조율중입니다';
-      alert(msg);
-    });
+    // 접수완료 상태 안내: 클릭 시 모달
+    (function(){
+      const modal = document.getElementById('statusModal');
+      const msgEl = document.getElementById('statusModalMsg');
+      const closeBtn = document.getElementById('statusModalClose');
+      const open = (msg) => {
+        if (!modal || !msgEl) return;
+        msgEl.textContent = msg;
+        modal.setAttribute('aria-hidden', 'false');
+      };
+      const close = () => {
+        if (!modal) return;
+        modal.setAttribute('aria-hidden', 'true');
+      };
+      document.addEventListener('click', function(e){
+        const btn = e.target.closest('.js-status-info');
+        if (!btn) return;
+        const msg = btn.getAttribute('data-message') || '아티스트 섭외 관련 조율중입니다';
+        open(msg);
+      });
+      closeBtn?.addEventListener('click', close);
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+    })();
   </script>
   <script>(function(){try{var t=(localStorage.getItem('enc_theme')==='light')?'light':'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 </body>

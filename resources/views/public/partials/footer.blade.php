@@ -24,6 +24,7 @@
       <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
     </a>
     <nav class="navlinks" aria-label="바로가기">
+      <a href="{{ route('about') }}">About</a>
       <a href="{{ route('faq') }}">FAQ</a>
       <a href="{{ route('notices.index') }}">공지사항</a>
     </nav>

@@ -135,18 +135,18 @@
       gap: 8px;
       padding: 12px 16px;
       border-radius: 12px;
-      border: 1px solid var(--accent);
+      border: 1px solid var(--btn);
       font-weight: 700;
       cursor: pointer;
-      background: var(--accent);
-      color: #1b130f;
+      background: var(--btn);
+      color: var(--btn-text);
       text-decoration: none;
       transition: background .2s ease, border-color .2s ease;
     }
 
     .btn:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
+      background: var(--btn-hover);
+      border-color: var(--btn-hover);
     }
 
     .btn-ghost {
@@ -157,7 +157,7 @@
 
     .btn-ghost:hover {
       background: rgba(141, 31, 45, 0.12);
-      color: var(--accent-hover);
+      color: var(--fg);
     }
 
     .muted {

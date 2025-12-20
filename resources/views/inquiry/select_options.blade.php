@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <style>
-    :root { --ring:#7c3aed; --ring-soft: rgba(124,58,237,.25); }
-    body { margin:0; background: var(--bg); color: var(--fg); font-family:-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif; }
+    :root { --ring:#8d1f2d; --ring-soft: rgba(141,31,45,.25); }
+    body { margin:0; background: var(--bg); color: var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:1120px; margin:0 auto; padding:24px 20px; }
     .head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
     .head h1 { margin:0; font-size:22px; letter-spacing:-0.01em; }
@@ -18,7 +18,7 @@
     .track::-webkit-scrollbar{ height:8px; }
     .track > article { scroll-snap-align:center; }
     .opt { position:relative; background: var(--card); border:1px solid var(--border); border-radius: 16px; padding: 16px; display:flex; flex-direction:column; gap:10px; align-items:center; text-align:center; box-shadow: inset 0 1px 0 rgba(255,255,255,.02); transform: scale(.92); transition: transform .25s ease, border-color .2s ease; min-width: 280px; }
-    .opt.active { transform: scale(1.04); border-color: var(--accent); }
+    .opt.active { transform: scale(1.04); border-color: var(--btn); }
     .thumb-wrap { position:relative; width: 320px; max-width: 86vw; aspect-ratio: 4/3; border-radius: 14px; overflow:hidden; border:1px solid var(--border); background: var(--card-alt); display:grid; place-items:center; }
     .collage { display:grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); width:100%; height:100%; }
     .collage img { width:100%; height:100%; object-fit:cover; display:block; }
@@ -27,7 +27,8 @@
     .label { display:inline-flex; align-items:center; gap:8px; padding:4px 10px; border-radius:999px; border:1px solid var(--chip-border); background: var(--chip); font-weight:700; }
     .title { margin:0; font-size:18px; }
     .price { font-weight:700; }
-    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--accent); background: var(--accent); color:#fff; cursor:pointer; text-decoration:none; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background: var(--btn); color:var(--btn-text); cursor:pointer; text-decoration:none; font-weight:600; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
     .btn.ghost { background: transparent; color: var(--fg); border-color: var(--border); }
     .opt:hover { border-color: var(--chip-border); }
     .opt:hover .thumb-wrap { box-shadow: 0 0 0 2px var(--ring-soft) inset; }

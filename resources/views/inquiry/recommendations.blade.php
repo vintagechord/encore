@@ -213,40 +213,41 @@
       gap: 8px;
       padding: 10px 14px;
       border-radius: 12px;
-      border: 1px solid var(--chip-border);
-      background: var(--card-alt);
-      color: var(--fg);
+      border: 1px solid var(--btn);
+      background: var(--btn);
+      color: var(--btn-text);
       font-weight: 700;
       cursor: pointer;
       transition: background .2s ease, border-color .2s ease, color .2s ease;
     }
 
     .btn:hover {
-      border-color: var(--accent);
-      color: var(--accent-hover);
+      border-color: var(--btn-hover);
+      background: var(--btn-hover);
+      color: var(--btn-text);
     }
 
     .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent);
+      background: var(--btn);
+      color: var(--btn-text);
+      border-color: var(--btn);
     }
 
     .btn-primary:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
-      color: #fff;
+      background: var(--btn-hover);
+      border-color: var(--btn-hover);
+      color: var(--btn-text);
     }
 
     .btn-ghost {
       background: transparent;
       color: var(--fg);
-      border-color: var(--chip-border);
+      border-color: var(--border);
     }
 
     .btn-ghost:hover {
-      background: rgba(99, 102, 241, .12);
-      color: var(--accent-hover);
+      background: rgba(141,31,45,.12);
+      color: var(--fg);
     }
 
     /* 하단 고정 플로팅 액션 */
@@ -283,13 +284,13 @@
     [data-theme="light"] .fab-inner { background: rgba(255, 255, 255, 0.95); box-shadow: 0 12px 30px rgba(2, 6, 23, .1); }
 
     .fab-inner .btn {
-      border-color: var(--chip-border)
+      border-color: var(--btn)
     }
 
     .fab-inner .btn:hover {
-      background: var(--accent);
-      color: #fff;
-      border-color: var(--accent-hover);
+      background: var(--btn-hover);
+      color: var(--btn-text);
+      border-color: var(--btn-hover);
     }
 
     /* ▼ 요약 박스 스타일 */
@@ -324,8 +325,8 @@
       gap: 6px;
       padding: 6px 10px;
       border-radius: 10px;
-      background: rgba(99, 102, 241, 0.18);
-      border: 1px solid rgba(99, 102, 241, 0.45);
+      background: rgba(141, 31, 45, 0.18);
+      border: 1px solid rgba(141, 31, 45, 0.45);
       color: var(--fg);
       font-weight: 600;
       font-size: 14px;
@@ -374,7 +375,7 @@
       align-items: center;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(99, 102, 241, 0.18);
+      background: rgba(141, 31, 45, 0.18);
       border: 1px solid var(--tag-border);
       font-size: 12px;
       color: var(--tag-text);
@@ -389,14 +390,14 @@
 
     .btn-outline {
       background: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
+      color: var(--btn);
+      border: 1px solid var(--btn);
     }
 
     .btn-outline:hover {
-      background: var(--accent);
-      border-color: var(--accent-hover);
-      color: #fff;
+      background: var(--btn);
+      border-color: var(--btn-hover);
+      color: var(--btn-text);
     }
 
     /* ===== 인쇄 최적화 ===== */

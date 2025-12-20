@@ -23,6 +23,9 @@
             --muted: #b6a89a;
             --accent: #f3c652;
             --accent-hover: #f0b840;
+            --btn: #8d1f2d;
+            --btn-hover: #a12639;
+            --btn-text: #f7f1e9;
             --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
             --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
         }
@@ -39,6 +42,9 @@
             --muted: #6b5b53;
             --accent: #e3b648;
             --accent-hover: #d5a63b;
+            --btn: #7a1e2e;
+            --btn-hover: #8b2638;
+            --btn-text: #fff7e6;
         }
 
         body {
@@ -69,22 +75,28 @@
         .btn {
             padding: 9px 12px;
             border-radius: 10px;
-            border: 1px solid var(--accent);
-            background: var(--accent);
-            color: #1b130f;
+            border: 1px solid var(--btn);
+            background: var(--btn);
+            color: var(--btn-text);
             cursor: pointer;
             font-weight: 600;
             transition: background .2s ease, border-color .2s ease;
         }
 
         .btn:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
         }
 
         .btn.secondary {
             background: transparent;
-            color: var(--accent);
+            color: var(--fg);
+            border-color: var(--border);
+        }
+        .btn.secondary:hover {
+            background: rgba(141, 31, 45, 0.12);
+            border-color: var(--btn-hover);
+            color: var(--fg);
         }
 
         .row {

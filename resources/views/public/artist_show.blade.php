@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <style>
-    body{ margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,Apple SD Gothic Neo,Malgun Gothic,sans-serif; }
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:960px; margin:0 auto; padding:24px 20px; }
     .grid{ display:grid; grid-template-columns:1fr; gap:16px; }
     @media(min-width:900px){ .grid{ grid-template-columns: 360px 1fr; } }
@@ -14,6 +14,8 @@
     .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
     .muted{ color:var(--muted); }
     .badge{ display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid var(--chip-border); border-radius:999px; background:var(--chip); }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; }
+    .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
   </style>
 </head>
 <body>
@@ -45,7 +47,7 @@
           <p class="muted" style="margin-top:10px; white-space:pre-wrap">{{ $artist->notes }}</p>
         @endif
         <div style="margin-top:12px">
-          <a class="btn" href="{{ route('inquiry.create') }}" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;border:1px solid var(--accent);background:var(--accent);color:#fff;text-decoration:none;">문의하기</a>
+          <a class="btn" href="{{ route('inquiry.create') }}">문의하기</a>
         </div>
       </div>
     </div>

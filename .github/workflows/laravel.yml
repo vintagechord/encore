@@ -9,7 +9,6 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-
     # 테스트 환경을 확실히 고정 (DB/캐시/세션 때문에 CI에서 깨지는 걸 방지)
     env:
       APP_ENV: testing
@@ -20,7 +19,6 @@ jobs:
       SESSION_DRIVER: array
       QUEUE_CONNECTION: sync
       MAIL_MAILER: array
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4

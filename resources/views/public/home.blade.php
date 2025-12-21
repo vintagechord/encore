@@ -423,6 +423,15 @@
             gap: 12px;
             margin-bottom: 12px;
         }
+        @media (max-width: 768px) {
+            .artist-head { align-items: flex-start; }
+            .artist-head > div:last-child {
+                width: 100%;
+                align-items: flex-start !important;
+            }
+            .artist-controls { order: 1; align-self: flex-end; }
+            .artist-tabs { order: 2; }
+        }
         .artist-eyebrow {
             font-size: 12px;
             letter-spacing: 0.2em;
@@ -1643,6 +1652,24 @@
                 testiMarquee.addEventListener('pointermove', onPointerMove);
                 testiMarquee.addEventListener('pointerup', onPointerUp);
                 testiMarquee.addEventListener('pointerleave', onPointerUp);
+                let touchActive = false;
+                let touchStartX = 0;
+                let touchScroll = 0;
+                testiMarquee.addEventListener('touchstart', (e) => {
+                    if (!e.touches || !e.touches[0]) return;
+                    touchActive = true;
+                    touchStartX = e.touches[0].clientX;
+                    touchScroll = testiMarquee.scrollLeft;
+                    pause();
+                }, { passive: true });
+                testiMarquee.addEventListener('touchmove', (e) => {
+                    if (!touchActive || !e.touches || !e.touches[0]) return;
+                    const delta = e.touches[0].clientX - touchStartX;
+                    testiMarquee.scrollLeft = touchScroll - delta;
+                }, { passive: true });
+                const onTouchEnd = () => { touchActive = false; scheduleResume(); };
+                testiMarquee.addEventListener('touchend', onTouchEnd);
+                testiMarquee.addEventListener('touchcancel', onTouchEnd);
                 testiMarquee.addEventListener('mouseenter', pause);
                 testiMarquee.addEventListener('mouseleave', scheduleResume);
                 testiMarquee.addEventListener('wheel', () => { pause(); scheduleResume(); }, { passive: true });
@@ -1748,6 +1775,24 @@
                     };
                     panel.addEventListener('pointerup', endDrag);
                     panel.addEventListener('pointerleave', endDrag);
+                    let tActive = false;
+                    let tStartX = 0;
+                    let tScroll = 0;
+                    panel.addEventListener('touchstart', (e) => {
+                        if (!e.touches || !e.touches[0]) return;
+                        tActive = true;
+                        data.paused = true;
+                        tStartX = e.touches[0].clientX;
+                        tScroll = panel.scrollLeft;
+                    }, { passive: true });
+                    panel.addEventListener('touchmove', (e) => {
+                        if (!tActive || !e.touches || !e.touches[0]) return;
+                        const delta = e.touches[0].clientX - tStartX;
+                        panel.scrollLeft = tScroll - delta;
+                    }, { passive: true });
+                    const onTouchEndArtist = () => { tActive = false; data.paused = false; };
+                    panel.addEventListener('touchend', onTouchEndArtist);
+                    panel.addEventListener('touchcancel', onTouchEndArtist);
                     panel.addEventListener('wheel', () => { data.paused = true; setTimeout(() => { data.paused = false; }, 1200); }, { passive: true });
                     panel.addEventListener('scroll', () => { data.paused = true; setTimeout(() => { data.paused = false; }, 1200); }, { passive: true });
                     marquees.push(data);

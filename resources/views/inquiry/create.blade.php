@@ -348,6 +348,27 @@
       .optcard .btn{ margin-top:auto; border:1px solid var(--btn); background: var(--btn); color: var(--btn-text); }
       .optcard .btn[disabled]{ opacity:.6; cursor:not-allowed; }
       .optcard .btn:hover{ background: var(--btn-hover); border-color: var(--btn-hover); }
+      @media (max-width: 768px) {
+        .optgrid{
+          display:flex;
+          gap:8px;
+          overflow-x:auto;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          padding-bottom: 6px;
+        }
+        .optgrid::-webkit-scrollbar{ display:none; }
+        .optcard{
+          flex: 0 0 calc((100% - 16px) / 3);
+          min-width: 0;
+          min-height: 160px;
+          padding: 12px;
+          scroll-snap-align: center;
+        }
+        .optcard h3{ font-size: 14px; }
+        .optcard p{ font-size: 11px; min-height: 32px; }
+        .optcard .btn{ height: 32px; padding: 0 8px; font-size: 11px; border-radius: 8px; }
+      }
     </style>
 
     <div class="optgrid" role="tablist" aria-label="문의 유형">
@@ -815,6 +836,7 @@
       const modeInput = document.getElementById('request_mode');
       const form = document.getElementById('inquiryForm');
       const cards = [document.getElementById('cardInstant'), document.getElementById('cardOneDay'), document.getElementById('cardDirect')];
+      const optGrid = document.querySelector('.optgrid');
       const oneBox = document.getElementById('oneDayBox');
       const req = document.getElementById('requirements');
       const evtStart = document.getElementById('event_start');
@@ -836,6 +858,10 @@
 
       function applyMode(m){
         cards.forEach(c => c.classList.toggle('active', c && c.dataset.mode === m));
+        const activeCard = cards.find(c => c && c.dataset.mode === m);
+        if (activeCard && optGrid && window.matchMedia('(max-width: 768px)').matches) {
+          activeCard.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
         const isOne = m === 'one_day';
         const isDirect = m === 'direct';
         if (oneBox) oneBox.style.display = isOne ? '' : 'none';

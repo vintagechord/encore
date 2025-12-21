@@ -101,7 +101,7 @@
           @else
             <a class="btn fav" href="{{ route('login') }}">찜하기</a>
           @endauth
-          <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">아티스트 지정섭외</a>
+          <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">의뢰하기</a>
           <a class="btn ghost" href="{{ route('inquiry.create') }}">일반 문의</a>
         </div>
       </div>

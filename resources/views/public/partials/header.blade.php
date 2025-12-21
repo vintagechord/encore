@@ -425,8 +425,12 @@
   })();
   </script>
 
+@php
+  $showMemberNav = empty($hideMemberNav)
+    && (request()->routeIs('member.*') || request()->routeIs('profile.edit'));
+@endphp
 @auth
-  @if(empty($hideMemberNav))
+  @if($showMemberNav)
     @include('member.partials.nav')
   @endif
 @endauth

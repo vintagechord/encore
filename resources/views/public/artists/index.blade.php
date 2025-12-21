@@ -14,6 +14,12 @@
     .explore-eyebrow { font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
 
     .filter-form { display: grid; gap: 22px; }
+    .filter-section { background: transparent; }
+    .filter-section-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 10px; }
+    .filter-section-head h2 { margin: 0; font-size: 16px; }
+    .filter-toggle { height: 34px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--card); color: var(--fg); cursor: pointer; font-weight: 600; }
+    .filter-toggle:hover { border-color: var(--accent); }
+    .filter-section-body { display: block; }
     .filter-quick { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; }
     .filter-quick .field { display: grid; gap: 6px; }
     .filter-quick label { font-size: 12px; color: var(--muted); }
@@ -22,10 +28,10 @@
     .filter-quick .cta { display:flex; align-items: end; }
     .filter-quick .cta button { width: 100%; height: 44px; border-radius: 12px; border: 1px solid var(--btn); background: var(--btn); color: var(--btn-text); font-weight: 700; cursor: pointer; }
     .filter-quick .cta button:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
+    .filter-quick .cta button[disabled] { background: var(--card-alt); border-color: var(--border); color: var(--muted); cursor: not-allowed; }
 
     .explore-layout { display: grid; gap: 20px; grid-template-columns: 260px 1fr; align-items: start; }
     .filter-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: sticky; top: 168px; }
-    .filter-panel h2 { margin: 0 0 12px; font-size: 16px; }
     .filter-block { display: grid; gap: 8px; margin-bottom: 16px; }
     .filter-block label { font-size: 12px; color: var(--muted); }
     .filter-block input,
@@ -65,15 +71,35 @@
       .artist-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 980px) {
-      .filter-quick { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .filter-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .explore-layout { grid-template-columns: 1fr; }
       .filter-panel { position: static; }
+      .filter-section-body { display: none; }
+      .filter-section.is-open .filter-section-body { display: block; }
+      .filter-toggle { display: inline-flex; }
+      .filter-block[data-filter-group] { display: none; }
       .artist-card { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
-      .filter-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .filter-quick { grid-template-columns: repeat(1, minmax(0, 1fr)); }
       .artist-actions { flex-direction: column; align-items: stretch; }
+      .filter-section-head h2 { font-size: 15px; }
     }
+    @media (min-width: 981px) {
+      .filter-toggle { display: none; }
+      .filter-section-body { display: block !important; }
+    }
+
+    .range-wrap { display: grid; gap: 10px; }
+    .range-row { display:flex; gap:10px; align-items:center; }
+    .range-label { width:40px; color: var(--muted); font-weight: 600; font-size: 12px; }
+    .range-field { position: relative; flex: 1; min-width: 180px; padding: 0 14px; }
+    .range { width: 100%; height: 10px; border-radius: 999px; background: linear-gradient(to right, var(--accent) 0 var(--p,0%), rgba(148,163,184,.25) var(--p,0%)); outline:none; -webkit-appearance:none; appearance:none; }
+    .range::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background: var(--accent); border: 2px solid #fff3; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer; }
+    .range::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background: var(--accent); border: 2px solid #fff3; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer; }
+    .range-bubble { position:absolute; transform: translateX(-50%); background: var(--card-alt); color: var(--fg); border:1px solid var(--border); padding:2px 8px; border-radius:8px; font-size:11px; white-space:nowrap; z-index: 2; pointer-events:none; }
+    .range-bubble.bubble-top { top:-30px; }
+    .range-bubble.bubble-bottom { bottom:-30px; }
   </style>
 </head>
 <body>
@@ -92,7 +118,6 @@
       'price' => '예상 금액대',
       'min_price' => '최소 금액',
       'max_price' => '최대 금액',
-      'date' => '일정',
       'discipline' => '분야',
       'q' => '이름/팀명',
       'age_group' => '연령대',
@@ -112,6 +137,9 @@
       if ($key === 'price') {
         $val = str_replace(['0-2000000','2000000-5000000','5000000-10000000','10000000+'], ['200만원 이하','200만~500만원','500만~1000만원','1000만원 이상'], (string)$val);
       }
+      if ($key === 'min_price' || $key === 'max_price') {
+        $val = number_format((int)$val).'원';
+      }
       if ($key === 'discipline') {
         $match = collect($categories)->firstWhere('slug', $val);
         $val = $match['name'] ?? $val;
@@ -120,6 +148,8 @@
     }
     $clearUrl = route('artists.browse');
     $favoriteIds = $favoriteIds ?? [];
+    $minPriceVal = is_numeric($filters['min_price'] ?? null) ? (int) $filters['min_price'] : 0;
+    $maxPriceVal = is_numeric($filters['max_price'] ?? null) ? (int) $filters['max_price'] : 3000000;
 
     $fallbackGenres = [
       'music' => ['K-POP','발라드','트로트','힙합','R&B/Soul','인디','밴드','재즈/소울','클래식','국악','OST'],
@@ -134,69 +164,88 @@
   <main class="enc-container explore">
     <section class="explore-hero">
       <span class="explore-eyebrow">ARTIST SEARCH</span>
-      <h1>가격 · 일정 · 지역 기준으로 아티스트를 바로 찾으세요</h1>
+      <h1>가격 · 지역 기준으로 아티스트를 바로 찾으세요</h1>
       <p>분야별 카테고리와 세부 필터로 실제 섭외에 필요한 조건만 빠르게 좁혀드립니다.</p>
     </section>
 
     <form class="filter-form" method="get" action="{{ route('artists.browse') }}">
-      <div class="filter-quick">
-        <div class="field">
-          <label for="region">지역</label>
-          <select id="region" name="region">
-            <option value="">전체</option>
-            @foreach(['서울','경기','인천','강원','대전','세종','충북','충남','광주','전북','전남','대구','경북','부산','울산','경남','제주'] as $region)
-              <option value="{{ $region }}" @selected(($filters['region'] ?? '') === $region)>{{ $region }}</option>
-            @endforeach
-          </select>
+      <div class="filter-section" data-section="quick">
+        <div class="filter-section-head">
+          <h2>메인 조건</h2>
+          <button class="filter-toggle" type="button" data-target="quick" aria-expanded="false">조건 펼치기</button>
         </div>
-        <div class="field">
-          <label for="price">예상 금액대</label>
-          <select id="price" name="price">
-            <option value="">전체</option>
-            <option value="0-2000000" @selected(($filters['price'] ?? '') === '0-2000000')>200만원 이하</option>
-            <option value="2000000-5000000" @selected(($filters['price'] ?? '') === '2000000-5000000')>200만~500만원</option>
-            <option value="5000000-10000000" @selected(($filters['price'] ?? '') === '5000000-10000000')>500만~1000만원</option>
-            <option value="10000000+" @selected(($filters['price'] ?? '') === '10000000+')>1000만원 이상</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="date">일정</label>
-          <input id="date" type="date" name="date" value="{{ $filters['date'] ?? '' }}">
-        </div>
-        <div class="field">
-          <label for="discipline">분야</label>
-          <select id="discipline" name="discipline">
-            <option value="all">전체</option>
-            @foreach($categories as $cat)
-              <option value="{{ $cat['slug'] }}" @selected($selectedDiscipline === $cat['slug'])>{{ $cat['name'] }}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="field">
-          <label for="q">이름/팀명</label>
-          <input id="q" name="q" placeholder="아티스트 이름" value="{{ $filters['q'] ?? '' }}">
-        </div>
-        <div class="cta">
-          <button type="submit">검색</button>
+        <div class="filter-section-body" id="filter-quick-body">
+          <div class="filter-quick">
+            <div class="field">
+              <label for="region">지역</label>
+              <select id="region" name="region" data-auto-submit="1">
+                <option value="">전체</option>
+                @foreach(['서울','경기','인천','강원','대전','세종','충북','충남','광주','전북','전남','대구','경북','부산','울산','경남','제주'] as $region)
+                  <option value="{{ $region }}" @selected(($filters['region'] ?? '') === $region)>{{ $region }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="field">
+              <label for="price">예상 금액대</label>
+              <select id="price" name="price" data-auto-submit="1">
+                <option value="">전체</option>
+                <option value="0-2000000" @selected(($filters['price'] ?? '') === '0-2000000')>200만원 이하</option>
+                <option value="2000000-5000000" @selected(($filters['price'] ?? '') === '2000000-5000000')>200만~500만원</option>
+                <option value="5000000-10000000" @selected(($filters['price'] ?? '') === '5000000-10000000')>500만~1000만원</option>
+                <option value="10000000+" @selected(($filters['price'] ?? '') === '10000000+')>1000만원 이상</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="discipline">분야</label>
+              <select id="discipline" name="discipline" data-auto-submit="1">
+                <option value="all">전체</option>
+                @foreach($categories as $cat)
+                  <option value="{{ $cat['slug'] }}" @selected($selectedDiscipline === $cat['slug'])>{{ $cat['name'] }}</option>
+                @endforeach
+              </select>
+            </div>
+            <div class="field">
+              <label for="q">이름/팀명</label>
+              <input id="q" name="q" placeholder="아티스트 이름" value="{{ $filters['q'] ?? '' }}">
+            </div>
+            <div class="cta">
+              <button type="button" id="searchBtn" @disabled(empty($filters['q']))>이름 검색</button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="explore-layout">
-        <aside class="filter-panel">
-          <h2>상세 조건</h2>
+        <aside class="filter-panel filter-section" data-section="detail">
+          <div class="filter-section-head">
+            <h2>상세 조건</h2>
+            <button class="filter-toggle" type="button" data-target="detail" aria-expanded="false">조건 펼치기</button>
+          </div>
+          <div class="filter-section-body" id="filter-detail-body">
 
           <div class="filter-block">
-            <label for="min_price">최소 금액</label>
-            <input id="min_price" name="min_price" inputmode="numeric" placeholder="예: 3000000" value="{{ $filters['min_price'] ?? '' }}">
-          </div>
-          <div class="filter-block">
-            <label for="max_price">최대 금액</label>
-            <input id="max_price" name="max_price" inputmode="numeric" placeholder="예: 8000000" value="{{ $filters['max_price'] ?? '' }}">
+            <label>예산 범위 (KRW)</label>
+            <div class="range-wrap">
+              <div class="range-row">
+                <span class="range-label">최소</span>
+                <div class="range-field">
+                  <input class="range" id="range_min" name="min_price" type="range" min="0" max="300000000" step="100000" value="{{ $minPriceVal }}">
+                  <output id="bubble_min" class="range-bubble bubble-top">{{ number_format($minPriceVal) }}원</output>
+                </div>
+              </div>
+              <div class="range-row">
+                <span class="range-label">최대</span>
+                <div class="range-field">
+                  <input class="range" id="range_max" name="max_price" type="range" min="0" max="300000000" step="100000" value="{{ $maxPriceVal }}">
+                  <output id="bubble_max" class="range-bubble bubble-bottom">{{ number_format($maxPriceVal) }}원</output>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="filter-block">
             <label for="age_group">연령대</label>
-            <select id="age_group" name="age_group">
+            <select id="age_group" name="age_group" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['10대','20대','30대','40대','50대 이상'] as $age)
                 <option value="{{ $age }}" @selected(($filters['age_group'] ?? '') === $age)>{{ $age }}</option>
@@ -206,7 +255,7 @@
 
           <div class="filter-block" data-filter-group="music">
             <label for="team_type">팀 구성</label>
-            <select id="team_type" name="team_type">
+            <select id="team_type" name="team_type" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['솔로','팀','혼성','듀엣','트리오','콰르텟','밴드','오케스트라'] as $team)
                 <option value="{{ $team }}" @selected(($filters['team_type'] ?? '') === $team)>{{ $team }}</option>
@@ -216,7 +265,7 @@
 
           <div class="filter-block" data-filter-group="music">
             <label for="genre">장르</label>
-            <select id="genre" name="genre">
+            <select id="genre" name="genre" data-auto-submit="1">
               <option value="">선택 안함</option>
               @if(!empty($genreOptions) && $genreOptions->count())
                 @foreach($genreOptions as $g)
@@ -238,7 +287,7 @@
 
           <div class="filter-block" data-filter-group="music">
             <label for="career">경력</label>
-            <select id="career" name="career">
+            <select id="career" name="career" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['1년 미만','1~3년','3~7년','7년 이상'] as $career)
                 <option value="{{ $career }}" @selected(($filters['career'] ?? '') === $career)>{{ $career }}</option>
@@ -248,7 +297,7 @@
 
           <div class="filter-block" data-filter-group="mc">
             <label for="mc_type">사회자 분류</label>
-            <select id="mc_type" name="mc_type">
+            <select id="mc_type" name="mc_type" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['전문MC','아나운서','홈쇼핑','주례','돌잔치','기업행사'] as $mc)
                 <option value="{{ $mc }}" @selected(($filters['mc_type'] ?? '') === $mc)>{{ $mc }}</option>
@@ -258,7 +307,7 @@
 
           <div class="filter-block" data-filter-group="mc">
             <label for="mc_style">진행 스타일</label>
-            <select id="mc_style" name="mc_style">
+            <select id="mc_style" name="mc_style" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['차분한','활발한','밝은','유머러스','진중한','차분+유쾌'] as $style)
                 <option value="{{ $style }}" @selected(($filters['mc_style'] ?? '') === $style)>{{ $style }}</option>
@@ -268,7 +317,7 @@
 
           <div class="filter-block" data-filter-group="dance">
             <label for="dance_style">댄스 스타일</label>
-            <select id="dance_style" name="dance_style">
+            <select id="dance_style" name="dance_style" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['스트릿','K-POP','비보이','락킹','왁킹','팝핑','현대무용','발레','댄스스포츠','치어'] as $style)
                 <option value="{{ $style }}" @selected(($filters['dance_style'] ?? '') === $style)>{{ $style }}</option>
@@ -278,7 +327,7 @@
 
           <div class="filter-block" data-filter-group="performance">
             <label for="performance_type">퍼포먼스 유형</label>
-            <select id="performance_type" name="performance_type">
+            <select id="performance_type" name="performance_type" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['마술','서커스','LED','저글링','샌드아트','파이어쇼','버블쇼','마임','퍼레이드'] as $type)
                 <option value="{{ $type }}" @selected(($filters['performance_type'] ?? '') === $type)>{{ $type }}</option>
@@ -288,7 +337,7 @@
 
           <div class="filter-block" data-filter-group="plan">
             <label for="plan_type">기획공연 유형</label>
-            <select id="plan_type" name="plan_type">
+            <select id="plan_type" name="plan_type" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['기획공연','테마공연','쇼케이스','콜라보','패키지','오프닝','피날레','레퍼토리'] as $type)
                 <option value="{{ $type }}" @selected(($filters['plan_type'] ?? '') === $type)>{{ $type }}</option>
@@ -298,7 +347,7 @@
 
           <div class="filter-block" data-filter-group="celebrity">
             <label for="celebrity_type">셀럽 분야</label>
-            <select id="celebrity_type" name="celebrity_type">
+            <select id="celebrity_type" name="celebrity_type" data-auto-submit="1">
               <option value="">선택 안함</option>
               @foreach(['셀럽','인플루언서','배우/방송인','유튜버','틱톡커','스포츠스타','셰프/쿠킹'] as $type)
                 <option value="{{ $type }}" @selected(($filters['celebrity_type'] ?? '') === $type)>{{ $type }}</option>
@@ -318,6 +367,7 @@
               <a class="chip" href="{{ route('artists.browse') }}">전체 해제</a>
             </div>
           </div>
+          </div>
         </aside>
 
         <section>
@@ -329,12 +379,12 @@
             <div class="filter-chips">
               @foreach($appliedFilters as $chip)
                 @php $nextQuery = request()->except($chip['key']); @endphp
-                <a class="filter-chip" href="{{ route('artists.browse', $nextQuery) }}">
+                <a class="filter-chip" href="{{ route('artists.browse', $nextQuery) }}" data-scroll-save="1">
                   <span>{{ $chip['label'] }}: {{ $chip['value'] }}</span>
                   <span class="x">×</span>
                 </a>
               @endforeach
-              <a class="filter-clear" href="{{ $clearUrl }}">전체 해제</a>
+              <a class="filter-clear" href="{{ $clearUrl }}" data-scroll-save="1">전체 해제</a>
             </div>
           @endif
 
@@ -384,8 +434,8 @@
                     @else
                       <a class="btn fav" href="{{ route('login') }}">찜하기</a>
                     @endauth
-                    <a class="btn ghost" href="{{ route('artist.show', ['artist' => $artist->id]) }}">필모/소개</a>
-                    <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">지정섭외</a>
+                    <a class="btn ghost" href="{{ route('artist.show', ['artist' => $artist->id]) }}">상세 보기</a>
+                    <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">의뢰하기</a>
                   </div>
                 </div>
               </article>
@@ -406,6 +456,100 @@
 
   <script>
     (function(){
+      const form = document.querySelector('.filter-form');
+      const searchBtn = document.getElementById('searchBtn');
+      const qInput = document.getElementById('q');
+      const autoFields = Array.from(document.querySelectorAll('[data-auto-submit="1"]'));
+      const toggles = Array.from(document.querySelectorAll('.filter-toggle'));
+      const isMobile = window.matchMedia && window.matchMedia('(max-width: 980px)').matches;
+
+      function setSectionOpen(section, open) {
+        if (!section) return;
+        section.classList.toggle('is-open', open);
+        const btn = section.querySelector('.filter-toggle');
+        btn?.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      document.querySelectorAll('.filter-section').forEach(section => {
+        setSectionOpen(section, !isMobile);
+      });
+
+      toggles.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const section = btn.closest('.filter-section');
+          if (!section) return;
+          const open = !section.classList.contains('is-open');
+          setSectionOpen(section, open);
+        });
+      });
+
+      const updateSearchBtn = () => {
+        if (!searchBtn || !qInput) return;
+        const hasText = qInput.value.trim().length > 0;
+        searchBtn.disabled = !hasText;
+      };
+      updateSearchBtn();
+      qInput?.addEventListener('input', updateSearchBtn);
+      qInput?.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        e.preventDefault();
+        form?.submit();
+      });
+      searchBtn?.addEventListener('click', () => {
+        if (qInput && qInput.value.trim().length > 0) {
+          form?.submit();
+        } else {
+          qInput?.focus();
+        }
+      });
+
+      autoFields.forEach(field => {
+        field.addEventListener('change', () => { form?.submit(); });
+      });
+
+      const fmt = (n) => (n || 0).toLocaleString('ko-KR') + '원';
+      const rmin = document.getElementById('range_min');
+      const rmax = document.getElementById('range_max');
+      const bmin = document.getElementById('bubble_min');
+      const bmax = document.getElementById('bubble_max');
+
+      function pct(input){
+        const min = parseInt(input.min||'0',10), max = parseInt(input.max||'100',10);
+        const val = parseInt(input.value||'0',10);
+        return Math.min(100, Math.max(0, ((val-min)/(max-min))*100));
+      }
+
+      function positionBubble(input, bubble){
+        if (!bubble) return;
+        const field = bubble.parentElement;
+        const rectW = field.clientWidth || 0;
+        const half = (bubble.offsetWidth||40)/2;
+        const padL = 0;
+        const p = pct(input)/100;
+        let x = padL + p * rectW;
+        const minX = half; const maxX = rectW - half;
+        x = Math.min(maxX, Math.max(minX, x));
+        bubble.style.left = x + 'px';
+        input.style.setProperty('--p', (p*100)+'%');
+      }
+
+      function syncBudget(e) {
+        if (!rmin || !rmax) return;
+        let a = parseInt(rmin.value || '0', 10);
+        let b = parseInt(rmax.value || '0', 10);
+        if (a > b) {
+          if (e && e.target === rmin) rmax.value = a; else rmin.value = b;
+          a = parseInt(rmin.value, 10); b = parseInt(rmax.value, 10);
+        }
+        if (bmin) { bmin.textContent = fmt(a); positionBubble(rmin, bmin); }
+        if (bmax) { bmax.textContent = fmt(b); positionBubble(rmax, bmax); }
+        if (e && e.type === 'change') {
+          form?.submit();
+        }
+      }
+      ['input','change'].forEach(ev=>{ rmin?.addEventListener(ev, syncBudget); rmax?.addEventListener(ev, syncBudget); });
+      syncBudget();
+
       const disciplineSelect = document.getElementById('discipline');
       const groups = Array.from(document.querySelectorAll('[data-filter-group]'));
       const genreSelect = document.getElementById('genre');
@@ -438,6 +582,20 @@
       }
       disciplineSelect?.addEventListener('change', applyFilters);
       applyFilters();
+
+      const scrollKey = 'enc_artist_scroll';
+      document.querySelectorAll('[data-scroll-save="1"]').forEach(el => {
+        el.addEventListener('click', () => {
+          try { sessionStorage.setItem(scrollKey, String(window.scrollY)); } catch (e) {}
+        });
+      });
+      try {
+        const saved = sessionStorage.getItem(scrollKey);
+        if (saved) {
+          sessionStorage.removeItem(scrollKey);
+          requestAnimationFrame(() => window.scrollTo(0, parseInt(saved, 10) || 0));
+        }
+      } catch (e) {}
     })();
   </script>
 </body>

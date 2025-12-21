@@ -89,8 +89,8 @@
                   @method('delete')
                   <button class="btn fav" type="submit">찜 해제</button>
                 </form>
-                <a class="btn ghost" href="{{ route('artist.show', ['artist' => $artist->id]) }}">필모/소개</a>
-                <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">지정섭외</a>
+                <a class="btn ghost" href="{{ route('artist.show', ['artist' => $artist->id]) }}">상세 보기</a>
+                <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">의뢰하기</a>
               </div>
             </div>
           </article>

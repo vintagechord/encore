@@ -14,6 +14,7 @@
       .enc-container { max-width:1120px; margin:0 auto; padding:0 20px; }
       .pg-head { border-bottom:1px solid var(--border); background: transparent; }
       .page-wrap { min-height: calc(100vh - 180px); }
+      body { margin:0; background: var(--bg); color: var(--fg); font-family: var(--font-sans); }
     </style>
   </head>
   <body>

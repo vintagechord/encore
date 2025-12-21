@@ -7,13 +7,13 @@
     <meta name="color-scheme" content="dark light">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <title>{{ config('app.name', 'Encore') }} | Auth</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
       /* Integrate with Encore public theme */
       :root { color-scheme: dark; }
-      body { margin:0; font-family: var(--font-sans, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif); background: var(--bg); color: var(--fg); }
+      body { margin:0; font-family: var(--font-sans, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif); background: var(--bg); color: var(--fg); }
       .auth-wrap { min-height: calc(100vh - 120px); display:flex; align-items:center; justify-content:center; }
       .auth-card { width:100%; max-width: 480px; background: var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 18px 20px; box-shadow: inset 0 1px 0 rgba(255,255,255,.02); }
       .auth-head { text-align:center; margin: 18px 0 8px; }

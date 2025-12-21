@@ -9,7 +9,7 @@
   <meta name="color-scheme" content="dark light">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 
   <style>
     :root {
@@ -27,8 +27,8 @@
       --accent-hover: #f0b840;
       --danger-bg: rgba(248, 113, 113, 0.18);
       --danger-border: rgba(248, 113, 113, 0.45);
-      --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
+      --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     }
 
     [data-theme="light"] {

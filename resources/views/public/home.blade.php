@@ -37,7 +37,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 
     <style>
         :root {
@@ -61,8 +61,8 @@
             --chip-border: rgba(141, 31, 45, 0.4);
             --hero-overlay: linear-gradient(180deg, rgba(11, 9, 10, 0.2) 0%, rgba(11, 9, 10, 0.75) 65%, rgba(11, 9, 10, 0.9) 100%);
             --hero-video-filter: saturate(1.12) contrast(1.05) brightness(0.68);
-            --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-            --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
+            --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
         }
 
         /* Light theme overrides */
@@ -295,6 +295,11 @@
             font-weight: 700;
             font-family: var(--font-display);
         }
+        #copy-title{
+            font-family: var(--font-sans);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
 
         .hero p {
             margin: 0 0 24px;
@@ -399,6 +404,117 @@
             border: 1px solid var(--chip-border)
         }
 
+        /* ▼ Artist Showcase */
+        .artist-showcase {
+            padding: 18px 0 24px;
+            border-top: 1px solid var(--border);
+        }
+        .artist-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .artist-eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+            display: inline-flex;
+        }
+        .artist-title {
+            margin: 0;
+            font-size: clamp(20px, 3.2vw, 26px);
+        }
+        .artist-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .artist-tab {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background .2s ease, color .2s ease, border-color .2s ease;
+        }
+        .artist-tab.active {
+            background: var(--btn);
+            color: var(--btn-text);
+            border-color: var(--btn);
+        }
+        .artist-marquee {
+            display: none;
+            position: relative;
+            overflow-x: auto;
+            border-radius: 18px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(12, 12, 12, 0.7);
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            touch-action: pan-y;
+            overscroll-behavior-x: contain;
+        }
+        .artist-marquee.active { display: block; }
+        .artist-marquee.is-dragging { cursor: grabbing; }
+        .artist-marquee::-webkit-scrollbar { display:none; }
+        .artist-track { display: flex; width: max-content; gap: 12px; align-items: stretch; }
+        .artist-set { display: flex; gap: 12px; align-items: stretch; }
+        .artist-card {
+            width: clamp(140px, 18vw, 180px);
+            flex: 0 0 auto;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 14px;
+            padding: 10px;
+            color: var(--fg);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scroll-snap-align: center;
+        }
+        .artist-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .artist-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .artist-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .artist-meta {
+            font-size: 12px;
+            color: var(--muted);
+        }
+        [data-theme="light"] .artist-marquee {
+            background: rgba(255,255,255,0.75);
+            border-color: rgba(0,0,0,0.1);
+        }
+        [data-theme="light"] .artist-card {
+            background: rgba(255,255,255,0.9);
+            border-color: rgba(0,0,0,0.08);
+            color: #1b1b1b;
+        }
+
         /* ▼ Testimonials */
         .testimonials {
             padding: 16px 0 36px;
@@ -408,7 +524,7 @@
         .testi-head {
             display: flex;
             flex-wrap: wrap;
-            align-items: flex-end;
+            align-items: center;
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 14px;
@@ -433,8 +549,8 @@
             overflow-x: auto;
             border-radius: 18px;
             padding: 10px;
-            border: 1px solid rgba(255,255,255,0.18);
-            background: #0d0d0d;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(14, 14, 14, 0.72);
             scroll-snap-type: x proximity;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
@@ -442,8 +558,38 @@
             touch-action: pan-y;
             overscroll-behavior-x: contain;
         }
+        [data-theme="light"] .testi-marquee { background: rgba(255,255,255,0.7); border-color: rgba(0,0,0,0.1); }
         .testi-marquee.is-dragging { cursor: grabbing; }
         .testi-marquee::-webkit-scrollbar { display:none; }
+
+        .testi-controls {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .testi-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20,20,20,0.6);
+            color: var(--fg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .2s ease, border-color .2s ease, transform .12s ease;
+        }
+        .testi-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.36);
+            transform: translateY(-1px);
+        }
+        [data-theme="light"] .testi-btn {
+            background: rgba(255,255,255,0.9);
+            color: #1b1b1b;
+            border-color: rgba(0,0,0,0.15);
+        }
 
         .testi-track {
             display: flex;
@@ -597,8 +743,8 @@
 
         .t-card {
             position: relative;
-            background: #f8f8f8;
-            border: 1px solid #111;
+            background: rgba(245, 245, 245, 0.82);
+            border: 1px solid rgba(0,0,0,0.18);
             border-radius: 16px;
             padding: 14px 14px 16px;
             display: flex;
@@ -606,10 +752,10 @@
             justify-content: space-between;
             gap: 8px;
             width: clamp(160px, 22vw, 220px);
-            aspect-ratio: 1 / 1.618;
+            height: clamp(140px, 18vw, 175px);
             flex: 0 0 auto;
             color: #0b0b0b;
-            box-shadow: 0 8px 18px rgba(0,0,0,.18);
+            box-shadow: 0 8px 18px rgba(0,0,0,.14);
             scroll-snap-align: center;
         }
 
@@ -617,10 +763,10 @@
             content: "";
             position: absolute;
             inset: 0 0 auto 0;
-            height: 4px;
+            height: 3px;
             border-radius: 16px 16px 0 0;
-            background: #111;
-            opacity: 0.85;
+            background: rgba(17,17,17,0.8);
+            opacity: 0.9;
         }
 
         .t-kind {
@@ -648,7 +794,7 @@
             font-size: 13px;
             line-height: 1.55;
             display: -webkit-box;
-            -webkit-line-clamp: 4;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -660,6 +806,7 @@
             gap: 10px;
             color: #333;
             font-size: 12px;
+            margin-top: auto;
         }
 
         .stars {
@@ -705,52 +852,6 @@
             justify-content: space-between;
             color: var(--muted);
             font-size: 13px
-        }
-
-        /* AB 토글 */
-        .ab-toggle {
-            position: fixed;
-            right: 14px;
-            bottom: 14px;
-            z-index: 40;
-            background: rgba(11, 9, 10, 0.95);
-            color: var(--fg);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 8px;
-            box-shadow: 0 12px 30px rgba(2, 4, 12, .55);
-        }
-
-        .ab-toggle .label {
-            font-size: 12px;
-            opacity: .85;
-            margin-right: 2px
-        }
-
-        .ab-btn {
-            background: transparent;
-            color: var(--muted);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background .2s ease, color .2s ease, border-color .2s ease;
-        }
-
-        .ab-btn:hover {
-            background: rgba(141, 31, 45, 0.16);
-            color: var(--fg);
-            border-color: rgba(141, 31, 45, 0.35);
-        }
-
-        .ab-btn.active {
-            background: var(--accent);
-            color: #1b130f;
-            border-color: var(--accent);
         }
 
         /* Skip link for a11y */
@@ -908,29 +1009,75 @@
                     display: grid;
                     place-items: center;
                     margin-top: 18px;
-                    min-height: 250px;
+                    min-height: 220px;
                     perspective: 1000px;
                   }
                   .optcard{
                     --slot: 0;
                     --shift: clamp(140px, 20vw, 260px);
                     --tilt: 10deg;
+                    --opt-bg: var(--card);
+                    --opt-border: var(--border);
+                    --opt-ring: rgba(243,198,82,.28);
+                    --opt-ring-soft: rgba(243,198,82,.16);
+                    --opt-btn: var(--btn);
+                    --opt-btn-hover: var(--btn-hover);
+                    --opt-btn-text: var(--btn-text);
                     position: absolute;
                     width: min(320px, 90vw);
-                    min-height: 210px;
-                    border: 1px solid var(--border);
+                    min-height: 182px;
+                    border: 1px solid var(--opt-border);
                     border-radius: 18px;
-                    background: var(--card);
-                    padding: 20px;
+                    background: var(--opt-bg);
+                    padding: 18px 18px 14px;
                     cursor: pointer;
                     transition: transform .6s cubic-bezier(0.2,0.8,0.2,1), box-shadow .25s ease, border-color .25s ease, filter .25s ease;
                     transform: translateX(calc(var(--slot) * var(--shift))) rotateY(calc(var(--slot) * var(--tilt)));
                     box-shadow: 0 14px 28px rgba(15,23,42,.32);
                     text-decoration: none;
                     color: inherit;
-                    filter: saturate(0.9) brightness(0.98);
+                    filter: saturate(0.92) brightness(0.98);
                     transform-style: preserve-3d;
                     text-rendering: optimizeLegibility;
+                  }
+                  .optcard[data-mode="instant"]{
+                    --opt-bg: linear-gradient(150deg, rgba(226,193,90,0.55), rgba(20,13,12,0.4));
+                    --opt-border: rgba(226,193,90,0.6);
+                    --opt-ring: rgba(226,193,90,0.5);
+                    --opt-ring-soft: rgba(226,193,90,0.22);
+                    --opt-btn: #e2c15a;
+                    --opt-btn-hover: #d1ad43;
+                    --opt-btn-text: #1b130f;
+                  }
+                  .optcard[data-mode="one_day"]{
+                    --opt-bg: linear-gradient(150deg, rgba(243,125,82,0.5), rgba(20,12,12,0.45));
+                    --opt-border: rgba(243,125,82,0.55);
+                    --opt-ring: rgba(243,125,82,0.45);
+                    --opt-ring-soft: rgba(243,125,82,0.22);
+                    --opt-btn: #f37d52;
+                    --opt-btn-hover: #ea6a3d;
+                    --opt-btn-text: #1b130f;
+                  }
+                  .optcard[data-mode="direct"]{
+                    --opt-bg: linear-gradient(150deg, rgba(181,18,32,0.42), rgba(20,10,12,0.6));
+                    --opt-border: rgba(181,18,32,0.55);
+                    --opt-ring: rgba(181,18,32,0.45);
+                    --opt-ring-soft: rgba(181,18,32,0.22);
+                    --opt-btn: #b51220;
+                    --opt-btn-hover: #9e0f1b;
+                    --opt-btn-text: #fff1f1;
+                  }
+                  [data-theme="light"] .optcard[data-mode="instant"]{
+                    --opt-bg: linear-gradient(150deg, rgba(226,193,90,0.4), rgba(255,247,230,0.92));
+                    --opt-border: rgba(226,193,90,0.6);
+                  }
+                  [data-theme="light"] .optcard[data-mode="one_day"]{
+                    --opt-bg: linear-gradient(150deg, rgba(243,125,82,0.36), rgba(255,247,230,0.92));
+                    --opt-border: rgba(243,125,82,0.6);
+                  }
+                  [data-theme="light"] .optcard[data-mode="direct"]{
+                    --opt-bg: linear-gradient(150deg, rgba(181,18,32,0.3), rgba(255,247,230,0.92));
+                    --opt-border: rgba(181,18,32,0.55);
                   }
                   .optcard::after{
                     content:"";
@@ -946,39 +1093,39 @@
                   .optcard[data-slot="0"]{
                     --slot:0;
                     z-index:3;
-                    border-color: var(--accent);
+                    border-color: var(--opt-border);
                     filter: saturate(1) brightness(1);
                     box-shadow: 0 22px 46px rgba(15,23,42,.38);
-                    min-height: 232px;
-                    padding: 24px;
+                    min-height: 198px;
+                    padding: 18px 18px 16px;
                   }
                   .optcard[data-slot="0"]::after{
-                    border-color: rgba(243,198,82,.45);
-                    box-shadow: 0 0 0 6px rgba(243,198,82,.16);
+                    border-color: var(--opt-ring);
+                    box-shadow: 0 0 0 6px var(--opt-ring-soft);
                     opacity:1;
                   }
                   .optcard[data-slot="1"]{ --slot:1; z-index:1; }
-                  .optcard:hover{ border-color: var(--chip-border); }
+                  .optcard:hover{ border-color: var(--opt-border); }
                   .optcard:focus-visible{
                     outline:none;
                     border-color: var(--accent);
                     box-shadow: 0 0 0 3px rgba(243,198,82,.35), 0 22px 46px rgba(15,23,42,.38);
                   }
-                  .optcard h3{ margin:0 0 8px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
+                  .optcard h3{ margin:0 0 6px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
                   .optcard[data-slot="0"] h3{ font-size: clamp(19px, 2.5vw, 24px); }
-                  .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
+                  .optcard p{ margin:0 0 6px; color:var(--muted); font-size:14px; min-height:32px; }
                   .optcard .btn{
-                    margin-top:auto;
-                    border:1px solid var(--btn);
-                    background: var(--btn);
-                    color: var(--btn-text);
+                    margin-top: 6px;
+                    border:1px solid var(--opt-btn);
+                    background: var(--opt-btn);
+                    color: var(--opt-btn-text);
                     transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
                   }
                   .optcard .btn:hover{
-                    background: var(--btn-hover);
-                    border-color: var(--btn-hover);
+                    background: var(--opt-btn-hover);
+                    border-color: var(--opt-btn-hover);
                     transform: translateY(-1px);
-                    box-shadow: 0 10px 22px rgba(141,31,45,.35), 0 0 0 2px rgba(141,31,45,.2) inset;
+                    box-shadow: 0 10px 22px rgba(0,0,0,.35), 0 0 0 2px rgba(0,0,0,.12) inset;
                   }
                   .optcard-face{
                     display:flex;
@@ -999,29 +1146,30 @@
                     .optgrid{
                       position: relative;
                       display: flex;
-                      gap: 10px;
+                      gap: 14px;
                       min-height: auto;
                       perspective: none;
                       overflow-x: auto;
-                      padding: 0 4px 10px;
-                      scroll-snap-type: x proximity;
-                      justify-content: center;
+                      padding: 0 18px 12px;
+                      scroll-snap-type: x mandatory;
+                      scroll-padding: 0 18px;
+                      justify-content: flex-start;
                       scrollbar-width: none;
                       -webkit-overflow-scrolling: touch;
                     }
                     .optgrid::-webkit-scrollbar{ display:none; }
                     .optcard{
                       position: relative;
-                      flex: 0 0 calc((100% - 20px) / 3);
-                      min-width: 120px;
+                      flex: 0 0 84%;
+                      min-width: 240px;
                       width: auto;
                       transform: none !important;
                       filter: none;
                       scroll-snap-align: center;
                     }
-                    .optcard h3{ font-size: 14px; }
-                    .optcard p{ font-size: 12px; min-height: 46px; }
-                    .optcard .btn{ height: 32px; padding: 0 8px; font-size: 12px; border-radius: 10px; }
+                    .optcard h3{ font-size: 16px; }
+                    .optcard p{ font-size: 12px; min-height: 40px; }
+                    .optcard .btn{ height: 34px; padding: 0 10px; font-size: 12px; border-radius: 10px; margin-top: 6px; }
                     .optcard::after{ display:none; }
                   }
                   @media (prefers-reduced-motion: reduce){
@@ -1119,6 +1267,29 @@
                       }
                     });
 
+                    let scrollTimer = 0;
+                    grid.addEventListener('scroll', function(){
+                      if (!window.matchMedia('(max-width: 860px)').matches) return;
+                      clearTimeout(scrollTimer);
+                      scrollTimer = window.setTimeout(() => {
+                        const center = grid.scrollLeft + grid.clientWidth / 2;
+                        let bestIdx = 0;
+                        let bestDist = Infinity;
+                        cards.forEach((card, idx) => {
+                          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                          const dist = Math.abs(cardCenter - center);
+                          if (dist < bestDist) {
+                            bestDist = dist;
+                            bestIdx = idx;
+                          }
+                        });
+                        if (bestIdx !== centerIndex) {
+                          centerIndex = bestIdx;
+                          applySlots();
+                        }
+                      }, 80);
+                    });
+
                     applySlots();
                   })();
                 </script>
@@ -1203,6 +1374,105 @@
         <!-- (삭제됨) 희망 아티스트 직접 요청 섹션 -->
         @endif
 
+        <!-- ▼ 섭외 가능 아티스트 섹션 -->
+        @php
+            $artistTabs = [
+                ['slug' => 'music', 'label' => '음악'],
+                ['slug' => 'mc', 'label' => '사회(MC)'],
+                ['slug' => 'dance', 'label' => '댄스'],
+                ['slug' => 'performance', 'label' => '퍼포먼스'],
+                ['slug' => 'planned', 'label' => '기획공연'],
+                ['slug' => 'celebrity', 'label' => '셀럽'],
+            ];
+            $artistBuckets = [];
+            try {
+                if (class_exists(\App\Models\Artist::class) && \Illuminate\Support\Facades\Schema::hasTable('artists')) {
+                    $disciplines = collect();
+                    if (class_exists(\App\Models\Discipline::class) && \Illuminate\Support\Facades\Schema::hasTable('disciplines')) {
+                        $disciplines = \App\Models\Discipline::whereIn('slug', collect($artistTabs)->pluck('slug')->all())->get()->keyBy('slug');
+                    }
+                    foreach ($artistTabs as $tab) {
+                        $query = \App\Models\Artist::query();
+                        if (\Illuminate\Support\Facades\Schema::hasColumn('artists', 'active')) {
+                            $query->where('active', true);
+                        }
+                        if ($disciplines->has($tab['slug'])) {
+                            $query->where('discipline_id', $disciplines[$tab['slug']]->id);
+                        }
+                        $artistBuckets[$tab['slug']] = $query->inRandomOrder()->take(12)->get();
+                    }
+                } else {
+                    foreach ($artistTabs as $tab) {
+                        $artistBuckets[$tab['slug']] = collect();
+                    }
+                }
+            } catch (\Throwable $e) {
+                foreach ($artistTabs as $tab) {
+                    $artistBuckets[$tab['slug']] = collect();
+                }
+            }
+        @endphp
+        <section class="artist-showcase" aria-labelledby="artist-title">
+            <div class="container">
+                <div class="artist-head">
+                    <div>
+                        <span class="artist-eyebrow">LINEUP</span>
+                        <h2 id="artist-title" class="artist-title">섭외 가능 아티스트</h2>
+                    </div>
+                    <div class="artist-tabs" role="tablist" aria-label="섭외 가능 아티스트 분류">
+                        @foreach($artistTabs as $idx => $tab)
+                            <button
+                                class="artist-tab{{ $idx === 0 ? ' active' : '' }}"
+                                type="button"
+                                id="artist-tab-{{ $tab['slug'] }}"
+                                data-target="{{ $tab['slug'] }}"
+                                role="tab"
+                                aria-selected="{{ $idx === 0 ? 'true' : 'false' }}"
+                                aria-controls="artist-panel-{{ $tab['slug'] }}"
+                            >{{ $tab['label'] }}</button>
+                        @endforeach
+                    </div>
+                </div>
+                @foreach($artistTabs as $idx => $tab)
+                    @php $list = $artistBuckets[$tab['slug']] ?? collect(); @endphp
+                    <div
+                        class="artist-marquee{{ $idx === 0 ? ' active' : '' }}"
+                        id="artist-panel-{{ $tab['slug'] }}"
+                        role="tabpanel"
+                        aria-labelledby="artist-tab-{{ $tab['slug'] }}"
+                        data-key="{{ $tab['slug'] }}"
+                    >
+                        <div class="artist-track" data-key="{{ $tab['slug'] }}">
+                            <div class="artist-set" role="list">
+                                @forelse($list as $artist)
+                                    @php
+                                        $img = $artist->image_url ?? ($artist->image_path ? asset('storage/'.$artist->image_path) : ($artist->image ?? null));
+                                    @endphp
+                                    <a class="artist-card" href="{{ route('artist.show', ['artist'=>$artist->id]) }}" role="listitem">
+                                        <div class="artist-thumb">
+                                            @if($img)
+                                                <img src="{{ $img }}" alt="{{ $artist->name }} 이미지" loading="lazy" decoding="async" referrerpolicy="no-referrer">
+                                            @else
+                                                <img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Crect width='100%25' height='100%25' fill='%231a1a1a'/%3E%3C/svg%3E">
+                                            @endif
+                                        </div>
+                                        <div class="artist-name">{{ $artist->name ?? '아티스트' }}</div>
+                                        <div class="artist-meta">{{ $tab['label'] }}</div>
+                                    </a>
+                                @empty
+                                    <div class="artist-card" role="listitem">
+                                        <div class="artist-thumb"></div>
+                                        <div class="artist-name">준비중</div>
+                                        <div class="artist-meta">{{ $tab['label'] }}</div>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
         <!-- ▼ 신규: 샘플 문의/후기 섹션 -->
         @php
             $fallbackTestimonials = collect([
@@ -1236,6 +1506,10 @@
                     <div>
                         <span class="testi-eyebrow">Samples</span>
                         <h2 id="testi-title" class="testi-title">샘플 문의/후기</h2>
+                    </div>
+                    <div class="testi-controls" role="group" aria-label="샘플 문의/후기 이동">
+                        <button class="testi-btn" type="button" id="testiPrev" aria-label="이전">‹</button>
+                        <button class="testi-btn" type="button" id="testiNext" aria-label="다음">›</button>
                     </div>
                 </div>
                 <div class="testi-marquee">
@@ -1275,85 +1549,13 @@
 
     @include('public.partials.footer')
 
-    <!-- AB 토글 -->
-    <div class="ab-toggle" role="group" aria-label="카피 A/B 테스트 토글" title="로컬에서만 적용됩니다">
-        <span class="label">Copy</span>
-        <button class="ab-btn" data-variant="A" type="button">A</button>
-        <button class="ab-btn" data-variant="B" type="button">B</button>
-        <button class="ab-btn" data-variant="C" type="button">C</button>
-    </div>
-
     <script>
         (function() {
-            const STORAGE_KEY = 'homeCopyVariant';
-            const THEME_KEY = 'enc_theme';
-            const $title = document.getElementById('copy-title');
-            const $desc = document.getElementById('copy-desc');
-            const $cta = document.getElementById('copy-cta')?.querySelector('.cta-text');
-
-            const variants = {
-                A: {
-                    title: '행사에 딱 맞는 아티스트,<br>바로 추천받으세요',
-                    descHtml: '간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해 공유 링크로 전달합니다.<br>필요하면 언제든 새 링크로 회수·재발급도 가능해요.',
-                    cta: '문의하기'
-                },
-                B: {
-                    title: '기획서에 꽂히는 섭외 후보,<br>내일 아침까지',
-                    descHtml: '핵심 조건만 남기면 밤사이 후보를 추려 정리합니다.<br>예산 가이드를 함께 드려 의사결정을 빠르게.',
-                    cta: '바로 문의'
-                },
-                C: {
-                    title: '예산·콘셉트·타깃 맞춤 추천,<br>링크로 깔끔하게 공유',
-                    descHtml: '공개 링크 발급/회수/재발급까지 한 번에.<br>내부 검토·외부 공유가 쉬워집니다.',
-                    cta: '추천 받아보기'
-                }
-            };
-
-            function applyVariant(key) {
-                const v = variants[key] || variants.A;
-                if ($title) $title.innerHTML = v.title;
-                if ($desc) $desc.innerHTML = v.descHtml || v.desc || '';
-                if ($cta) $cta.textContent = v.cta;
-                document.querySelectorAll('.ab-btn').forEach(b => {
-                    b.classList.toggle('active', b.dataset.variant === key);
-                });
-                try {
-                    localStorage.setItem(STORAGE_KEY, key);
-                } catch (e) {}
-            }
-
-            const url = new URL(window.location.href);
-            const fromQuery = (url.searchParams.get('ab') || '').toUpperCase();
-            const saved = (() => {
-                try {
-                    return localStorage.getItem(STORAGE_KEY) || '';
-                } catch (e) {
-                    return '';
-                }
-            })();
-            const initial = ['A', 'B', 'C'].includes(fromQuery) ? fromQuery : (['A', 'B', 'C'].includes(saved) ? saved : 'A');
-            applyVariant(initial);
-
-            document.querySelectorAll('.ab-btn').forEach(btn => {
-                btn.addEventListener('click', () => applyVariant(btn.dataset.variant));
-            });
-
-            // Theme init + toggle
-            const root = document.documentElement;
-            const btnTheme = document.getElementById('themeToggle');
-            const setTheme = (t) => {
-                root.setAttribute('data-theme', t);
-                try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
-                const label = btnTheme?.querySelector('.tlabel');
-                if (label) label.textContent = t === 'light' ? 'Light' : 'Dark';
-            };
-            const savedTheme = (() => { try { return localStorage.getItem(THEME_KEY) || ''; } catch(e) { return ''; } })();
-            setTheme(savedTheme === 'light' ? 'light' : 'dark');
-            btnTheme?.addEventListener('click', () => setTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
-
             const testiTrack = document.getElementById('testiTrack');
             const testiMarquee = document.querySelector('.testi-marquee');
             if (testiTrack && testiMarquee) {
+                const prevBtn = document.getElementById('testiPrev');
+                const nextBtn = document.getElementById('testiNext');
                 let baseWidth = 0;
                 const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1429,6 +1631,22 @@
                 testiMarquee.addEventListener('wheel', () => { pause(); scheduleResume(); }, { passive: true });
                 testiMarquee.addEventListener('scroll', () => { pause(); scheduleResume(); }, { passive: true });
 
+                const getStep = () => {
+                    const card = testiMarquee.querySelector('.t-card');
+                    if (!card) return 200;
+                    const style = window.getComputedStyle(testiTrack);
+                    const gap = parseFloat(style.columnGap || style.gap || '12') || 12;
+                    return card.getBoundingClientRect().width + gap;
+                };
+                const stepScroll = (dir) => {
+                    pause();
+                    const step = getStep() * dir;
+                    testiMarquee.scrollBy({ left: step, behavior: 'smooth' });
+                    scheduleResume();
+                };
+                prevBtn?.addEventListener('click', () => stepScroll(-1));
+                nextBtn?.addEventListener('click', () => stepScroll(1));
+
                 let lastTs = 0;
                 const tick = (ts) => {
                     if (!prefersReduced && !paused && !isDragging) {
@@ -1446,6 +1664,95 @@
                     requestAnimationFrame(tick);
                 };
                 requestAnimationFrame(tick);
+            }
+
+            const artistTabs = document.querySelectorAll('.artist-tab');
+            const artistPanels = Array.from(document.querySelectorAll('.artist-marquee'));
+            if (artistTabs.length && artistPanels.length) {
+                const panelByKey = new Map(artistPanels.map(p => [p.dataset.key, p]));
+                const setActiveArtist = (key) => {
+                    artistTabs.forEach(tab => {
+                        const active = tab.dataset.target === key;
+                        tab.classList.toggle('active', active);
+                        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                    });
+                    artistPanels.forEach(panel => {
+                        panel.classList.toggle('active', panel.dataset.key === key);
+                        if (panel.dataset.key === key) {
+                            panel.scrollLeft = 0;
+                        }
+                    });
+                };
+                artistTabs.forEach(tab => {
+                    tab.addEventListener('click', () => setActiveArtist(tab.dataset.target));
+                });
+                setActiveArtist(artistTabs[0]?.dataset.target);
+
+                const prefersReducedArtist = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const marquees = [];
+                artistPanels.forEach(panel => {
+                    const track = panel.querySelector('.artist-track');
+                    const set = panel.querySelector('.artist-set');
+                    if (!track || !set) return;
+                    const data = { panel, track, set, baseWidth: 0, paused: false, isDragging: false, startX: 0, startScroll: 0 };
+                    data.build = () => {
+                        while (track.children.length > 1) track.removeChild(track.lastChild);
+                        let safety = 0;
+                        while (track.scrollWidth < panel.clientWidth * 2 && safety < 6) {
+                            const clone = set.cloneNode(true);
+                            clone.setAttribute('aria-hidden', 'true');
+                            track.appendChild(clone);
+                            safety += 1;
+                        }
+                        data.baseWidth = set.scrollWidth || 0;
+                    };
+                    data.build();
+                    panel.addEventListener('pointerdown', (e) => {
+                        data.isDragging = true;
+                        data.paused = true;
+                        data.startX = e.clientX;
+                        data.startScroll = panel.scrollLeft;
+                        panel.classList.add('is-dragging');
+                        panel.setPointerCapture?.(e.pointerId);
+                    });
+                    panel.addEventListener('pointermove', (e) => {
+                        if (!data.isDragging) return;
+                        const delta = e.clientX - data.startX;
+                        panel.scrollLeft = data.startScroll - delta;
+                    });
+                    const endDrag = (e) => {
+                        if (!data.isDragging) return;
+                        data.isDragging = false;
+                        panel.classList.remove('is-dragging');
+                        panel.releasePointerCapture?.(e.pointerId);
+                        data.paused = false;
+                    };
+                    panel.addEventListener('pointerup', endDrag);
+                    panel.addEventListener('pointerleave', endDrag);
+                    panel.addEventListener('wheel', () => { data.paused = true; setTimeout(() => { data.paused = false; }, 1200); }, { passive: true });
+                    panel.addEventListener('scroll', () => { data.paused = true; setTimeout(() => { data.paused = false; }, 1200); }, { passive: true });
+                    marquees.push(data);
+                });
+                let artistResizeTimer = 0;
+                window.addEventListener('resize', () => {
+                    clearTimeout(artistResizeTimer);
+                    artistResizeTimer = setTimeout(() => { marquees.forEach(m => m.build()); }, 150);
+                });
+                const SPEED = 0.28;
+                const tickArtist = () => {
+                    if (!prefersReducedArtist) {
+                        marquees.forEach(m => {
+                            if (!m.panel.classList.contains('active')) return;
+                            if (m.paused || m.isDragging) return;
+                            m.panel.scrollLeft += SPEED;
+                            if (m.baseWidth > 0 && m.panel.scrollLeft >= m.baseWidth) {
+                                m.panel.scrollLeft -= m.baseWidth;
+                            }
+                        });
+                    }
+                    requestAnimationFrame(tickArtist);
+                };
+                requestAnimationFrame(tickArtist);
             }
 
             const frame = document.querySelector('.stories-frame');

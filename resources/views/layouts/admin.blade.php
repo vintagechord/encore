@@ -7,7 +7,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
   <style>
     :root{
       --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
@@ -22,8 +22,8 @@
       --accent-hover:#f0b840;
       --chip: rgba(141,31,45,.2);
       --chip-border: rgba(141,31,45,.4);
-      --font-sans: "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
-      --font-display: "Noto Serif KR","Apple SD Gothic Neo","Malgun Gothic",serif;
+      --font-sans: "Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+      --font-display: "Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
     }
     [data-theme="light"]{
       --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),

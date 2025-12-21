@@ -11,7 +11,7 @@
   <meta name="description" content="문의 접수가 완료되었습니다. 빠르게 후보를 검토하여 공유드리겠습니다.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 
   <style>
     :root {
@@ -26,8 +26,8 @@
       --card-alt: #1b1316;
       --border: #2a1c22;
       --ok: #34d399;
-      --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-      --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
+      --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     }
     [data-theme="light"] {
       --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),

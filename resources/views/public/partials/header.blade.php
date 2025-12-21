@@ -1,5 +1,6 @@
 {{-- Shared public header (matches home) --}}
 <style id="enc-theme-vars">
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
   /* Global theme variables for all public pages */
   :root {
     --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
@@ -20,8 +21,8 @@
     --border: #2a1c22;
     --chip: rgba(141, 31, 45, 0.2);
     --chip-border: rgba(141, 31, 45, 0.4);
-    --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    --font-display: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif;
+    --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   }
   [data-theme="light"] {
     --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
@@ -57,6 +58,14 @@
     .enc-brand .brand-logo { height: 20px; }
   }
   .enc-nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .enc-categorybar { border-top:1px solid var(--border); padding:8px 0 10px; }
+  .enc-categorylist { display:flex; align-items:center; gap:8px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
+  .enc-categorylist::-webkit-scrollbar { display:none; }
+  .enc-categorylink { display:inline-flex; align-items:center; justify-content:center; height:32px; padding:0 12px; border-radius:999px; border:1px solid transparent; color: var(--muted); text-decoration:none; font-weight:600; background: rgba(255,255,255,0.02); white-space:nowrap; }
+  .enc-categorylink:hover { color: var(--fg); border-color: rgba(243,198,82,.4); background: rgba(243,198,82,.12); }
+  .enc-categorylink.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); box-shadow: 0 6px 14px rgba(243,198,82,.25); }
+  [data-theme="light"] .enc-categorylink { background: rgba(255,255,255,0.6); }
+  [data-theme="light"] .enc-categorylink.active { background: var(--accent); color: var(--accent-text); }
   .enc-link { display:inline-flex; align-items:center; justify-content:center; height:36px; padding:0 12px; border-radius:999px; border:1px solid transparent; color: var(--muted); text-decoration:none; font-weight:600; }
   .enc-link:hover { background: rgba(141,31,45,.12); color: var(--fg); border-color: rgba(141,31,45,.35); }
   .enc-badge { display:inline-flex; align-items:center; font-size:12px; color:#f5e2b2; background: rgba(141,31,45,.18); border:1px solid rgba(141,31,45,.4); padding:2px 8px; border-radius:999px; }
@@ -110,6 +119,8 @@
     .enc-nav { gap: 12px; padding: 12px 0; }
     .enc-nav-right { gap: 6px; }
     .theme-toggle, .enc-link { height: 34px; padding: 0 10px; border-radius: 999px; }
+    .enc-categorybar { padding: 6px 0 8px; }
+    .enc-categorylink { height: 30px; padding: 0 10px; font-size: 12px; }
 
     /* Common components used throughout pages */
     .grid { grid-template-columns: 1fr !important; }
@@ -124,6 +135,20 @@
     .thumb-wrap { max-width: 70vw; }
   }
 </style>
+
+@php
+  $categoryLinks = $categoryLinks ?? [
+    ['slug' => 'all', 'label' => '전체'],
+    ['slug' => 'music', 'label' => '음악'],
+    ['slug' => 'mc', 'label' => '사회(MC)'],
+    ['slug' => 'dance', 'label' => '댄스'],
+    ['slug' => 'performance', 'label' => '퍼포먼스'],
+    ['slug' => 'plan', 'label' => '기획공연'],
+    ['slug' => 'celebrity', 'label' => '셀럽'],
+  ];
+  $activeCategory = $activeCategory ?? (request()->route('discipline') ?? request()->query('discipline') ?? 'all');
+  $activeCategory = $activeCategory === '' ? 'all' : $activeCategory;
+@endphp
 
 <header class="enc-top" aria-label="상단 내비게이션">
   <div class="enc-container enc-nav">
@@ -146,6 +171,22 @@
       <button id="themeToggle" class="theme-toggle" type="button" aria-label="테마 전환"><span class="tlabel">Dark</span></button>
     </div>
   </div>
+  @if(empty($hideCategoryNav))
+    <div class="enc-categorybar" aria-label="전체 카테고리">
+      <div class="enc-container enc-categorylist">
+        @foreach($categoryLinks as $cat)
+          @php
+            $slug = $cat['slug'];
+            $isActive = $activeCategory === $slug;
+            $href = $slug === 'all' ? route('artists.browse') : route('artists.browse.discipline', ['discipline' => $slug]);
+          @endphp
+          <a class="enc-categorylink{{ $isActive ? ' active' : '' }}" href="{{ $href }}" @if($isActive) aria-current="page" @endif>
+            {{ $cat['label'] }}
+          </a>
+        @endforeach
+      </div>
+    </div>
+  @endif
 </header>
 
 <script id="enc-theme-toggle-script">

@@ -5,7 +5,7 @@
   <title>{{ $notice->title }} | 공지사항</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body{ margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,system-ui,Segoe UI,Roboto,Helvetica,Arial,Apple SD Gothic Neo,Malgun Gothic,sans-serif; }
+    body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:920px; margin:0 auto; padding:24px 20px; }
     .card{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px; }
     .muted{ color:var(--muted); }
@@ -25,4 +25,3 @@
   @include('public.partials.footer')
 </body>
 </html>
-

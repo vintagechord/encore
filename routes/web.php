@@ -33,6 +33,11 @@ Route::get('/r/{token}/option/{idx}', [PublicRecommendationsController::class, '
     ->where(['idx'=>'[0-9]+'])
     ->name('share.token.option');
 
+// 공개 아티스트 탐색
+Route::get('/artists', [ArtistPublicController::class, 'index'])->name('artists.browse');
+Route::get('/artists/{discipline}', [ArtistPublicController::class, 'index'])
+    ->name('artists.browse.discipline');
+
 // 공개 아티스트 상세
 Route::get('/artist/{artist}', [ArtistPublicController::class, 'show'])->name('artist.show');
 

@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#fff7e6" media="(prefers-color-scheme: light)">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
   <style>
     /* Use global tokens from shared header; define only page-specific ones. */
     :root {
@@ -40,7 +40,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      font-family: var(--font-sans, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif);
+      font-family: var(--font-sans, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif);
       color: var(--fg);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;

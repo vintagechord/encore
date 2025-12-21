@@ -6,9 +6,9 @@
   <title>관리자 잠금 해제</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
   <style>
-    :root{ --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%), radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%), #0b090a; --fg:#f7f1e9; --muted:#b6a89a; --card:#151012; --border:#2a1c22; --accent:#f3c652; --accent-hover:#f0b840; --font-sans:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif; }
+    :root{ --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%), radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%), #0b090a; --fg:#f7f1e9; --muted:#b6a89a; --card:#151012; --border:#2a1c22; --accent:#f3c652; --accent-hover:#f0b840; --font-sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif; }
     body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .wrap{ min-height:100vh; display:grid; place-items:center; padding:20px; }
     .panel{ width:min(420px, 92vw); background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:0 16px 40px rgba(4,8,18,.45); }

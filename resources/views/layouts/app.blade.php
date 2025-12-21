@@ -7,7 +7,7 @@
     <meta name="color-scheme" content="dark light">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <title>{{ config('app.name', 'Encore') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>

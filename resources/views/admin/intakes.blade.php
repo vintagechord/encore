@@ -18,7 +18,7 @@
       --danger: #ef4444;
       --warning: #f59e0b;
       --success: #34d399;
-      --font-sans: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     }
 
     body {

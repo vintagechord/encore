@@ -13,38 +13,38 @@
 
   <style>
     :root {
-      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
-        radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
-        #0b090a;
-      --surface: #151012;
-      --surface-alt: #1b1316;
-      --card: #1a1316;
-      --border: #2a1c22;
-      --border-alt: #352029;
-      --text: #f7f1e9;
-      --muted: #b6a89a;
+      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%),
+        radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%),
+        #0a0a0a;
+      --surface: #121212;
+      --surface-alt: #191919;
+      --card: #151515;
+      --border: #2a2a2a;
+      --border-alt: #333333;
+      --text: #f7f4ee;
+      --muted: #b4b0a8;
       --accent: #f3c652;
-      --accent-hover: #f0b840;
-      --danger-bg: rgba(248, 113, 113, 0.18);
-      --danger-border: rgba(248, 113, 113, 0.45);
+      --accent-hover: #e6b940;
+      --danger-bg: rgba(141, 31, 45, 0.22);
+      --danger-border: rgba(141, 31, 45, 0.45);
       --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
       --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     }
 
     [data-theme="light"] {
-      --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
-        linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%);
-      --surface: #fffdf8;
-      --surface-alt: #f6ecdd;
-      --card: #fff9f0;
-      --border: #e6d4c0;
-      --border-alt: #d7c5b3;
-      --text: #2b1b1b;
-      --muted: #6b5b53;
-      --accent: #e3b648;
-      --accent-hover: #d5a63b;
-      --danger-bg: rgba(248, 113, 113, 0.10);
-      --danger-border: rgba(248, 113, 113, 0.35);
+      --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%),
+        linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%);
+      --surface: #ffffff;
+      --surface-alt: #f7f3ea;
+      --card: #ffffff;
+      --border: #e3ddd2;
+      --border-alt: #d6cfc2;
+      --text: #1c1b19;
+      --muted: #6b655c;
+      --accent: #f3c652;
+      --accent-hover: #e6b940;
+      --danger-bg: rgba(141, 31, 45, 0.12);
+      --danger-border: rgba(141, 31, 45, 0.35);
     }
 
     * {
@@ -115,7 +115,7 @@
       width: 18px;
       height: 18px;
       border-radius: 6px;
-      background: linear-gradient(135deg, #8d1f2d, #f3c652);
+      background: linear-gradient(135deg, #f3c652, #f7e3a3);
       display: inline-flex;
     }
 
@@ -128,9 +128,9 @@
     }
 
     .site-nav .nav-link:hover {
-      background: rgba(141, 31, 45, 0.16);
+      background: rgba(243, 198, 82, 0.18);
       color: var(--text);
-      border-color: rgba(141, 31, 45, 0.35);
+      border-color: rgba(243, 198, 82, 0.45);
     }
 
     fieldset {
@@ -181,7 +181,7 @@
     input[type="number"]:focus,
     select:focus {
       border-color: var(--btn);
-      box-shadow: 0 0 0 2px rgba(141, 31, 45, 0.3);
+      box-shadow: 0 0 0 2px rgba(243, 198, 82, 0.35);
       outline: none;
     }
 
@@ -341,8 +341,8 @@
     <style>
       .optgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; margin-bottom:10px; }
       .optcard{ position:relative; display:flex; flex-direction:column; min-height:200px; border:1px solid var(--border); border-radius:14px; background:var(--card); padding:20px; cursor:pointer; transition: border-color .2s ease, box-shadow .2s ease, transform .08s ease; }
-      .optcard:hover{ border-color: var(--border-alt); box-shadow: inset 0 0 0 2px rgba(141,31,45,.18); }
-      .optcard.active{ border-color: var(--btn); box-shadow: inset 0 0 0 2px rgba(141,31,45,.35); }
+      .optcard:hover{ border-color: var(--border-alt); box-shadow: inset 0 0 0 2px rgba(243,198,82,.18); }
+      .optcard.active{ border-color: var(--btn); box-shadow: inset 0 0 0 2px rgba(243,198,82,.35); }
       .optcard h3{ margin:0 0 8px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; }
       .optcard p{ margin:0 0 10px; color:var(--muted); font-size:14px; min-height:40px; }
       .optcard .btn{ margin-top:auto; border:1px solid var(--btn); background: var(--btn); color: var(--btn-text); }

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <style>
-    :root { --ring:#8d1f2d; --ring-soft: rgba(141,31,45,.25); }
+    :root { --ring:#f3c652; --ring-soft: rgba(243,198,82,.25); }
     body { margin:0; background: var(--bg); color: var(--fg); font-family:var(--font-sans); }
     .enc-container{ max-width:1120px; margin:0 auto; padding:24px 20px; }
     .head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
@@ -37,7 +37,7 @@
   </style>
 </head>
 <body>
-  @include('public.partials.header')
+  @include('public.partials.header', ['hideMemberNav' => true])
   <main class="enc-container">
     @php $opts = $options ?? []; @endphp
 

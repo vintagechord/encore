@@ -19,6 +19,7 @@ use App\Http\Controllers\ArtistPublicController;
 use App\Http\Controllers\OptionOrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NoticeController as PublicNoticeController;
+use App\Http\Controllers\FavoriteController;
 
 Route::get('/', PublicHomeController::class)->name('home');
 // FAQ & Notices
@@ -90,6 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/me', [MemberController::class, 'dashboard'])->name('member.dashboard');
     Route::get('/me/inquiries', [MemberController::class, 'inquiries'])->name('member.inquiries');
     Route::get('/me/payments', [MemberController::class, 'payments'])->name('member.payments');
+    Route::get('/me/favorites', [MemberController::class, 'favorites'])->name('member.favorites');
 
     // Member private recommendations (no public token required)
     Route::get('/me/recommendations/{intake}', [MemberController::class, 'recommendations'])->name('member.recommendations');
@@ -126,6 +128,10 @@ Route::get('/inquiry/thanks', [InquiryController::class, 'thanks'])->name('inqui
 // Direct request (specific artist)
 Route::get('/request/artist', [DirectRequestController::class, 'create'])->name('direct.request.create');
 Route::post('/request/artist', [DirectRequestController::class, 'store'])->name('direct.request.store');
+
+// Favorites
+Route::post('/favorites/{artist}', [FavoriteController::class, 'store'])->middleware('auth')->name('favorites.store');
+Route::delete('/favorites/{artist}', [FavoriteController::class, 'destroy'])->middleware('auth')->name('favorites.destroy');
 
 // ===== Admin =====
 // Change admin URL to `/eadmincore` and gate with simple password

@@ -13,8 +13,8 @@
     .explore-hero p { margin: 0; color: var(--muted); max-width: 520px; }
     .explore-eyebrow { font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
 
-    .filter-form { display: grid; gap: 18px; }
-    .filter-quick { display: grid; gap: 10px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .filter-form { display: grid; gap: 22px; }
+    .filter-quick { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; }
     .filter-quick .field { display: grid; gap: 6px; }
     .filter-quick label { font-size: 12px; color: var(--muted); }
     .filter-quick input,
@@ -24,17 +24,23 @@
     .filter-quick .cta button:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
 
     .explore-layout { display: grid; gap: 20px; grid-template-columns: 260px 1fr; align-items: start; }
-    .filter-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: sticky; top: 118px; }
+    .filter-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: sticky; top: 168px; }
     .filter-panel h2 { margin: 0 0 12px; font-size: 16px; }
     .filter-block { display: grid; gap: 8px; margin-bottom: 16px; }
     .filter-block label { font-size: 12px; color: var(--muted); }
     .filter-block input,
     .filter-block select { width: 100%; height: 42px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-alt); color: var(--fg); }
     .filter-block .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    .filter-block .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(141,31,45,.1); font-size: 12px; color: var(--fg); text-decoration: none; }
+    .filter-block .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(243,198,82,.12); font-size: 12px; color: var(--fg); text-decoration: none; }
 
     .results-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
     .results-count { color: var(--muted); font-size: 13px; }
+    .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .filter-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--chip-border); background: var(--chip); color: var(--fg); font-size: 12px; text-decoration: none; }
+    .filter-chip .x { font-weight: 800; opacity: .6; }
+    .filter-chip:hover { border-color: var(--accent); background: rgba(243,198,82,.2); }
+    .filter-clear { margin-left: auto; font-size: 12px; color: var(--muted); text-decoration: none; }
+    .filter-clear:hover { color: var(--accent-hover); }
     .artist-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .artist-card { display: grid; grid-template-columns: 140px 1fr; gap: 14px; padding: 14px; background: rgba(21,16,18,0.88); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 18px 30px rgba(10,10,10,0.18); }
     [data-theme="light"] .artist-card { background: rgba(255,255,255,0.9); }
@@ -49,6 +55,9 @@
     .artist-actions .btn { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--btn); background: var(--btn); color: var(--btn-text); text-decoration: none; font-weight: 600; }
     .artist-actions .btn:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
     .artist-actions .btn.ghost { background: transparent; color: var(--fg); border-color: var(--border); }
+    .artist-actions .btn.fav { background: transparent; border-color: var(--chip-border); color: var(--fg); }
+    .artist-actions .btn.fav.active { background: var(--btn); border-color: var(--btn); color: var(--btn-text); }
+    .artist-actions form { margin: 0; }
 
     .empty-state { padding: 32px; border: 1px dashed var(--border); border-radius: 16px; color: var(--muted); text-align: center; }
 
@@ -77,14 +86,48 @@
     $disciplineMap = collect($categories ?? [])->mapWithKeys(fn($row) => [$row['slug'] => $row['id'] ?? null]);
     $activeLabelRow = collect($categories ?? [])->firstWhere('slug', $selectedDiscipline);
     $activeLabel = $selectedDiscipline === 'all' ? '전체 카테고리' : ($activeLabelRow['name'] ?? '선택된 분야');
+    $appliedFilters = [];
+    $labelMap = [
+      'region' => '지역',
+      'price' => '예상 금액대',
+      'min_price' => '최소 금액',
+      'max_price' => '최대 금액',
+      'date' => '일정',
+      'discipline' => '분야',
+      'q' => '이름/팀명',
+      'age_group' => '연령대',
+      'team_type' => '팀 구성',
+      'genre' => '장르',
+      'mc_type' => '사회자 분류',
+      'mc_style' => '진행 스타일',
+      'dance_style' => '댄스 스타일',
+      'performance_type' => '퍼포먼스 유형',
+      'plan_type' => '기획공연 유형',
+      'celebrity_type' => '셀럽 분야',
+      'career' => '경력',
+    ];
+    foreach ($labelMap as $key => $label) {
+      $val = $filters[$key] ?? '';
+      if ($val === '' || $val === null || $val === 'all') continue;
+      if ($key === 'price') {
+        $val = str_replace(['0-2000000','2000000-5000000','5000000-10000000','10000000+'], ['200만원 이하','200만~500만원','500만~1000만원','1000만원 이상'], (string)$val);
+      }
+      if ($key === 'discipline') {
+        $match = collect($categories)->firstWhere('slug', $val);
+        $val = $match['name'] ?? $val;
+      }
+      $appliedFilters[] = ['key' => $key, 'label' => $label, 'value' => $val];
+    }
+    $clearUrl = route('artists.browse');
+    $favoriteIds = $favoriteIds ?? [];
 
     $fallbackGenres = [
-      'music' => ['K-POP','발라드','트로트','힙합','인디','밴드','재즈/소울'],
-      'mc' => ['전문 MC','아나운서','홈쇼핑','주례','돌잔치','기업행사'],
-      'dance' => ['스트릿','K-POP','비보이','락킹','현대무용','발레'],
-      'performance' => ['마술','서커스','LED','퍼포먼스'],
-      'plan' => ['기획공연','쇼케이스','콜라보'],
-      'celebrity' => ['셀럽','인플루언서','배우/방송인'],
+      'music' => ['K-POP','발라드','트로트','힙합','R&B/Soul','인디','밴드','재즈/소울','클래식','국악','OST'],
+      'mc' => ['전문 MC','아나운서','홈쇼핑','주례','돌잔치','기업행사','학술/포럼','국제행사'],
+      'dance' => ['스트릿','K-POP','비보이','락킹','왁킹','팝핑','현대무용','발레','치어'],
+      'performance' => ['마술','서커스','LED','저글링','샌드아트','파이어쇼','버블쇼'],
+      'plan' => ['기획공연','테마공연','쇼케이스','콜라보','패키지','오프닝','피날레'],
+      'celebrity' => ['셀럽','인플루언서','배우/방송인','유튜버','스포츠스타','셰프/쿠킹'],
     ];
   @endphp
 
@@ -165,7 +208,7 @@
             <label for="team_type">팀 구성</label>
             <select id="team_type" name="team_type">
               <option value="">선택 안함</option>
-              @foreach(['솔로','팀','혼성','듀엣','밴드'] as $team)
+              @foreach(['솔로','팀','혼성','듀엣','트리오','콰르텟','밴드','오케스트라'] as $team)
                 <option value="{{ $team }}" @selected(($filters['team_type'] ?? '') === $team)>{{ $team }}</option>
               @endforeach
             </select>
@@ -217,7 +260,7 @@
             <label for="mc_style">진행 스타일</label>
             <select id="mc_style" name="mc_style">
               <option value="">선택 안함</option>
-              @foreach(['차분한','활발한','밝은','차분+유쾌'] as $style)
+              @foreach(['차분한','활발한','밝은','유머러스','진중한','차분+유쾌'] as $style)
                 <option value="{{ $style }}" @selected(($filters['mc_style'] ?? '') === $style)>{{ $style }}</option>
               @endforeach
             </select>
@@ -227,8 +270,38 @@
             <label for="dance_style">댄스 스타일</label>
             <select id="dance_style" name="dance_style">
               <option value="">선택 안함</option>
-              @foreach(['스트릿','K-POP','비보이','락킹','현대무용','퍼포먼스'] as $style)
+              @foreach(['스트릿','K-POP','비보이','락킹','왁킹','팝핑','현대무용','발레','댄스스포츠','치어'] as $style)
                 <option value="{{ $style }}" @selected(($filters['dance_style'] ?? '') === $style)>{{ $style }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="filter-block" data-filter-group="performance">
+            <label for="performance_type">퍼포먼스 유형</label>
+            <select id="performance_type" name="performance_type">
+              <option value="">선택 안함</option>
+              @foreach(['마술','서커스','LED','저글링','샌드아트','파이어쇼','버블쇼','마임','퍼레이드'] as $type)
+                <option value="{{ $type }}" @selected(($filters['performance_type'] ?? '') === $type)>{{ $type }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="filter-block" data-filter-group="plan">
+            <label for="plan_type">기획공연 유형</label>
+            <select id="plan_type" name="plan_type">
+              <option value="">선택 안함</option>
+              @foreach(['기획공연','테마공연','쇼케이스','콜라보','패키지','오프닝','피날레','레퍼토리'] as $type)
+                <option value="{{ $type }}" @selected(($filters['plan_type'] ?? '') === $type)>{{ $type }}</option>
+              @endforeach
+            </select>
+          </div>
+
+          <div class="filter-block" data-filter-group="celebrity">
+            <label for="celebrity_type">셀럽 분야</label>
+            <select id="celebrity_type" name="celebrity_type">
+              <option value="">선택 안함</option>
+              @foreach(['셀럽','인플루언서','배우/방송인','유튜버','틱톡커','스포츠스타','셰프/쿠킹'] as $type)
+                <option value="{{ $type }}" @selected(($filters['celebrity_type'] ?? '') === $type)>{{ $type }}</option>
               @endforeach
             </select>
           </div>
@@ -239,6 +312,9 @@
               <a class="chip" href="{{ route('artists.browse', array_merge(request()->except('discipline'), ['discipline' => 'music'])) }}">음악</a>
               <a class="chip" href="{{ route('artists.browse', array_merge(request()->except('discipline'), ['discipline' => 'mc'])) }}">사회(MC)</a>
               <a class="chip" href="{{ route('artists.browse', array_merge(request()->except('discipline'), ['discipline' => 'dance'])) }}">댄스</a>
+              <a class="chip" href="{{ route('artists.browse', array_merge(request()->except('discipline'), ['discipline' => 'performance'])) }}">퍼포먼스</a>
+              <a class="chip" href="{{ route('artists.browse', array_merge(request()->except('discipline'), ['discipline' => 'plan'])) }}">기획공연</a>
+              <a class="chip" href="{{ route('artists.browse', array_merge(request()->except('discipline'), ['discipline' => 'celebrity'])) }}">셀럽</a>
               <a class="chip" href="{{ route('artists.browse') }}">전체 해제</a>
             </div>
           </div>
@@ -249,6 +325,18 @@
             <div class="results-count">총 {{ $artists->total() }}팀</div>
             <div class="results-count">{{ $activeLabel }}</div>
           </div>
+          @if(!empty($appliedFilters))
+            <div class="filter-chips">
+              @foreach($appliedFilters as $chip)
+                @php $nextQuery = request()->except($chip['key']); @endphp
+                <a class="filter-chip" href="{{ route('artists.browse', $nextQuery) }}">
+                  <span>{{ $chip['label'] }}: {{ $chip['value'] }}</span>
+                  <span class="x">×</span>
+                </a>
+              @endforeach
+              <a class="filter-clear" href="{{ $clearUrl }}">전체 해제</a>
+            </div>
+          @endif
 
           <div class="artist-grid">
             @forelse($artists as $artist)
@@ -258,6 +346,7 @@
                 $feeMin = $artist->fee_min ?? $artist->min_fee ?? null;
                 $feeMax = $artist->fee_max ?? $artist->max_fee ?? null;
                 $disciplineName = $artist->discipline->name ?? null;
+                $isFav = in_array($artist->id, $favoriteIds, true);
               @endphp
               <article class="artist-card">
                 <a class="artist-media" href="{{ route('artist.show', ['artist' => $artist->id]) }}">
@@ -282,6 +371,19 @@
                     @endif
                   </div>
                   <div class="artist-actions">
+                    @auth
+                      <form method="post" action="{{ $isFav ? route('favorites.destroy', $artist) : route('favorites.store', $artist) }}">
+                        @csrf
+                        @if($isFav)
+                          @method('delete')
+                        @endif
+                        <button class="btn fav{{ $isFav ? ' active' : '' }}" type="submit">
+                          {{ $isFav ? '찜 해제' : '찜하기' }}
+                        </button>
+                      </form>
+                    @else
+                      <a class="btn fav" href="{{ route('login') }}">찜하기</a>
+                    @endauth
                     <a class="btn ghost" href="{{ route('artist.show', ['artist' => $artist->id]) }}">필모/소개</a>
                     <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">지정섭외</a>
                   </div>

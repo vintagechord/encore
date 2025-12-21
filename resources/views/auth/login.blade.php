@@ -2,7 +2,7 @@
     <div class="auth-head">
         <h1 style="margin:0 0 12px; font-size:22px; letter-spacing:-0.01em">로그인</h1>
         <div class="muted" style="margin-bottom:10px">
-            Encore 계정으로 로그인하거나 <a href="{{ route('register') }}">회원가입</a>을 진행하세요.
+            Encore 계정으로 로그인하거나 <a class="auth-link" href="{{ route('register') }}">회원가입</a>을 진행하세요.
         </div>
     </div>
 
@@ -34,17 +34,17 @@
         <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-slate-600 bg-slate-900 text-indigo-400 shadow-sm focus:ring-indigo-500 focus:ring-offset-slate-900" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-slate-600 bg-slate-900 shadow-sm focus:ring-offset-slate-900" name="remember">
                 <span class="ms-2 text-sm text-slate-400">{{ __('Remember me') }}</span>
             </label>
         </div>
 
         <div class="flex items-center justify-between mt-4">
-            <a class="underline text-sm text-indigo-300 hover:text-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('register') }}">
+            <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('register') }}">
                 아직 회원이 아니신가요?
             </a>
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-indigo-300 hover:text-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('password.request') }}">
+                <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif

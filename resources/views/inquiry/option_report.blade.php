@@ -22,7 +22,7 @@
   </style>
 </head>
 <body>
-  @include('public.partials.header')
+  @include('public.partials.header', ['hideMemberNav' => true])
   <main class="enc-container">
     <div class="head">
       <div>

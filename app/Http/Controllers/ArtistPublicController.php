@@ -198,6 +198,30 @@ class ArtistPublicController extends Controller
             });
         }
 
+        $performanceType = trim((string) $request->query('performance_type', ''));
+        if ($performanceType !== '' && $hasMeta) {
+            $query->where(function ($qq) use ($performanceType) {
+                $qq->where('meta->performance_type', $performanceType);
+                try { $qq->orWhereJsonContains('meta->performance_type', $performanceType); } catch (\Throwable $e) {}
+            });
+        }
+
+        $planType = trim((string) $request->query('plan_type', ''));
+        if ($planType !== '' && $hasMeta) {
+            $query->where(function ($qq) use ($planType) {
+                $qq->where('meta->plan_type', $planType);
+                try { $qq->orWhereJsonContains('meta->plan_type', $planType); } catch (\Throwable $e) {}
+            });
+        }
+
+        $celebrityType = trim((string) $request->query('celebrity_type', ''));
+        if ($celebrityType !== '' && $hasMeta) {
+            $query->where(function ($qq) use ($celebrityType) {
+                $qq->where('meta->celebrity_type', $celebrityType);
+                try { $qq->orWhereJsonContains('meta->celebrity_type', $celebrityType); } catch (\Throwable $e) {}
+            });
+        }
+
         $career = trim((string) $request->query('career', ''));
         if ($career !== '' && $hasMeta) {
             $query->where(function ($qq) use ($career) {
@@ -218,17 +242,36 @@ class ArtistPublicController extends Controller
 
         $activeCategory = $disciplineSlug ?: 'all';
 
+        $favoriteIds = [];
+        try {
+            if ($request->user() && Schema::hasTable('artist_favorites')) {
+                $favoriteIds = $request->user()->favoriteArtists()->pluck('artists.id')->all();
+            }
+        } catch (\Throwable $e) {
+            $favoriteIds = [];
+        }
+
         return view('public.artists.index', [
             'artists' => $artists,
             'categories' => $categories,
             'activeCategory' => $activeCategory,
             'genreOptions' => $genreOptions,
             'filters' => $request->all(),
+            'favoriteIds' => $favoriteIds,
         ]);
     }
 
     public function show(Artist $artist)
     {
-        return view('public.artist_show', compact('artist'));
+        $isFavorite = false;
+        try {
+            if (auth()->check() && Schema::hasTable('artist_favorites')) {
+                $isFavorite = auth()->user()->favoriteArtists()->where('artists.id', $artist->id)->exists();
+            }
+        } catch (\Throwable $e) {
+            $isFavorite = false;
+        }
+
+        return view('public.artist_show', compact('artist', 'isFavorite'));
     }
 }

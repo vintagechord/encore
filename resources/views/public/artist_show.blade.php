@@ -16,6 +16,9 @@
     .badge{ display:inline-flex; align-items:center; gap:6px; padding:4px 8px; border:1px solid var(--chip-border); border-radius:999px; background:var(--chip); }
     .btn{ display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--btn); background:var(--btn); color:var(--btn-text); text-decoration:none; font-weight:600; }
     .btn:hover{ background:var(--btn-hover); border-color:var(--btn-hover); }
+    .btn.ghost{ background: transparent; border-color: var(--border); color: var(--fg); }
+    .btn.fav{ background: transparent; border-color: var(--chip-border); color: var(--fg); }
+    .btn.fav.active{ background: var(--btn); border-color: var(--btn); color: var(--btn-text); }
     .section-title{ margin:16px 0 6px; font-size:16px; font-weight:700; }
     .info-grid{ display:grid; gap:10px; margin-top:10px; }
     .info-row{ display:flex; flex-wrap:wrap; gap:10px; font-size:13px; color:var(--muted); }
@@ -85,8 +88,21 @@
           </div>
         </div>
         <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+          @auth
+            <form method="post" action="{{ $isFavorite ? route('favorites.destroy', $artist) : route('favorites.store', $artist) }}" style="margin:0">
+              @csrf
+              @if($isFavorite)
+                @method('delete')
+              @endif
+              <button class="btn fav{{ $isFavorite ? ' active' : '' }}" type="submit">
+                {{ $isFavorite ? '찜 해제' : '찜하기' }}
+              </button>
+            </form>
+          @else
+            <a class="btn fav" href="{{ route('login') }}">찜하기</a>
+          @endauth
           <a class="btn" href="{{ route('direct.request.create', ['requested' => $artist->name ?? $artist->stage_name]) }}">아티스트 지정섭외</a>
-          <a class="btn" style="background:transparent;border-color:var(--border);color:var(--fg);" href="{{ route('inquiry.create') }}">일반 문의</a>
+          <a class="btn ghost" href="{{ route('inquiry.create') }}">일반 문의</a>
         </div>
       </div>
     </div>

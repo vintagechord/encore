@@ -59,7 +59,7 @@
             <div class="muted">상품합계금액</div>
             <div>{{ number_format($amount) }} 원</div>
             <div class="muted" style="margin-top:6px">총 주문합계 금액 in KRW</div>
-            <div style="font-weight:800; color:#ef4444; font-size:18px">{{ number_format($amount) }} 원</div>
+            <div style="font-weight:800; color:var(--accent); font-size:18px">{{ number_format($amount) }} 원</div>
           </div>
         </div>
         <div class="row" style="justify-content:flex-end; margin-top:12px">

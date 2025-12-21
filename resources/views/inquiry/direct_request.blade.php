@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
   <style>
-    :root { --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%), radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%), #0b090a; --fg:#f7f1e9; --muted:#b6a89a; --border:#2a1c22; --card:#151012; --card-alt:#1b1316; --accent:#f3c652; --accent-hover:#f0b840; --font-sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif; }
-    [data-theme="light"] { --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%), linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%); --fg:#2b1b1b; --muted:#6b5b53; --border:#e6d4c0; --card:#fffdf8; --card-alt:#f6ecdd; --accent:#e3b648; --accent-hover:#d5a63b; }
+    :root { --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%), radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%), #0a0a0a; --fg:#f7f4ee; --muted:#b4b0a8; --border:#2a2a2a; --card:#121212; --card-alt:#191919; --accent:#f3c652; --accent-hover:#e6b940; --danger:#8d1f2d; --font-sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif; }
+    [data-theme="light"] { --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%), linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%); --fg:#1c1b19; --muted:#6b655c; --border:#e3ddd2; --card:#ffffff; --card-alt:#f7f3ea; --accent:#f3c652; --accent-hover:#e6b940; --danger:#8d1f2d; }
     body { margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-sans); }
     .page { max-width: 820px; margin: 0 auto; padding: 24px 20px 24px; }
     h1 { margin: 12px 0; font-size: 22px; }
@@ -30,12 +30,12 @@
   </style>
 </head>
 <body>
-  @include('public.partials.header')
+  @include('public.partials.header', ['hideMemberNav' => true])
   <main class="page">
     <h1>특정 아티스트 직접 요청</h1>
 
     @if ($errors->any())
-      <div style="border:1px solid #8d1f2d; background:rgba(141,31,45,.15); padding:10px; border-radius:10px; margin:12px 0;">
+      <div style="border:1px solid var(--danger); background:rgba(141,31,45,.15); padding:10px; border-radius:10px; margin:12px 0;">
         <strong>입력값을 확인해 주세요.</strong>
         <ul style="margin:6px 0 0 18px;">
         @foreach ($errors->all() as $e) <li>{{ $e }}</li> @endforeach

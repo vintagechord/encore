@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\RecommendationSet;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route as RouteFacade;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -171,7 +172,7 @@ class MemberController extends Controller
     public function payments(Request $request)
     {
         // 결제 테이블이 없으면 빈 목록 반환
-        if (!\Illuminate\Support\Facades\Schema::hasTable('payments')) {
+        if (!Schema::hasTable('payments')) {
             $payments = collect();
             return view('member.payments', compact('payments'));
         }
@@ -182,5 +183,24 @@ class MemberController extends Controller
             ->paginate(20);
 
         return view('member.payments', compact('payments'));
+    }
+
+    /**
+     * Favorites list
+     */
+    public function favorites(Request $request)
+    {
+        $user = $request->user();
+        if (!$user || !Schema::hasTable('artist_favorites')) {
+            $artists = collect();
+            return view('member.favorites', compact('artists'));
+        }
+
+        $artists = $user->favoriteArtists()
+            ->with('discipline')
+            ->latest('artist_favorites.id')
+            ->paginate(12);
+
+        return view('member.favorites', compact('artists'));
     }
 }

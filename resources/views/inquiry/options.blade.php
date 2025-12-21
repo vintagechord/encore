@@ -11,40 +11,40 @@
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <style>
         :root {
-            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
-                radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
-                #0b090a;
-            --surface: #151012;
-            --card: #1a1316;
-            --card-alt: #1b1316;
-            --border: #2a1c22;
-            --border-soft: #352029;
-            --text: #f7f1e9;
-            --muted: #b6a89a;
+            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%),
+                radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%),
+                #0a0a0a;
+            --surface: #121212;
+            --card: #151515;
+            --card-alt: #191919;
+            --border: #2a2a2a;
+            --border-soft: #333333;
+            --text: #f7f4ee;
+            --muted: #b4b0a8;
             --accent: #f3c652;
-            --accent-hover: #f0b840;
-            --btn: #8d1f2d;
-            --btn-hover: #a12639;
-            --btn-text: #f7f1e9;
+            --accent-hover: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
             --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
             --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
         }
 
         [data-theme="light"] {
-            --bg: radial-gradient(980px 360px at 10% -6%, rgba(141, 31, 45, 0.08), rgba(255, 247, 230, 0) 60%),
-                linear-gradient(180deg, #fff7e6 0%, #f4e9d8 100%);
-            --surface: #fffdf8;
-            --card: #fff9f0;
-            --card-alt: #f6ecdd;
-            --border: #e6d4c0;
-            --border-soft: #d7c5b3;
-            --text: #2b1b1b;
-            --muted: #6b5b53;
-            --accent: #e3b648;
-            --accent-hover: #d5a63b;
-            --btn: #7a1e2e;
-            --btn-hover: #8b2638;
-            --btn-text: #fff7e6;
+            --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%),
+                linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%);
+            --surface: #ffffff;
+            --card: #ffffff;
+            --card-alt: #f7f3ea;
+            --border: #e3ddd2;
+            --border-soft: #d6cfc2;
+            --text: #1c1b19;
+            --muted: #6b655c;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
         }
 
         body {
@@ -94,7 +94,7 @@
             border-color: var(--border);
         }
         .btn.secondary:hover {
-            background: rgba(141, 31, 45, 0.12);
+            background: rgba(243, 198, 82, 0.14);
             border-color: var(--btn-hover);
             color: var(--fg);
         }

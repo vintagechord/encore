@@ -20,6 +20,8 @@
       .muted { color: var(--muted); }
       a { color: inherit; text-decoration: none; }
       a:hover { color: var(--accent-hover); text-decoration: underline; }
+      .auth-link { color: var(--accent); font-weight: 600; }
+      .auth-link:hover { color: var(--accent-hover); }
       .auth-card input,
       .auth-card select,
       .auth-card textarea { background: var(--card-alt) !important; color: var(--fg) !important; border-color: var(--border) !important; }
@@ -28,6 +30,14 @@
       .auth-card .primary { background: var(--btn) !important; border-color: var(--btn) !important; color: var(--btn-text) !important; }
       .auth-card button[type="submit"]:hover,
       .auth-card .primary:hover { background: var(--btn-hover) !important; }
+      .auth-card input:focus, .auth-card select:focus, .auth-card textarea:focus {
+        outline: none;
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 2px rgba(243,198,82,.25);
+      }
+      .auth-card input[type="checkbox"] { accent-color: var(--accent); }
+      .auth-card .text-indigo-300, .auth-card .text-indigo-200 { color: var(--accent) !important; }
+      .auth-card .focus\\:ring-indigo-500 { --tw-ring-color: var(--accent) !important; }
     </style>
   </head>
   <body>

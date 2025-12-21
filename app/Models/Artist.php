@@ -94,6 +94,14 @@ class Artist extends Model
     }
 
     /**
+     * 찜한 사용자 목록
+     */
+    public function favoritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'artist_favorites')->withTimestamps();
+    }
+
+    /**
      * 섭외비(다중 요율) — 새 스키마용
      */
     public function fees(): HasMany

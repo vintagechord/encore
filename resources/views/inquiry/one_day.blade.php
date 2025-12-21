@@ -18,7 +18,7 @@
   </style>
 </head>
 <body>
-  @include('public.partials.header')
+  @include('public.partials.header', ['hideMemberNav' => true])
   <main class="enc-container">
     <h1 style="margin:0 0 8px">1일 Set 문의</h1>
     <p class="muted" style="margin:0 0 10px">요구사항을 자세히 적어 보내주세요. 관리자가 검토 후 1일 내 3가지 셋을 전달합니다.</p>

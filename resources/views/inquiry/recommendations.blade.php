@@ -15,15 +15,15 @@
   <style>
     /* Use global tokens from shared header; define only page-specific ones. */
     :root {
-      --tag-bg: rgba(141, 31, 45, 0.12);
-      --tag-border: rgba(141, 31, 45, 0.35);
+      --tag-bg: rgba(243, 198, 82, 0.14);
+      --tag-border: rgba(243, 198, 82, 0.45);
       --tag-text: #f5e2b2;
     }
 
     [data-theme="light"] {
       --tag-bg: rgba(122, 30, 46, 0.12);
       --tag-border: rgba(122, 30, 46, 0.28);
-      --tag-text: #7a1e2e;
+      --tag-text: #1b130f;
     }
 
     * {
@@ -246,7 +246,7 @@
     }
 
     .btn-ghost:hover {
-      background: rgba(141,31,45,.12);
+      background: rgba(243,198,82,.14);
       color: var(--fg);
     }
 
@@ -325,8 +325,8 @@
       gap: 6px;
       padding: 6px 10px;
       border-radius: 10px;
-      background: rgba(141, 31, 45, 0.18);
-      border: 1px solid rgba(141, 31, 45, 0.45);
+      background: rgba(243, 198, 82, 0.18);
+      border: 1px solid rgba(243, 198, 82, 0.45);
       color: var(--fg);
       font-weight: 600;
       font-size: 14px;
@@ -375,7 +375,7 @@
       align-items: center;
       padding: 4px 8px;
       border-radius: 999px;
-      background: rgba(141, 31, 45, 0.18);
+      background: rgba(243, 198, 82, 0.18);
       border: 1px solid var(--tag-border);
       font-size: 12px;
       color: var(--tag-text);
@@ -488,7 +488,7 @@
 </head>
 
 <body>
-  @include('public.partials.header')
+  @include('public.partials.header', ['hideMemberNav' => true])
 
   <div class="page-head">
     <div class="contact-top" id="contactTop" role="region" aria-label="빠른 연락 배너">

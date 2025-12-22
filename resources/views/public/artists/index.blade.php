@@ -31,11 +31,22 @@
     .filter-quick .cta button[disabled] { background: var(--card-alt); border-color: var(--border); color: var(--muted); cursor: not-allowed; }
 
     .explore-layout { display: grid; gap: 20px; grid-template-columns: 260px 1fr; align-items: start; }
-    .filter-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: sticky; top: 168px; }
-    .filter-block { display: grid; gap: 8px; margin-bottom: 16px; }
+    .filter-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; position: sticky; top: 168px; min-width: 0; }
+    .filter-block { display: grid; gap: 8px; margin-bottom: 16px; min-width: 0; }
     .filter-block label { font-size: 12px; color: var(--muted); }
     .filter-block input,
     .filter-block select { width: 100%; height: 42px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--border); background: var(--card-alt); color: var(--fg); }
+    .filter-quick select,
+    .filter-block select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1.5L6 6.5L11 1.5' stroke='%23b4b0a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px 8px;
+      padding-right: 30px;
+    }
     .filter-block .chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .filter-block .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(243,198,82,.12); font-size: 12px; color: var(--fg); text-decoration: none; }
 
@@ -49,7 +60,7 @@
     .filter-clear:hover { color: var(--accent-hover); }
     .artist-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .artist-card { display: grid; grid-template-columns: 140px 1fr; gap: 14px; padding: 14px; background: rgba(21,16,18,0.88); border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 18px 30px rgba(10,10,10,0.18); }
-    [data-theme="light"] .artist-card { background: rgba(255,255,255,0.9); }
+    [data-theme="light"] .artist-card { background: #ffffff; }
     .artist-media { display: block; width: 100%; aspect-ratio: 4/3; border-radius: 12px; overflow: hidden; background: var(--card-alt); }
     .artist-media img { width: 100%; height: 100%; object-fit: cover; }
     .artist-body h3 { margin: 0 0 6px; font-size: 18px; }
@@ -63,6 +74,31 @@
     .artist-actions .btn.ghost { background: transparent; color: var(--fg); border-color: var(--border); }
     .artist-actions .btn.fav { background: transparent; border-color: var(--chip-border); color: var(--fg); }
     .artist-actions .btn.fav.active { background: var(--btn); border-color: var(--btn); color: var(--btn-text); }
+    [data-theme="light"] .artist-actions .btn.ghost,
+    [data-theme="light"] .artist-actions .btn.fav:not(.active) {
+      background: #ffffff;
+      border-color: #d9d4cc;
+      color: #1c1b19;
+    }
+    [data-theme="light"] .artist-actions .btn.ghost:hover,
+    [data-theme="light"] .artist-actions .btn.fav:not(.active):hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    [data-theme="light"] .filter-block .chip,
+    [data-theme="light"] .filter-chip {
+      background: #ffffff;
+      border-color: #d9d4cc;
+      color: #1c1b19;
+    }
+    [data-theme="light"] .filter-chip:hover,
+    [data-theme="light"] .filter-block .chip:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-text);
+    }
     .artist-actions form { margin: 0; }
 
     .empty-state { padding: 32px; border: 1px dashed var(--border); border-radius: 16px; color: var(--muted); text-align: center; }
@@ -73,11 +109,31 @@
     @media (max-width: 980px) {
       .filter-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .explore-layout { grid-template-columns: 1fr; }
-      .filter-panel { position: static; }
+      .filter-panel { position: static; background: transparent; border: 0; padding: 0; }
       .filter-section-body { display: none; }
       .filter-section.is-open .filter-section-body { display: block; }
       .filter-toggle { display: inline-flex; }
       .filter-block[data-filter-group] { display: none; }
+      .filter-section-head {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 0;
+      }
+      .filter-section.is-open .filter-section-head {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        border-bottom: 0;
+      }
+      .filter-section-body {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-top: 0;
+        border-radius: 0 0 14px 14px;
+        padding: 14px;
+      }
+      .filter-quick { background: transparent; border: 0; padding: 0; }
       .artist-card { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
@@ -90,16 +146,22 @@
       .filter-section-body { display: block !important; }
     }
 
-    .range-wrap { display: grid; gap: 10px; }
-    .range-row { display:flex; gap:10px; align-items:center; }
+    .range-wrap { display: grid; gap: 10px; width: 100%; min-width: 0; }
+    .range-row { display:flex; gap:10px; align-items:center; min-width: 0; }
     .range-label { width:40px; color: var(--muted); font-weight: 600; font-size: 12px; }
-    .range-field { position: relative; flex: 1; min-width: 180px; padding: 0 14px; }
-    .range { width: 100%; height: 10px; border-radius: 999px; background: linear-gradient(to right, var(--accent) 0 var(--p,0%), rgba(148,163,184,.25) var(--p,0%)); outline:none; -webkit-appearance:none; appearance:none; }
+    .range-field { position: relative; flex: 1; min-width: 0; max-width: 100%; padding: 0 14px; }
+    .range { width: 100%; max-width: 100%; height: 10px; border-radius: 999px; background: linear-gradient(to right, var(--accent) 0 var(--p,0%), rgba(148,163,184,.25) var(--p,0%)); outline:none; -webkit-appearance:none; appearance:none; }
     .range::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background: var(--accent); border: 2px solid #fff3; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer; }
     .range::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background: var(--accent); border: 2px solid #fff3; box-shadow: 0 2px 6px rgba(0,0,0,.25); cursor:pointer; }
     .range-bubble { position:absolute; transform: translateX(-50%); background: var(--card-alt); color: var(--fg); border:1px solid var(--border); padding:2px 8px; border-radius:8px; font-size:11px; white-space:nowrap; z-index: 2; pointer-events:none; }
     .range-bubble.bubble-top { top:-30px; }
     .range-bubble.bubble-bottom { bottom:-30px; }
+    @media (max-width: 640px) {
+      .range-row { flex-direction: column; align-items: stretch; gap: 6px; }
+      .range-label { width: auto; }
+      .range-field { padding: 0 6px; }
+      .range-bubble { font-size: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -169,6 +231,7 @@
     </section>
 
     <form class="filter-form" method="get" action="{{ route('artists.browse') }}">
+      <input type="hidden" name="q" value="{{ $filters['q'] ?? '' }}">
       <div class="filter-section" data-section="quick">
         <div class="filter-section-head">
           <h2>메인 조건</h2>
@@ -204,13 +267,7 @@
                 @endforeach
               </select>
             </div>
-            <div class="field">
-              <label for="q">이름/팀명</label>
-              <input id="q" name="q" placeholder="아티스트 이름" value="{{ $filters['q'] ?? '' }}">
-            </div>
-            <div class="cta">
-              <button type="button" id="searchBtn" @disabled(empty($filters['q']))>이름 검색</button>
-            </div>
+            <div class="cta" style="display:none"></div>
           </div>
         </div>
       </div>
@@ -457,8 +514,6 @@
   <script>
     (function(){
       const form = document.querySelector('.filter-form');
-      const searchBtn = document.getElementById('searchBtn');
-      const qInput = document.getElementById('q');
       const autoFields = Array.from(document.querySelectorAll('[data-auto-submit="1"]'));
       const toggles = Array.from(document.querySelectorAll('.filter-toggle'));
       const isMobile = window.matchMedia && window.matchMedia('(max-width: 980px)').matches;
@@ -481,26 +536,6 @@
           const open = !section.classList.contains('is-open');
           setSectionOpen(section, open);
         });
-      });
-
-      const updateSearchBtn = () => {
-        if (!searchBtn || !qInput) return;
-        const hasText = qInput.value.trim().length > 0;
-        searchBtn.disabled = !hasText;
-      };
-      updateSearchBtn();
-      qInput?.addEventListener('input', updateSearchBtn);
-      qInput?.addEventListener('keydown', (e) => {
-        if (e.key !== 'Enter') return;
-        e.preventDefault();
-        form?.submit();
-      });
-      searchBtn?.addEventListener('click', () => {
-        if (qInput && qInput.value.trim().length > 0) {
-          form?.submit();
-        } else {
-          qInput?.focus();
-        }
       });
 
       autoFields.forEach(field => {

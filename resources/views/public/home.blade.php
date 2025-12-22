@@ -220,7 +220,8 @@
         /* Light specific readability tweaks */
         [data-theme="light"] .hero { background: linear-gradient(180deg,#fff7e6 0%, #f4e2cc 100%); border-bottom:1px solid var(--border); }
         [data-theme="light"] .card { box-shadow: 0 12px 28px rgba(2, 6, 23, 0.06); }
-        [data-theme="light"] .btn-ghost { border-color: #c6ced8; }
+        [data-theme="light"] .btn-ghost { background: #ffffff; border-color: #d9d4cc; color: #1c1b19; }
+        [data-theme="light"] .btn-ghost:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
 
         .nav-link {
             display: inline-flex;
@@ -423,14 +424,25 @@
             gap: 12px;
             margin-bottom: 12px;
         }
+        .artist-actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
         @media (max-width: 768px) {
             .artist-head { align-items: flex-start; }
-            .artist-head > div:last-child {
+            .artist-actions-row {
                 width: 100%;
-                align-items: flex-start !important;
+                justify-content: space-between;
+                flex-wrap: nowrap;
+                gap: 6px;
             }
-            .artist-controls { order: 1; align-self: flex-end; }
-            .artist-tabs { order: 2; }
+            .artist-controls { order: 2; }
+            .artist-tabs { order: 1; }
+            .artist-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+            .artist-tabs::-webkit-scrollbar { display: none; }
         }
         .artist-eyebrow {
             font-size: 12px;
@@ -469,6 +481,16 @@
             transition: background .2s ease, border-color .2s ease;
         }
         .artist-btn:hover { background: rgba(243,198,82,0.18); border-color: var(--chip-border); }
+        [data-theme="light"] .artist-btn {
+            background: #ffffff;
+            border-color: #d9d4cc;
+            color: #1c1b19;
+        }
+        [data-theme="light"] .artist-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--accent-text);
+        }
         .artist-tab {
             padding: 8px 12px;
             border: 1px solid var(--border);
@@ -484,6 +506,11 @@
             color: var(--btn-text);
             border-color: var(--btn);
         }
+        [data-theme="light"] .artist-tab {
+            background: #ffffff;
+            border-color: #d9d4cc;
+            color: #1c1b19;
+        }
         .artist-marquee {
             display: none;
             position: relative;
@@ -498,9 +525,12 @@
             cursor: grab;
             touch-action: pan-y;
             overscroll-behavior-x: contain;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .artist-marquee.active { display: block; }
         .artist-marquee.is-dragging { cursor: grabbing; }
+        .artist-marquee.is-dragging a { pointer-events: none; }
         .artist-marquee::-webkit-scrollbar { display:none; }
         .artist-track { display: flex; width: max-content; gap: 12px; align-items: stretch; }
         .artist-set { display: flex; gap: 12px; align-items: stretch; }
@@ -592,9 +622,12 @@
             cursor: grab;
             touch-action: pan-y;
             overscroll-behavior-x: contain;
+            user-select: none;
+            -webkit-user-select: none;
         }
         [data-theme="light"] .testi-marquee { background: rgba(255,255,255,0.7); border-color: rgba(0,0,0,0.1); }
         .testi-marquee.is-dragging { cursor: grabbing; }
+        .testi-marquee.is-dragging a { pointer-events: none; }
         .testi-marquee::-webkit-scrollbar { display:none; }
 
         .testi-controls {
@@ -621,9 +654,9 @@
             transform: translateY(-1px);
         }
         [data-theme="light"] .testi-btn {
-            background: rgba(255,255,255,0.9);
+            background: #ffffff;
             color: #1b1b1b;
-            border-color: rgba(0,0,0,0.15);
+            border-color: rgba(0,0,0,0.18);
         }
 
         .testi-track {
@@ -935,6 +968,8 @@
             .bn-nav{ position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
             .bn-btn{ pointer-events:auto; width:40px; height:40px; border-radius:999px; border:1px solid var(--border); background: rgba(15,23,41,.8); color: var(--fg); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
             .bn-btn:hover{ background: rgba(243,198,82,.18); border-color: var(--chip-border); }
+            [data-theme="light"] .bn-btn{ background:#ffffff; color:#1b1b1b; border-color:#d9d4cc; }
+            [data-theme="light"] .bn-btn:hover{ background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
             /* Floating close bar at bottom center */
             .bn-closebar{ position:absolute; left:50%; transform:translateX(-50%); bottom:8px; display:flex; justify-content:center; width:100%; pointer-events:none; z-index:2; }
             .bn-closebar .bn-toggle{ pointer-events:auto; }
@@ -1439,7 +1474,7 @@
                         <span class="artist-eyebrow">LINEUP</span>
                         <h2 id="artist-title" class="artist-title"><a href="{{ route('inquiry.create') }}">섭외 가능 아티스트</a></h2>
                     </div>
-                    <div style="display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
+                    <div class="artist-actions-row">
                         <div class="artist-tabs" role="tablist" aria-label="섭외 가능 아티스트 분류">
                             @foreach($artistTabs as $idx => $tab)
                                 <button
@@ -1654,20 +1689,35 @@
                 testiMarquee.addEventListener('pointerleave', onPointerUp);
                 let touchActive = false;
                 let touchStartX = 0;
+                let touchStartY = 0;
                 let touchScroll = 0;
                 testiMarquee.addEventListener('touchstart', (e) => {
                     if (!e.touches || !e.touches[0]) return;
                     touchActive = true;
                     touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
                     touchScroll = testiMarquee.scrollLeft;
                     pause();
+                    testiMarquee.classList.add('is-dragging');
                 }, { passive: true });
                 testiMarquee.addEventListener('touchmove', (e) => {
                     if (!touchActive || !e.touches || !e.touches[0]) return;
-                    const delta = e.touches[0].clientX - touchStartX;
-                    testiMarquee.scrollLeft = touchScroll - delta;
-                }, { passive: true });
-                const onTouchEnd = () => { touchActive = false; scheduleResume(); };
+                    const deltaX = e.touches[0].clientX - touchStartX;
+                    const deltaY = e.touches[0].clientY - touchStartY;
+                    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                        touchActive = false;
+                        testiMarquee.classList.remove('is-dragging');
+                        scheduleResume();
+                        return;
+                    }
+                    e.preventDefault();
+                    testiMarquee.scrollLeft = touchScroll - deltaX;
+                }, { passive: false });
+                const onTouchEnd = () => {
+                    touchActive = false;
+                    testiMarquee.classList.remove('is-dragging');
+                    scheduleResume();
+                };
                 testiMarquee.addEventListener('touchend', onTouchEnd);
                 testiMarquee.addEventListener('touchcancel', onTouchEnd);
                 testiMarquee.addEventListener('mouseenter', pause);
@@ -1740,7 +1790,11 @@
                     const track = panel.querySelector('.artist-track');
                     const set = panel.querySelector('.artist-set');
                     if (!track || !set) return;
-                    const data = { panel, track, set, baseWidth: 0, paused: false, isDragging: false, startX: 0, startScroll: 0 };
+                    const data = { panel, track, set, baseWidth: 0, paused: false, isDragging: false, startX: 0, startScroll: 0, resumeTimer: 0 };
+                    data.scheduleResume = () => {
+                        clearTimeout(data.resumeTimer);
+                        data.resumeTimer = setTimeout(() => { data.paused = false; }, 1200);
+                    };
                     data.build = () => {
                         while (track.children.length > 1) track.removeChild(track.lastChild);
                         let safety = 0;
@@ -1756,6 +1810,7 @@
                     panel.addEventListener('pointerdown', (e) => {
                         data.isDragging = true;
                         data.paused = true;
+                        clearTimeout(data.resumeTimer);
                         data.startX = e.clientX;
                         data.startScroll = panel.scrollLeft;
                         panel.classList.add('is-dragging');
@@ -1771,30 +1826,46 @@
                         data.isDragging = false;
                         panel.classList.remove('is-dragging');
                         panel.releasePointerCapture?.(e.pointerId);
-                        data.paused = false;
+                        data.scheduleResume();
                     };
                     panel.addEventListener('pointerup', endDrag);
                     panel.addEventListener('pointerleave', endDrag);
                     let tActive = false;
                     let tStartX = 0;
+                    let tStartY = 0;
                     let tScroll = 0;
                     panel.addEventListener('touchstart', (e) => {
                         if (!e.touches || !e.touches[0]) return;
                         tActive = true;
                         data.paused = true;
+                        clearTimeout(data.resumeTimer);
                         tStartX = e.touches[0].clientX;
+                        tStartY = e.touches[0].clientY;
                         tScroll = panel.scrollLeft;
+                        panel.classList.add('is-dragging');
                     }, { passive: true });
                     panel.addEventListener('touchmove', (e) => {
                         if (!tActive || !e.touches || !e.touches[0]) return;
-                        const delta = e.touches[0].clientX - tStartX;
-                        panel.scrollLeft = tScroll - delta;
-                    }, { passive: true });
-                    const onTouchEndArtist = () => { tActive = false; data.paused = false; };
+                        const deltaX = e.touches[0].clientX - tStartX;
+                        const deltaY = e.touches[0].clientY - tStartY;
+                        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                            tActive = false;
+                            panel.classList.remove('is-dragging');
+                            data.scheduleResume();
+                            return;
+                        }
+                        e.preventDefault();
+                        panel.scrollLeft = tScroll - deltaX;
+                    }, { passive: false });
+                    const onTouchEndArtist = () => {
+                        tActive = false;
+                        panel.classList.remove('is-dragging');
+                        data.scheduleResume();
+                    };
                     panel.addEventListener('touchend', onTouchEndArtist);
                     panel.addEventListener('touchcancel', onTouchEndArtist);
-                    panel.addEventListener('wheel', () => { data.paused = true; setTimeout(() => { data.paused = false; }, 1200); }, { passive: true });
-                    panel.addEventListener('scroll', () => { data.paused = true; setTimeout(() => { data.paused = false; }, 1200); }, { passive: true });
+                    panel.addEventListener('wheel', () => { data.paused = true; data.scheduleResume(); }, { passive: true });
+                    panel.addEventListener('scroll', () => { data.paused = true; data.scheduleResume(); }, { passive: true });
                     marquees.push(data);
                 });
                 const pauseActive = () => {

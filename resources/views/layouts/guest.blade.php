@@ -38,6 +38,13 @@
       .auth-card input[type="checkbox"] { accent-color: var(--accent); }
       .auth-card .text-indigo-300, .auth-card .text-indigo-200 { color: var(--accent) !important; }
       .auth-card .focus\\:ring-indigo-500 { --tw-ring-color: var(--accent) !important; }
+      .auth-foot { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px; }
+      .auth-links { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+      @media (max-width: 640px) {
+        .auth-foot { flex-direction: column; align-items: stretch; }
+        .auth-links { flex-direction: column; align-items: flex-start; gap:6px; }
+        .auth-foot .primary { width:100%; justify-content:center; }
+      }
     </style>
   </head>
   <body>

@@ -39,17 +39,19 @@
             </label>
         </div>
 
-        <div class="flex items-center justify-between mt-4">
-            <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('register') }}">
-                아직 회원이 아니신가요?
-            </a>
-            @if (Route::has('password.request'))
-                <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+        <div class="auth-foot">
+            <div class="auth-links">
+                <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('register') }}">
+                    아직 회원이 아니신가요?
                 </a>
-            @endif
+                @if (Route::has('password.request'))
+                    <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('password.request') }}">
+                        {{ __('Forgot your password?') }}
+                    </a>
+                @endif
+            </div>
 
-            <x-primary-button class="ms-3 primary">
+            <x-primary-button class="primary">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

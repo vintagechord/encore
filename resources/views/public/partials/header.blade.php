@@ -58,12 +58,25 @@
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.01em; }
   .enc-container { max-width:1120px; margin:0 auto; padding:0 20px; }
   .enc-nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 0; flex-wrap:wrap; }
-  .enc-brand { display:flex; align-items:center; gap:10px; font-weight:700; color:inherit; text-decoration:none; }
+  .enc-left { display:flex; align-items:center; gap:14px; flex:1 1 auto; min-width:0; }
+  .enc-brand { display:flex; align-items:center; gap:10px; font-weight:700; color:inherit; text-decoration:none; flex:0 0 auto; }
   .enc-brand .brand-logo { height: 24px; width: auto; display:block; }
+  .enc-search { display:flex; align-items:center; gap:6px; height:36px; padding:0 6px 0 10px; border-radius:999px; border:1px solid var(--border); background: var(--card); }
+  .enc-search input { border:0; outline:none; background: transparent; color: var(--fg); font-size:13px; min-width:0; width:180px; appearance:none; -webkit-appearance:none; }
+  .enc-search input::-webkit-search-decoration,
+  .enc-search input::-webkit-search-cancel-button,
+  .enc-search input::-webkit-search-results-button,
+  .enc-search input::-webkit-search-results-decoration { -webkit-appearance: none; }
+  .enc-search input::placeholder { color: var(--muted); }
+  .enc-search button { height:26px; padding:0 10px; border-radius:999px; border:1px solid var(--btn); background: var(--btn); color: var(--btn-text); font-weight:700; font-size:12px; cursor:pointer; }
+  .enc-search button:hover { background: var(--btn-hover); border-color: var(--btn-hover); }
+  [data-theme="light"] .enc-search { background: #ffffff; }
   @media (max-width: 768px) {
     .enc-brand .brand-logo { height: 20px; }
+    .enc-search { height: 34px; padding-right: 4px; }
+    .enc-search input { width: 120px; font-size:12px; }
   }
-  .enc-nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .enc-nav-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-left:auto; justify-content:flex-end; }
   .enc-categorybar { border-top:1px solid var(--border); padding:8px 0 10px; position: relative; }
   .enc-categorylist { display:flex; align-items:center; gap:8px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
   .enc-categorylist::-webkit-scrollbar { display:none; }
@@ -71,8 +84,9 @@
   .enc-categorylink:hover { color: var(--fg); border-color: rgba(243,198,82,.4); background: rgba(243,198,82,.12); }
   .enc-categorylink.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); box-shadow: 0 6px 14px rgba(243,198,82,.25); }
   .enc-categorylink .chev { font-size: 12px; opacity: .7; }
-  [data-theme="light"] .enc-categorylink { background: rgba(255,255,255,0.6); }
-  [data-theme="light"] .enc-categorylink.active { background: var(--accent); color: var(--accent-text); }
+  [data-theme="light"] .enc-categorylink { background: #ffffff; border-color: #d9d4cc; color: #1c1b19; }
+  [data-theme="light"] .enc-categorylink:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  [data-theme="light"] .enc-categorylink.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
   .enc-categorypanel { display:none; padding: 14px 0 6px; border-top: 1px solid var(--border); }
   .enc-categorypanel.open { display:block; }
   .enc-categorypanel .panel-grid { display:grid; gap:10px; grid-template-columns: 1fr; }
@@ -140,7 +154,8 @@
     /* Ensure consistent mobile side padding across pages using different wrappers */
     .container, .page { padding-left: 18px !important; padding-right: 18px !important; }
     .enc-nav { gap: 12px; padding: 12px 0; }
-    .enc-nav-right { gap: 6px; }
+    .enc-left { width: 100%; justify-content: space-between; }
+    .enc-nav-right { width: 100%; justify-content: flex-end; gap: 6px; }
     .theme-toggle, .enc-link { height: 34px; padding: 0 10px; border-radius: 999px; }
     .enc-categorybar { padding: 6px 0 8px; }
     .enc-categorylink { height: 30px; padding: 0 10px; font-size: 12px; }
@@ -270,9 +285,15 @@
 
 <header class="enc-top" aria-label="상단 내비게이션">
   <div class="enc-container enc-nav">
-    <a class="enc-brand" href="{{ url('/') }}" aria-label="Encore 홈">
-      <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
-    </a>
+    <div class="enc-left">
+      <a class="enc-brand" href="{{ url('/') }}" aria-label="Encore 홈">
+        <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
+      </a>
+      <form class="enc-search" action="{{ route('artists.browse') }}" method="get" role="search" aria-label="아티스트 검색">
+        <input type="search" name="q" value="{{ request()->query('q') }}" placeholder="아티스트 검색" aria-label="아티스트 검색">
+        <button type="submit">검색</button>
+      </form>
+    </div>
     <div class="enc-nav-right">
       <span class="enc-badge" aria-label="베타">BETA</span>
       @guest

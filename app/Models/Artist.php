@@ -11,22 +11,14 @@ class Artist extends Model
 {
     // ⚠️ fillable에는 실제 DB에 있는 컬럼만 남기는 게 안전합니다.
     protected $fillable = [
-        // 표준 필드 (엔진이 읽는 키)
-        'name',
-        'genre',
-        'fee_min',
-        'fee_max',
-        'meta',
-        // 아래는 프로젝트에 실제로 컬럼이 있을 때만 유지
-        'stage_name',
-        'min_fee',
-        'max_fee',
-        'genres',
-        'moods',
-        'formats',
-        'home_city',
-        'active',
-        'notes',
+        // 표준/레거시
+        'name','genre','fee_min','fee_max','meta',
+        // 신규 스키마 필드
+        'discipline_id','stage_name','legal_name','fame_score','external_links','bio','active',
+        // 이미지 관련
+        'image_path','image_url',
+        // 레거시 보조
+        'min_fee','max_fee','genres','moods','formats','home_city','notes',
     ];
 
     protected $casts = [
@@ -36,6 +28,7 @@ class Artist extends Model
         'formats' => 'array',
         'active'  => 'boolean',
         'meta'    => 'array',
+        'external_links' => 'array',
     ];
 
     /* =========================================================
@@ -98,6 +91,14 @@ class Artist extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'artist_tag');
+    }
+
+    /**
+     * 찜한 사용자 목록
+     */
+    public function favoritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'artist_favorites')->withTimestamps();
     }
 
     /**

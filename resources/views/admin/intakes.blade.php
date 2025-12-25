@@ -1,29 +1,28 @@
-<!doctype html>
-<html lang="ko">
+@extends('layouts.admin')
 
-<head>
-  <meta charset="utf-8">
-  <title>문의 목록</title>
+@push('head')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <style>
     :root {
-      --bg: #050912;
-      --surface: #0f1729;
-      --surface-alt: #152033;
-      --border: #1f2b41;
-      --border-soft: #273554;
-      --text: #e6edff;
-      --muted: #97a6c9;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
+      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+        radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+        #0b090a;
+      --surface: #151012;
+      --surface-alt: #1b1316;
+      --border: #2a1c22;
+      --border-soft: #352029;
+      --text: #f7f1e9;
+      --muted: #b6a89a;
+      --accent: #f3c652;
+      --accent-hover: #f0b840;
       --danger: #ef4444;
       --warning: #f59e0b;
       --success: #34d399;
+      --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
     }
 
     body {
-      font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      margin: 24px;
+      font-family: var(--font-sans);
       color: var(--text);
       background: var(--bg);
     }
@@ -38,13 +37,13 @@
     }
 
     a {
-      color: #8da2fb;
+      color: var(--accent);
       text-decoration: none;
       transition: color .2s ease;
     }
 
     a:hover {
-      color: #b3c0ff;
+      color: var(--accent-hover);
       text-decoration: underline;
     }
 
@@ -231,8 +230,8 @@
 
     .tag.shared {
       border-color: var(--accent);
-      background: rgba(99, 102, 241, 0.2);
-      color: #b3c0ff;
+      background: rgba(243, 198, 82, 0.2);
+      color: #f5e2b2;
     }
 
     .tag.issued {
@@ -295,9 +294,9 @@
       box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
     }
   </style>
-</head>
+@endpush
 
-<body>
+@section('content')
   <h1>문의 목록</h1>
   <p><a href="{{ route('inquiry.create') }}">새 문의</a></p>
 
@@ -319,6 +318,7 @@
         <th>성함</th>
         <th>이메일</th>
         <th>접수일</th>
+        <th>상태</th>
         <th>액션</th>
       </tr>
     </thead>
@@ -331,6 +331,21 @@
         <td>
           @php $isoCreated = optional($i->created_at)?->toIso8601String(); @endphp
           <span class="dt" data-iso="{{ $isoCreated }}">{{ $isoCreated }}</span>
+        </td>
+        <td>
+          <form method="post" action="{{ route('admin.intakes.status', ['intake'=>$i->id]) }}" style="display:flex;gap:6px;align-items:center">
+            @csrf
+            <select name="status" style="background:var(--surface-alt);color:var(--text);border:1px solid var(--border-soft);border-radius:6px;padding:4px 6px">
+              @php $st=$i->status ?: 'new'; @endphp
+              <option value="new" @selected($st==='new')>접수 완료</option>
+              <option value="processing" @selected($st==='processing')>견적 확인</option>
+              <option value="recommended" @selected($st==='recommended')>결제 하기</option>
+              <option value="closed" @selected($st==='closed')>결제 완료</option>
+              <option value="booked" @selected($st==='booked')>섭외 완료</option>
+              <option value="completed" @selected($st==='completed')>행사 완료</option>
+            </select>
+            <button class="btn" type="submit">저장</button>
+          </form>
         </td>
         <td>
           <div class="actions">
@@ -435,7 +450,9 @@
     </div>
   </div>
 
-  <!-- Rocket Loader 무시 -->
+@endsection
+
+@push('scripts')
   <script data-cfasync="false">
     (function() {
       const csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
@@ -720,6 +737,4 @@
       initTZ();
     })();
   </script>
-</body>
-
-</html>
+@endpush

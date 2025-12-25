@@ -35,6 +35,7 @@ class OptionGenerator
 
         // 3) 후보군: 장르/일정/제외 필터 (일정 필터는 나중 단계에서 상세화)
         $candidates = Artist::query()
+            ->with(['genresRelation','discipline'])
             ->when($excluded->isNotEmpty(), fn($q) => $q->whereNotIn('id', $excluded))
             ->get()
             ->filter(function ($a) use ($req) {
@@ -53,10 +54,13 @@ class OptionGenerator
         // 4) 옵션 N개 생성
         $options = [];
         $seedBase = crc32(($req->seed ?: 'encore') . '-' . (string)$req->id);
+        $used = collect($lockedArtists->pluck('id')->all());
         for ($k = 0; $k < $n; $k++) {
             $seed = $seedBase + $k;
-            $opt = $this->buildOneOption($candidates, $remainQuota, $remainBudget, $lockedArtists, $seed);
+            $pool = $candidates->reject(fn($a) => $used->contains($a->id));
+            $opt = $this->buildOneOption($pool, $remainQuota, $remainBudget, $lockedArtists, $seed);
             $options[] = $opt;
+            $used = $used->merge($opt['artist_ids'])->unique();
         }
         return $options;
     }
@@ -152,6 +156,8 @@ class OptionGenerator
         'k pop' => 'kpop',
         'kpop' => 'kpop',
         '케이팝' => 'kpop',
+        'kpop댄스' => 'kpop',
+        'k-pop댄스' => 'kpop',
         'dance' => 'dance',
         '댄스' => 'dance',
         'hiphop' => 'hiphop',
@@ -162,6 +168,15 @@ class OptionGenerator
         'rnb' => 'rnb',
         'pop' => 'pop',
         '팝' => 'pop',
+        'metal' => 'rock',
+        '메탈' => 'rock',
+        '록' => 'rock',
+        '재즈' => 'jazz',
+        'announcer' => 'announcer',
+        '아나운서' => 'announcer',
+        'comedian' => 'comedian',
+        '개그맨' => 'comedian',
+        'mc' => 'announcer',
         // 필요시 계속 추가
     ];
 
@@ -195,16 +210,32 @@ class OptionGenerator
     {
         $map = [];
         foreach ($artists as $a) {
-            $list = [];
-            if (is_array($a->genre)) $list = $a->genre;
-            elseif (is_string($a->genre)) $list = preg_split('/[,\s\/]+/u', $a->genre, -1, PREG_SPLIT_NO_EMPTY) ?: [];
-
-            foreach ($list as $g) {
-                $k = $this->norm((string)$g);
-                if ($k === '') continue;
-                $map[$k] ??= [];
-                $map[$k][] = $a;
+            $keys = [];
+            // 1) 관계형 장르
+            try {
+                foreach (($a->genresRelation ?? []) as $g) {
+                    $slug = (string)($g->slug ?? '');
+                    $name = (string)($g->name ?? '');
+                    if (str_contains($slug, '-')) $slug = explode('-', $slug, 2)[1];
+                    $keys[] = $this->norm($slug);
+                    $keys[] = $this->norm($name);
+                    if (stripos($slug, 'rock') !== false) $keys[] = 'metal';
+                }
+            } catch (\Throwable $e) {}
+            // 2) 레거시 배열/문자열
+            if (empty($a->genresRelation) || count($a->genresRelation) === 0) {
+                $list = [];
+                if (is_array($a->genre)) $list = $a->genre;
+                elseif (is_string($a->genre)) $list = preg_split('/[,\s\/]+/u', $a->genre, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+                foreach ($list as $g) $keys[] = $this->norm((string)$g);
             }
+            // 3) 분야 기반 요청 맵핑(사회/댄스)
+            $disc = $a->discipline->slug ?? null;
+            if ($disc === 'mc') { $keys[] = 'announcer'; $keys[] = 'comedian'; }
+            if ($disc === 'dance') { $keys[] = 'kpop'; }
+
+            $keys = array_values(array_unique(array_filter($keys)));
+            foreach ($keys as $k) { $map[$k] ??= []; $map[$k][] = $a; }
         }
         return $map;
     }

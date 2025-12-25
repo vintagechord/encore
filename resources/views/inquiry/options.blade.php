@@ -5,22 +5,50 @@
     <meta charset="utf-8">
     <title>추천 옵션 미리보기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #060913;
-            --surface: #0f1729;
-            --card: #111b30;
-            --card-alt: #152033;
-            --border: #1f2b41;
-            --border-soft: #273554;
-            --text: #e5ecff;
-            --muted: #96a7c9;
-            --accent: #6366f1;
-            --accent-hover: #818cf8;
+            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%),
+                radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%),
+                #0a0a0a;
+            --surface: #121212;
+            --card: #151515;
+            --card-alt: #191919;
+            --border: #2a2a2a;
+            --border-soft: #333333;
+            --text: #f7f4ee;
+            --muted: #b4b0a8;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
+            --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%),
+                linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%);
+            --surface: #ffffff;
+            --card: #ffffff;
+            --card-alt: #f7f3ea;
+            --border: #e3ddd2;
+            --border-soft: #d6cfc2;
+            --text: #1c1b19;
+            --muted: #6b655c;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
         }
 
         body {
-            font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--font-sans);
             margin: 24px;
             line-height: 1.5;
             background: var(--bg);
@@ -33,11 +61,11 @@
         }
 
         a {
-            color: #8da2fb;
+            color: var(--accent);
         }
 
         a:hover {
-            color: #b3c0ff;
+            color: var(--accent-hover);
         }
 
         .muted {
@@ -47,22 +75,28 @@
         .btn {
             padding: 9px 12px;
             border-radius: 10px;
-            border: 1px solid var(--accent);
-            background: var(--accent);
-            color: #fff;
+            border: 1px solid var(--btn);
+            background: var(--btn);
+            color: var(--btn-text);
             cursor: pointer;
             font-weight: 600;
             transition: background .2s ease, border-color .2s ease;
         }
 
         .btn:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
         }
 
         .btn.secondary {
             background: transparent;
-            color: var(--accent);
+            color: var(--fg);
+            border-color: var(--border);
+        }
+        .btn.secondary:hover {
+            background: rgba(243, 198, 82, 0.14);
+            border-color: var(--btn-hover);
+            color: var(--fg);
         }
 
         .row {
@@ -132,6 +166,7 @@
 </head>
 
 <body>
+    <script>(function(){try{var t=(localStorage.getItem('enc_theme')==='light') ? 'light' : 'dark';document.documentElement.setAttribute('data-theme', t);}catch(e){}})();</script>
     <div class="header">
         <div>
             <h1>추천 옵션</h1>
@@ -196,10 +231,16 @@
                     <div><strong>#{{ $aid }}</strong> {{ $a?->stage_name ?? 'Unknown' }}</div>
                     <div class="muted" style="font-size:12px">
                         @if($a)
-                        {{ number_format($a->min_fee) }} ~ {{ number_format($a->max_fee) }}원
-                        @if(is_array($a->genres))
-                        &middot; 장르: {{ implode(', ', $a->genres) }}
+                        @php $fee = $a->fee_range ?? null; @endphp
+                        @if($fee)
+                          {{ number_format($fee['min'] ?? 0) }} ~ {{ number_format($fee['max'] ?? 0) }}원
                         @endif
+                        @php
+                          $genreOut = '';
+                          if (is_array($a->genres ?? null))      { $genreOut = implode(', ', array_filter($a->genres)); }
+                          elseif (method_exists($a,'genresRelation')) { $genreOut = $a->genresRelation->pluck('name')->implode(', '); }
+                        @endphp
+                        @if($genreOut !== '') &middot; 장르: {{ $genreOut }} @endif
                         @endif
                     </div>
                 </div>

@@ -5,21 +5,40 @@
   <meta charset="utf-8">
   <title>문의 접수 완료 | Encore</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
   <!-- 완료 페이지는 검색 노출 불필요 -->
   <meta name="robots" content="noindex,follow">
   <meta name="description" content="문의 접수가 완료되었습니다. 빠르게 후보를 검토하여 공유드리겠습니다.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #050912;
-      --fg: #e6edff;
-      --muted: #96a6c6;
-      --accent: #6366f1;
-      --accent-hover: #818cf8;
-      --card: #0f1729;
-      --card-alt: #151f33;
-      --border: #1f2b41;
+      --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%),
+        radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%),
+        #0a0a0a;
+      --fg: #f7f4ee;
+      --muted: #b4b0a8;
+      --accent: #f3c652;
+      --accent-hover: #e6b940;
+      --card: #121212;
+      --card-alt: #191919;
+      --border: #2a2a2a;
       --ok: #34d399;
+      --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+    [data-theme="light"] {
+      --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%),
+        linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%);
+      --fg: #1c1b19;
+      --muted: #6b655c;
+      --accent: #f3c652;
+      --accent-hover: #e6b940;
+      --card: #ffffff;
+      --card-alt: #f7f3ea;
+      --border: #e3ddd2;
     }
 
     * {
@@ -36,7 +55,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
+      font-family: var(--font-sans);
       color: var(--fg);
       background: var(--bg);
       -webkit-font-smoothing: antialiased;
@@ -116,18 +135,18 @@
       gap: 8px;
       padding: 12px 16px;
       border-radius: 12px;
-      border: 1px solid var(--accent);
+      border: 1px solid var(--btn);
       font-weight: 700;
       cursor: pointer;
-      background: var(--accent);
-      color: #fff;
+      background: var(--btn);
+      color: var(--btn-text);
       text-decoration: none;
       transition: background .2s ease, border-color .2s ease;
     }
 
     .btn:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
+      background: var(--btn-hover);
+      border-color: var(--btn-hover);
     }
 
     .btn-ghost {
@@ -137,8 +156,8 @@
     }
 
     .btn-ghost:hover {
-      background: rgba(99, 102, 241, 0.16);
-      color: var(--accent-hover);
+      background: rgba(243, 198, 82, 0.14);
+      color: var(--fg);
     }
 
     .muted {
@@ -146,11 +165,8 @@
       font-size: 13px;
     }
 
-    .footer {
-      border-top: 1px solid var(--border);
-      margin-top: 24px;
-      background: rgba(9, 14, 26, 0.75);
-    }
+    .footer { border-top: 1px solid var(--border); margin-top: 24px; background: rgba(11, 9, 10, 0.75); }
+    [data-theme="light"] .footer { background: rgba(255, 255, 255, 0.75); }
 
     .footer-inner {
       max-width: 1120px;
@@ -180,15 +196,7 @@
 </head>
 
 <body>
-  <header>
-    <nav class="nav" aria-label="상단 내비게이션">
-      <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈">
-        <span aria-hidden="true" style="display:inline-flex;width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-        Encore
-      </a>
-      <span class="muted" aria-hidden="true">/ 문의 완료</span>
-    </nav>
-  </header>
+  @include('public.partials.header', ['hideMemberNav' => true])
 
   <main id="main">
     <div class="container">
@@ -201,12 +209,11 @@
         </div>
         <h1>문의가 접수되었습니다.</h1>
         <p class="lead">
-          보통 <strong>영업일 기준 1일 내</strong> 후보를 정리해 <span class="ok">공유 링크</span>로 보내드립니다.
-          확인 메일도 함께 발송했으니, <strong>수신함/스팸함</strong>을 확인해주세요.
+          보통 <strong>영업일 기준 1일 내</strong> 후보를 <strong>마이페이지의 추천셋</strong>에서 볼 수 있습니다.
         </p>
 
         <div class="row" role="group" aria-label="다음 작업">
-          <a class="btn" href="{{ url('/r/example') }}">
+          <a class="btn" href="{{ route('share.example') }}">
             <!-- 카드 아이콘 -->
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 4h16v16H4z" />
@@ -231,11 +238,7 @@
     </div>
   </main>
 
-  <footer class="footer" role="contentinfo">
-    <div class="footer-inner">
-      <span>&copy; {{ date('Y') }} Encore</span>
-    </div>
-  </footer>
+  @include('public.partials.footer')
 </body>
 
 </html>

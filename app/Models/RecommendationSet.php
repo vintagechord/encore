@@ -43,4 +43,20 @@ class RecommendationSet extends Model
     {
         return $this->belongsTo(IntakeRequest::class, 'intake_request_id');
     }
+
+    /**
+     * Backwards-compat alias used by some controllers/views.
+     */
+    public function intakeRequest()
+    {
+        return $this->intake();
+    }
+
+    /**
+     * Build public URL for this recommendation set if token exists.
+     */
+    public function publicUrl(): string
+    {
+        return url('/r/' . $this->public_token);
+    }
 }

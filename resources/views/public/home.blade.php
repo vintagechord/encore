@@ -32,22 +32,66 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
-    <meta name="theme-color" content="#050912">
-    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#0b090a">
+    <meta name="color-scheme" content="dark light">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #050912;
-            --fg: #e6edff;
-            --muted: #97a6c9;
-            --accent: #6366f1;
-            --accent-hover: #818cf8;
-            --ring: #4f46e5;
-            --card: #0f1729;
-            --card-alt: #152033;
-            --border: #1f2b41;
-            --chip: rgba(99, 102, 241, 0.18);
-            --chip-border: rgba(99, 102, 241, 0.35);
+            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%),
+                radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%),
+                #0a0a0a;
+            --fg: #f7f4ee;
+            --muted: #b4b0a8;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --accent-2: #1a1a1a;
+            --accent-text: #17120a;
+            --ring: #f3c652;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
+            --danger: #8d1f2d;
+            --danger-hover: #a12639;
+            --danger-text: #ffffff;
+            --card: #121212;
+            --card-alt: #191919;
+            --border: #2a2a2a;
+            --chip: rgba(243, 198, 82, 0.16);
+            --chip-border: rgba(243, 198, 82, 0.4);
+            --hero-overlay: linear-gradient(180deg, rgba(10, 10, 10, 0.2) 0%, rgba(10, 10, 10, 0.75) 65%, rgba(10, 10, 10, 0.92) 100%);
+            --hero-video-filter: saturate(1.05) contrast(1.02) brightness(0.62);
+            --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            --font-display: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        }
+
+        /* Light theme overrides */
+        [data-theme="light"] {
+            --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%),
+                linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%);
+            --fg: #1c1b19;
+            --muted: #6b655c;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --accent-2: #fdf8ef;
+            --accent-text: #17120a;
+            --ring: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
+            --danger: #8d1f2d;
+            --danger-hover: #a12639;
+            --danger-text: #ffffff;
+            --card: #ffffff;
+            --card-alt: #f7f3ea;
+            --border: #e3ddd2;
+            --chip: rgba(243, 198, 82, 0.2);
+            --chip-border: rgba(243, 198, 82, 0.45);
+            --hero-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.65) 70%, rgba(255, 255, 255, 0.3) 100%);
+            --hero-video-filter: saturate(1.02) contrast(1.01) brightness(1.08);
         }
 
         * {
@@ -64,11 +108,16 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif;
+            font-family: var(--font-sans);
             color: var(--fg);
             background: var(--bg);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, .testi-title, .success-title {
+            font-family: var(--font-display);
+            letter-spacing: -0.01em;
         }
 
         main {
@@ -93,15 +142,20 @@
             margin: 0 auto;
             padding: 0 20px
         }
+        @media (max-width: 768px) {
+            .container { padding-left: 18px; padding-right: 18px; }
+        }
 
         header {
             position: sticky;
             top: 0;
             z-index: 20;
-            background: rgba(7, 12, 24, .88);
+            background: rgba(11, 9, 10, .88);
             backdrop-filter: saturate(200%) blur(12px);
             border-bottom: 1px solid var(--border);
         }
+
+        [data-theme="light"] header { background: rgba(255,255,255,.85); backdrop-filter:saturate(180%) blur(10px); }
 
         .nav {
             display: flex;
@@ -118,16 +172,29 @@
             gap: 10px;
             font-weight: 700
         }
+        .brand-logo {
+            height: 24px;
+            width: auto;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .brand-logo { height: 20px; }
+        }
 
         .badge {
             display: inline-flex;
             align-items: center;
             font-size: 12px;
-            color: #7dd3fc;
-            background: rgba(14, 165, 233, 0.12);
-            border: 1px solid rgba(14, 165, 233, 0.32);
+            color: #1b130f;
+            background: rgba(243, 198, 82, 0.85);
+            border: 1px solid rgba(243, 198, 82, 0.55);
             padding: 2px 8px;
             border-radius: 999px
+        }
+        [data-theme="light"] .badge {
+            color: #fff;
+            background: var(--accent-2);
+            border-color: var(--accent-2);
         }
 
         .nav-right {
@@ -137,23 +204,50 @@
             flex-wrap: wrap
         }
 
+        .theme-toggle { display:inline-flex; align-items:center; justify-content:center; gap:8px; height:36px; padding:0 12px; border-radius:999px; border:1px solid var(--border); background: var(--card); color: var(--fg); cursor:pointer; }
+        .banner-area { border-bottom:1px solid var(--border); background: var(--card); }
+        .banner-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+        .banner { display:block; overflow:hidden; border-radius:12px; border:1px solid var(--border); }
+        .banner img { display:block; width:100%; height:auto; }
+
+        /* Direct request box */
+        .request-card { background: var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+        .request-form { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+        .request-input { height:44px; padding:0 14px; border-radius:12px; border:1px solid var(--border); background: var(--card-alt); color: var(--fg); min-width:280px; }
+        .request-input::placeholder { color: var(--muted); opacity:.9; }
+        .request-btn { height:44px; padding:0 16px; border-radius:12px; }
+
+        /* Light specific readability tweaks */
+        [data-theme="light"] .hero { background: linear-gradient(180deg,#fff7e6 0%, #f4e2cc 100%); border-bottom:1px solid var(--border); }
+        [data-theme="light"] .card { box-shadow: 0 12px 28px rgba(2, 6, 23, 0.06); }
+        [data-theme="light"] .btn-ghost { background: #ffffff; border-color: #d9d4cc; color: #1c1b19; }
+        [data-theme="light"] .btn-ghost:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+
         .nav-link {
-            padding: 8px 10px;
-            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 36px;
+            padding: 0 12px;
+            border-radius: 999px;
             border: 1px solid transparent;
             color: var(--muted);
+            font-weight: 600;
             transition: background .2s ease, color .2s ease, border-color .2s ease;
+        }
+        @media (max-width: 768px) {
+            .nav-link { height: 34px; padding: 0 10px; }
         }
 
         .nav-link:hover {
-            background: rgba(99, 102, 241, 0.12);
+            background: rgba(243, 198, 82, 0.14);
             color: var(--fg);
-            border-color: rgba(99, 102, 241, 0.35);
+            border-color: rgba(243, 198, 82, 0.35);
         }
 
         .nav-link[aria-current="page"] {
-            border-color: rgba(99, 102, 241, 0.35);
-            background: rgba(99, 102, 241, 0.18);
+            border-color: rgba(243, 198, 82, 0.4);
+            background: rgba(243, 198, 82, 0.2);
             color: var(--fg);
         }
 
@@ -161,27 +255,66 @@
             position: relative;
             overflow: hidden;
             background:
-                radial-gradient(1100px 420px at 10% -20%, rgba(59, 130, 246, 0.28) 0%, rgba(5, 9, 18, 0) 60%),
-                radial-gradient(900px 360px at 95% 10%, rgba(236, 72, 153, 0.25) 0%, rgba(5, 9, 18, 0) 58%),
-                linear-gradient(180deg, #050912 0%, #070c1f 100%);
+                radial-gradient(1100px 420px at 12% -20%, rgba(243, 198, 82, 0.18) 0%, rgba(10, 10, 10, 0) 60%),
+                radial-gradient(900px 360px at 90% 12%, rgba(255, 255, 255, 0.06) 0%, rgba(10, 10, 10, 0) 58%),
+                linear-gradient(180deg, #0a0a0a 0%, #121212 100%);
             border-bottom: 1px solid var(--border);
         }
 
         .hero-inner {
+            position: relative;
+            z-index: 1;
             padding: 72px 0 56px
+        }
+
+        .hero-media {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .hero-media::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--hero-overlay);
+        }
+
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: var(--hero-video-filter);
+            transform: scale(1.02);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-video { display: none; }
         }
 
         .hero h1 {
             margin: 0 0 12px;
             font-size: clamp(28px, 5vw, 44px);
             line-height: 1.12;
-            letter-spacing: -0.02em
+            letter-spacing: -0.03em;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+        #copy-title{
+            font-family: var(--font-sans);
+            font-weight: 800;
+            letter-spacing: -0.02em;
         }
 
         .hero p {
             margin: 0 0 24px;
             color: var(--muted);
             font-size: clamp(16px, 2.8vw, 18px)
+        }
+        @media (max-width: 768px) {
+            #copy-desc { display: none; }
         }
 
         .cta {
@@ -197,25 +330,34 @@
             gap: 8px;
             padding: 12px 16px;
             border-radius: 12px;
-            border: 1px solid transparent;
+            border: 1px solid var(--btn);
             font-weight: 600;
             cursor: pointer;
-            transition: transform .04s ease, background .2s ease, border-color .2s ease;
+            background: var(--btn);
+            color: var(--btn-text);
+            transition: transform .04s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
             user-select: none;
         }
 
         .btn:active {
             transform: translateY(1px)
         }
+        .btn:hover {
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
+            box-shadow: 0 10px 22px rgba(243, 198, 82, 0.3);
+        }
 
         .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent)
+            background: var(--btn);
+            color: var(--btn-text);
+            border-color: var(--btn)
         }
 
         .btn-primary:hover {
-            background: var(--accent-hover)
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
+            box-shadow: 0 10px 22px rgba(243, 198, 82, 0.35);
         }
 
         .btn-ghost {
@@ -225,8 +367,8 @@
         }
 
         .btn-ghost:hover {
-            background: rgba(99, 102, 241, 0.16);
-            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(243, 198, 82, 0.12);
+            border-color: rgba(243, 198, 82, 0.35);
         }
 
         .features {
@@ -269,15 +411,265 @@
             border: 1px solid var(--chip-border)
         }
 
-        /* ▼ Testimonials */
-        .testimonials {
-            padding: 8px 0 28px
+        /* ▼ Artist Showcase */
+        .artist-showcase {
+            padding: 18px 0 24px;
+            border-top: 1px solid var(--border);
+        }
+        .artist-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .artist-actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        @media (max-width: 768px) {
+            .artist-head { align-items: flex-start; }
+            .artist-actions-row {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: nowrap;
+                gap: 6px;
+            }
+            .artist-controls { order: 2; }
+            .artist-tabs { order: 1; }
+            .artist-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+            .artist-tabs::-webkit-scrollbar { display: none; }
+        }
+        .artist-eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+            display: inline-flex;
+        }
+        .artist-title {
+            margin: 0;
+            font-size: clamp(20px, 3.2vw, 26px);
+        }
+        .artist-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .artist-title a:hover { color: var(--accent-hover); }
+        .artist-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .artist-controls { display:flex; gap:8px; }
+        .artist-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(243,198,82,0.08);
+            color: var(--fg);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s ease, border-color .2s ease;
+        }
+        .artist-btn:hover { background: rgba(243,198,82,0.18); border-color: var(--chip-border); }
+        [data-theme="light"] .artist-btn {
+            background: #ffffff;
+            border-color: #d9d4cc;
+            color: #1c1b19;
+        }
+        [data-theme="light"] .artist-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--accent-text);
+        }
+        .artist-tab {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background .2s ease, color .2s ease, border-color .2s ease;
+        }
+        .artist-tab.active {
+            background: var(--btn);
+            color: var(--btn-text);
+            border-color: var(--btn);
+        }
+        [data-theme="light"] .artist-tab {
+            background: #ffffff;
+            border-color: #d9d4cc;
+            color: #1c1b19;
+        }
+        .artist-marquee {
+            display: none;
+            position: relative;
+            overflow-x: auto;
+            border-radius: 18px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(12, 12, 12, 0.75);
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            touch-action: pan-y;
+            overscroll-behavior-x: contain;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .artist-marquee.active { display: block; }
+        .artist-marquee.is-dragging { cursor: grabbing; }
+        .artist-marquee.is-dragging a { pointer-events: none; }
+        .artist-marquee::-webkit-scrollbar { display:none; }
+        .artist-track { display: flex; width: max-content; gap: 12px; align-items: stretch; }
+        .artist-set { display: flex; gap: 12px; align-items: stretch; }
+        .artist-card {
+            width: clamp(140px, 18vw, 180px);
+            flex: 0 0 auto;
+            background: rgba(20,20,20,0.92);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 14px;
+            padding: 10px;
+            color: var(--fg);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scroll-snap-align: center;
+        }
+        .artist-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .artist-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .artist-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .artist-meta {
+            font-size: 12px;
+            color: var(--muted);
+        }
+        [data-theme="light"] .artist-marquee {
+            background: rgba(255,255,255,0.75);
+            border-color: rgba(0,0,0,0.1);
+        }
+        [data-theme="light"] .artist-card {
+            background: rgba(255,255,255,0.9);
+            border-color: rgba(0,0,0,0.08);
+            color: #1b1b1b;
         }
 
-        .testi-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 14px
+        /* ▼ Testimonials */
+        .testimonials {
+            padding: 16px 0 36px;
+            border-top: 1px solid var(--border);
+        }
+
+        .testi-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .testi-eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+            display: inline-flex;
+        }
+
+        .testi-title {
+            margin: 0;
+            font-size: clamp(20px, 3.2vw, 26px);
+        }
+
+        .testi-marquee {
+            position: relative;
+            overflow-x: auto;
+            border-radius: 18px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: rgba(14, 14, 14, 0.72);
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            touch-action: pan-y;
+            overscroll-behavior-x: contain;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        [data-theme="light"] .testi-marquee { background: rgba(255,255,255,0.7); border-color: rgba(0,0,0,0.1); }
+        .testi-marquee.is-dragging { cursor: grabbing; }
+        .testi-marquee.is-dragging a { pointer-events: none; }
+        .testi-marquee::-webkit-scrollbar { display:none; }
+
+        .testi-controls {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .testi-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(20,20,20,0.6);
+            color: var(--fg);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .2s ease, border-color .2s ease, transform .12s ease;
+        }
+        .testi-btn:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.36);
+            transform: translateY(-1px);
+        }
+        [data-theme="light"] .testi-btn {
+            background: #ffffff;
+            color: #1b1b1b;
+            border-color: rgba(0,0,0,0.18);
+        }
+
+        .testi-track {
+            display: flex;
+            width: max-content;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        .testi-set {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
         }
 
         .success-stories {
@@ -326,33 +718,46 @@
         }
 
         .success-tab.active {
-            background: rgba(99, 102, 241, 0.2);
-            color: var(--fg);
-            border-color: rgba(99, 102, 241, 0.4);
+            background: var(--btn);
+            color: var(--btn-text);
+            border-color: var(--btn);
         }
 
         .stories-frame {
             position: relative;
             overflow: hidden;
+            cursor: grab;
+            touch-action: pan-y;
+            user-select: none;
         }
 
         .stories-track {
             display: none;
+            overflow: hidden; /* mask overflowing cards */
         }
 
         .stories-track.active {
             display: block;
         }
 
+        /* Default: show current page as grid (fallback when JS not transforming to flow) */
         .stories-slide {
             display: none;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 14px;
         }
+        .stories-slide.current { display: grid; }
 
-        .stories-slide.current {
-            display: grid;
+        /* Flow row: horizontally scrolling cards */
+        .stories-row {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+            will-change: transform;
         }
+
+        /* Make card width consistent for smooth flow */
+        .stories-row .story-card { width: clamp(220px, 28vw, 280px); flex: 0 0 auto; }
 
         .story-card {
             background: var(--card);
@@ -401,75 +806,65 @@
             color: var(--fg);
         }
 
-        .stories-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 18px;
-            gap: 12px;
-            color: var(--muted);
-        }
-
-        .stories-nav {
-            display: flex;
-            gap: 10px;
-        }
-
-        .stories-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--fg);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: background .2s ease, border-color .2s ease;
-        }
-
-        .stories-btn:hover {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: rgba(99, 102, 241, 0.35);
-        }
-
-        .stories-btn:disabled {
-            opacity: .4;
-            cursor: not-allowed;
-        }
+        .stories-controls { display: none !important; }
+        .stories-nav, .stories-btn { display: none !important; }
 
         .t-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 16px;
+            position: relative;
+            background: rgba(232, 232, 232, 0.65);
+            border: 1px solid rgba(0,0,0,0.18);
+            border-radius: 16px;
+            padding: 14px 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 10px
+            justify-content: space-between;
+            gap: 8px;
+            width: clamp(160px, 22vw, 220px);
+            height: clamp(140px, 18vw, 175px);
+            flex: 0 0 auto;
+            color: #0b0b0b;
+            box-shadow: 0 8px 18px rgba(0,0,0,.14);
+            scroll-snap-align: center;
+        }
+
+        .t-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+            background: rgba(17,17,17,0.8);
+            opacity: 0.9;
         }
 
         .t-kind {
-            font-size: 12px;
-            color: #c7d2ff;
-            background: rgba(99, 102, 241, 0.16);
-            border: 1px solid rgba(99, 102, 241, 0.35);
+            font-size: 11px;
+            color: #ffffff;
+            background: #111;
+            border: 1px solid #111;
             border-radius: 999px;
-            padding: 2px 8px;
+            padding: 3px 8px;
             display: inline-flex;
             width: max-content
         }
+        [data-theme="light"] .t-kind { background:#111; border-color:#111; color:#fff; }
 
         .t-title {
             margin: 0;
-            font-size: 16px
+            font-size: 15px;
+            color: #0b0b0b;
+            font-weight: 700;
         }
 
         blockquote {
             margin: 0;
-            color: var(--fg);
-            font-size: 14px;
-            line-height: 1.6
+            color: #111;
+            font-size: 13px;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .t-meta {
@@ -477,13 +872,14 @@
             justify-content: space-between;
             align-items: center;
             gap: 10px;
-            color: var(--muted);
-            font-size: 12px
+            color: #333;
+            font-size: 12px;
+            margin-top: auto;
         }
 
         .stars {
             letter-spacing: 1px;
-            color: #facc15;
+            color: #111;
         }
 
         .sr-only {
@@ -502,11 +898,6 @@
 
             .hero-inner {
                 padding: 96px 0 72px
-            }
-
-            .testi-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px
             }
 
             .stories-slide {
@@ -531,52 +922,6 @@
             font-size: 13px
         }
 
-        /* AB 토글 */
-        .ab-toggle {
-            position: fixed;
-            right: 14px;
-            bottom: 14px;
-            z-index: 40;
-            background: rgba(7, 12, 24, 0.95);
-            color: var(--fg);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 8px;
-            box-shadow: 0 12px 30px rgba(2, 4, 12, .55);
-        }
-
-        .ab-toggle .label {
-            font-size: 12px;
-            opacity: .85;
-            margin-right: 2px
-        }
-
-        .ab-btn {
-            background: transparent;
-            color: var(--muted);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background .2s ease, color .2s ease, border-color .2s ease;
-        }
-
-        .ab-btn:hover {
-            background: rgba(99, 102, 241, 0.16);
-            color: var(--fg);
-            border-color: rgba(99, 102, 241, 0.35);
-        }
-
-        .ab-btn.active {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
         /* Skip link for a11y */
         .skip {
             position: absolute;
@@ -594,7 +939,7 @@
             padding: 8px 12px;
             margin: 8px;
             background: var(--accent);
-            color: #fff;
+            color: #1b130f;
             border-radius: 8px
         }
     </style>
@@ -609,86 +954,402 @@
 @endphp
     <a class="skip" href="#main">본문 바로가기</a>
 
-    <header aria-label="상단 내비게이션">
-        <div class="container nav">
-            <a class="brand" href="{{ url('/') }}" aria-label="Encore 홈" aria-current="page">
-                <span aria-hidden="true" style="display:inline-flex;width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#ec4899);"></span>
-                <span>Encore</span>
-            </a>
-            <div class="nav-right">
-                @if($storyGroups->isNotEmpty())
-                <a class="nav-link" href="#success-stories">성공 사례</a>
-                @endif
-                <a class="nav-link" href="{{ route('inquiry.create') }}">문의</a>
-                <span class="badge" aria-label="베타 배지">BETA</span>
-            </div>
-        </div>
-    </header>
+    @include('public.partials.header')
 
     <main id="main" aria-live="polite">
+        @if(isset($banners) && $banners->isNotEmpty())
+        <section class="banner-area" aria-label="메인 배너" id="encMainBanner">
+          <style>
+            .bn-wrap{ max-width: 920px; margin: 0 auto; position:relative; }
+            .bn-viewport{ overflow:hidden; border-radius:14px; border:1px solid var(--border); background: var(--card); position:relative; }
+            .bn-track{ display:flex; transition: transform .35s ease; }
+            .bn-item{ flex: 0 0 100%; display:block; text-align:center; }
+            .bn-item img{ display:block; max-width:100%; height:auto; }
+            .bn-nav{ position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
+            .bn-btn{ pointer-events:auto; width:40px; height:40px; border-radius:999px; border:1px solid var(--border); background: rgba(15,23,41,.8); color: var(--fg); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; }
+            .bn-btn:hover{ background: rgba(243,198,82,.18); border-color: var(--chip-border); }
+            [data-theme="light"] .bn-btn{ background:#ffffff; color:#1b1b1b; border-color:#d9d4cc; }
+            [data-theme="light"] .bn-btn:hover{ background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+            /* Floating close bar at bottom center */
+            .bn-closebar{ position:absolute; left:50%; transform:translateX(-50%); bottom:8px; display:flex; justify-content:center; width:100%; pointer-events:none; z-index:2; }
+            .bn-closebar .bn-toggle{ pointer-events:auto; }
+            .bn-toggle{ display:inline-flex; align-items:center; gap:6px; background: rgba(243,198,82,.18); border:1px solid var(--chip-border); color: var(--fg); border-radius:999px; padding:6px 12px; cursor:pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
+            .bn-toggle:hover{ background: rgba(243,198,82,.28); }
+            /* Light theme: solid accent for clear contrast */
+            [data-theme="light"] .bn-toggle{ background: var(--accent); border-color: var(--accent); color:#1b130f; }
+            [data-theme="light"] .bn-toggle:hover{ background: var(--accent-hover); border-color: var(--accent-hover); color:#1b130f; }
+            .bn-toggle .chev{ transition: transform .2s ease; }
+            .bn-reopen{ position: sticky; top: 0; display:none; justify-content:center; padding:8px 0; }
+            [data-collapsed="true"] .bn-wrap{ display:none; }
+            [data-collapsed="true"] .bn-reopen{ display:flex; }
+            [data-collapsed="true"] .bn-toggle .chev{ transform: rotate(180deg); }
+            /* Section spacing: add symmetric breathing room */
+            .banner-area{ padding: 8px 0 16px; }
+          </style>
+          <div class="bn-wrap">
+            <div class="bn-viewport" id="bnViewport">
+              <div class="bn-track" id="bnTrack">
+                @foreach($banners as $b)
+                  @php $img = $b->image_path ? asset('storage/'.$b->image_path) : null; @endphp
+                  @if($img)
+                    <a class="bn-item" href="{{ $b->link_url ?: '#' }}" @if($b->link_url) target="_blank" rel="noopener" @endif>
+                      <img src="{{ $img }}" alt="{{ $b->title }}">
+                    </a>
+                  @endif
+                @endforeach
+              </div>
+              @if($banners->count() > 1)
+              <div class="bn-nav" aria-hidden="true">
+                <button class="bn-btn" type="button" id="bnPrev" aria-label="이전">‹</button>
+                <button class="bn-btn" type="button" id="bnNext" aria-label="다음">›</button>
+              </div>
+              @endif
+              <div class="bn-closebar" aria-hidden="false">
+                <button class="bn-toggle" type="button" id="bnCloseBtn" aria-label="배너 닫기"><span class="chev">▴</span> 배너 닫기</button>
+              </div>
+            </div>
+          </div>
+          <div class="bn-reopen" id="bnReopen"><button class="bn-toggle" type="button"><span class="chev">▾</span> 배너 열기</button></div>
+          <script>
+            (function(){
+              const key='enc_banner_closed';
+              const sec=document.getElementById('encMainBanner');
+              const wrap=sec?.querySelector('.bn-wrap');
+              const reopen=document.getElementById('bnReopen');
+              const isClosed=()=>{ try{return localStorage.getItem(key)==='1';}catch(e){return false;} };
+              const setClosed=(v)=>{ try{localStorage.setItem(key, v?'1':'0');}catch(e){} };
+              function applyVis(){ if(!sec) return; sec.setAttribute('data-collapsed', isClosed() ? 'true' : 'false'); }
+              applyVis();
+              document.getElementById('bnCloseBtn')?.addEventListener('click', (ev)=>{ ev.preventDefault(); setClosed(true); applyVis(); });
+              reopen?.querySelector('button')?.addEventListener('click', (ev)=>{ ev.preventDefault(); setClosed(false); applyVis(); });
+
+              // slider
+              const track=document.getElementById('bnTrack');
+              const vp=document.getElementById('bnViewport');
+              const items=track?Array.from(track.children):[];
+              let idx=0; function clamp(i){ return (i+items.length)%items.length; }
+              function go(i){ idx=clamp(i); const w = vp?.clientWidth || 0; const x = -idx * w; track.style.transform = 'translateX('+x+'px)'; }
+              window.addEventListener('resize', ()=>go(idx));
+              document.getElementById('bnPrev')?.addEventListener('click', ()=>go(idx-1));
+              document.getElementById('bnNext')?.addEventListener('click', ()=>go(idx+1));
+              // init
+              if(track){ go(0); }
+            })();
+          </script>
+        </section>
+        @endif
         <section class="hero" aria-labelledby="home-title">
+            <div class="hero-media" aria-hidden="true">
+                <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="{{ asset('videos/hero-poster.jpg') }}">
+                    <source src="{{ asset('videos/hero.webm') }}" type="video/webm">
+                    <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
+                </video>
+            </div>
             <div class="container hero-inner">
-                <h1 id="home-title"><span id="copy-title">행사에 딱 맞는 아티스트,<br>바로 추천받으세요.</span></h1>
+                <h1 id="home-title"><span id="copy-title">견적 비교부터 계약까지<br>한 번에</span></h1>
                 <p id="copy-desc">
-                    간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해
-                    공유 링크로 전달합니다. 필요하면 언제든 새 링크로 회수·재발급도 가능해요.
+                    복잡한 커뮤니케이션 없이, 필요한 인원만 딱
                 </p>
-                <div class="cta" role="group" aria-label="주요 작업">
-                    <a id="copy-cta" class="btn btn-primary" href="{{ route('inquiry.create') }}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 5v14M5 12h14" />
-                        </svg>
-                        <span class="cta-text">문의하기</span>
-                    </a>
-                    <a class="btn btn-ghost" href="{{ url('/r/example') }}" aria-label="공유 예시 페이지 (샘플)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16v16H4z" />
-                            <path d="M4 9h16" />
-                        </svg>
-                        공유 예시 보기
-                    </a>
+                <style>
+                  .optgrid{
+                    position: relative;
+                    display: grid;
+                    place-items: center;
+                    margin-top: 18px;
+                    min-height: 220px;
+                    perspective: 1000px;
+                  }
+                  .optcard{
+                    --slot: 0;
+                    --shift: clamp(140px, 20vw, 260px);
+                    --tilt: 10deg;
+                    --opt-bg: var(--card);
+                    --opt-border: var(--border);
+                    --opt-ring: rgba(243,198,82,.35);
+                    --opt-ring-soft: rgba(243,198,82,.2);
+                    --opt-btn: var(--btn);
+                    --opt-btn-hover: var(--btn-hover);
+                    --opt-btn-text: var(--btn-text);
+                    position: absolute;
+                    width: min(320px, 90vw);
+                    min-height: 182px;
+                    border: 1px solid var(--opt-border);
+                    border-radius: 18px;
+                    background: var(--opt-bg);
+                    padding: 18px 18px 14px;
+                    cursor: pointer;
+                    transition: transform .6s cubic-bezier(0.2,0.8,0.2,1), box-shadow .25s ease, border-color .25s ease, filter .25s ease;
+                    transform: translateX(calc(var(--slot) * var(--shift))) rotateY(calc(var(--slot) * var(--tilt)));
+                    box-shadow: 0 14px 28px rgba(0,0,0,.42);
+                    text-decoration: none;
+                    color: inherit;
+                    filter: saturate(0.78) brightness(0.7);
+                    transform-style: preserve-3d;
+                    text-rendering: optimizeLegibility;
+                    opacity: 0.7;
+                  }
+                  .optcard[data-mode="instant"]{
+                    --opt-bg: linear-gradient(160deg, rgba(243,198,82,0.3), rgba(12,12,12,0.82));
+                    --opt-border: rgba(243,198,82,0.4);
+                  }
+                  .optcard[data-mode="one_day"]{
+                    --opt-bg: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(10,10,10,0.88));
+                    --opt-border: rgba(243,198,82,0.32);
+                  }
+                  .optcard[data-mode="direct"]{
+                    --opt-bg: linear-gradient(160deg, rgba(243,198,82,0.22), rgba(10,10,10,0.9));
+                    --opt-border: rgba(243,198,82,0.36);
+                  }
+                  [data-theme="light"] .optcard[data-mode="instant"]{
+                    --opt-bg: linear-gradient(160deg, rgba(243,198,82,0.3), rgba(255,255,255,0.95));
+                    --opt-border: rgba(243,198,82,0.5);
+                  }
+                  [data-theme="light"] .optcard[data-mode="one_day"]{
+                    --opt-bg: linear-gradient(160deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95));
+                    --opt-border: rgba(243,198,82,0.4);
+                  }
+                  [data-theme="light"] .optcard[data-mode="direct"]{
+                    --opt-bg: linear-gradient(160deg, rgba(243,198,82,0.22), rgba(255,255,255,0.95));
+                    --opt-border: rgba(243,198,82,0.45);
+                  }
+                  .optcard::before{
+                    content:"";
+                    position:absolute;
+                    left:50%;
+                    bottom:-14px;
+                    width:72%;
+                    height:18px;
+                    transform: translateX(-50%);
+                    border-radius:999px;
+                    background: radial-gradient(circle at center, rgba(243,198,82,.45), rgba(243,198,82,0) 70%);
+                    opacity:0;
+                    filter: blur(1px);
+                    transition: opacity .25s ease, transform .25s ease;
+                  }
+                  .optcard::after{
+                    content:"";
+                    position:absolute;
+                    inset:-8px;
+                    border-radius:22px;
+                    border:1px solid transparent;
+                    opacity:0;
+                    transition: opacity .25s ease;
+                    pointer-events:none;
+                  }
+                  .optcard[data-slot="-1"]{ --slot:-1; z-index:1; }
+                  .optcard[data-slot="0"]{
+                    --slot:0;
+                    z-index:3;
+                    border-color: var(--opt-border);
+                    filter: saturate(1) brightness(1.05);
+                    box-shadow: 0 24px 50px rgba(0,0,0,.55);
+                    min-height: 198px;
+                    padding: 18px 18px 16px;
+                    opacity: 1;
+                  }
+                  .optcard[data-slot="0"]::after{
+                    border-color: var(--opt-ring);
+                    box-shadow: 0 0 0 6px var(--opt-ring-soft);
+                    opacity:1;
+                  }
+                  .optcard[data-slot="0"]::before{
+                    opacity:1;
+                    transform: translateX(-50%) scaleX(1.05);
+                  }
+                  .optcard[data-slot="1"]{ --slot:1; z-index:1; }
+                  .optcard:hover{ border-color: var(--opt-border); }
+                  .optcard:focus-visible{
+                    outline:none;
+                    border-color: var(--accent);
+                    box-shadow: 0 0 0 3px rgba(243,198,82,.35), 0 22px 46px rgba(15,23,42,.38);
+                  }
+                  .optcard h3{ margin:0 0 6px; font-size: clamp(18px, 2.2vw, 22px); font-weight: 800; letter-spacing: -0.01em; text-align:center; }
+                  .optcard[data-slot="0"] h3{ font-size: clamp(19px, 2.5vw, 24px); }
+                  .optcard p{ margin:0 0 6px; color:var(--muted); font-size:14px; min-height:32px; text-align:center; }
+                  .optcard .btn{
+                    margin-top: 6px;
+                    border:1px solid var(--opt-btn);
+                    background: var(--opt-btn);
+                    color: var(--opt-btn-text);
+                    transition: transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+                    align-self:center;
+                  }
+                  .optcard .btn:hover{
+                    background: var(--opt-btn-hover);
+                    border-color: var(--opt-btn-hover);
+                    transform: translateY(-1px);
+                    box-shadow: 0 10px 22px rgba(0,0,0,.35), 0 0 0 2px rgba(0,0,0,.12) inset;
+                  }
+                  .optcard-face{
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    text-align:center;
+                    height:100%;
+                    backface-visibility: hidden;
+                  }
+                  .optcard.is-spinning .optcard-face{
+                    animation: optSpin .55s cubic-bezier(0.2,0.8,0.2,1);
+                    transform-origin: center;
+                  }
+                  @keyframes optSpin{
+                    0%{ transform: rotateY(-160deg); }
+                    60%{ transform: rotateY(18deg); }
+                    100%{ transform: rotateY(0); }
+                  }
+                  @media (max-width: 860px){
+                    .optgrid{
+                      position: relative;
+                      display: flex;
+                      gap: 14px;
+                      min-height: auto;
+                      perspective: none;
+                      overflow-x: auto;
+                      padding: 0 18px 12px;
+                      scroll-snap-type: x mandatory;
+                      scroll-padding: 0 18px;
+                      justify-content: flex-start;
+                      scrollbar-width: none;
+                      -webkit-overflow-scrolling: touch;
+                    }
+                    .optgrid::-webkit-scrollbar{ display:none; }
+                    .optcard{
+                      position: relative;
+                      flex: 0 0 84%;
+                      min-width: 240px;
+                      width: auto;
+                      transform: none !important;
+                      filter: none;
+                      scroll-snap-align: center;
+                    }
+                    .optcard h3{ font-size: 16px; }
+                    .optcard p{ font-size: 12px; min-height: 40px; }
+                    .optcard .btn{ height: 34px; padding: 0 10px; font-size: 12px; border-radius: 10px; margin-top: 6px; }
+                    .optcard::after{ display:none; }
+                  }
+                  @media (prefers-reduced-motion: reduce){
+                    .optcard{ transition: none; }
+                    .optcard.is-spinning .optcard-face{ animation: none; }
+                  }
+                </style>
+                <div class="optgrid" id="homeOptGrid" role="tablist" aria-label="문의 옵션">
+                  <div class="optcard active" data-mode="instant" data-slot="0" role="tab" aria-selected="true" tabindex="0">
+                    <div class="optcard-face">
+                      <h3>1초 Set</h3>
+                      <p>옵션 입력 즉시 3가지 추천안 자동 생성. 마음에 들지 않으면 재생성 가능.</p>
+                      <a class="btn" href="{{ route('inquiry.create', ['mode'=>'instant']) }}">추천셋 즉시 생성</a>
+                    </div>
+                  </div>
+                  <div class="optcard" data-mode="one_day" data-slot="1" role="tab" aria-selected="false" tabindex="0">
+                    <div class="optcard-face">
+                      <h3>1일 Set</h3>
+                      <p>요구사항을 작성해 보내주시면 관리자가 큐레이션한 3가지 셋을 1일 내 전달.</p>
+                      <a class="btn" href="{{ route('inquiry.create', ['mode'=>'one_day']) }}">관리자의 추천셋</a>
+                    </div>
+                  </div>
+                  <div class="optcard" data-mode="direct" data-slot="-1" role="tab" aria-selected="false" tabindex="0">
+                    <div class="optcard-face">
+                      <h3>아티스트 맞춤형</h3>
+                      <p>원하는 아티스트를 지정해 섭외 요청하기.</p>
+                      <a class="btn" href="{{ route('inquiry.create', ['mode'=>'direct']) }}">아티스트 지정 섭외</a>
+                    </div>
+                  </div>
                 </div>
+                <script>
+                  (function(){
+                    const grid = document.getElementById('homeOptGrid');
+                    if(!grid) return;
+                    const cards = Array.from(grid.querySelectorAll('.optcard'));
+                    if(!cards.length) return;
+                    let centerIndex = cards.findIndex(c => c.classList.contains('active'));
+                    if(centerIndex < 0) centerIndex = 0;
 
-                <div class="features" aria-label="핵심 기능 소개">
-                    <article class="card">
-                        <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
-                                <path d="M20 6L9 17l-5-5" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3>간편한 문의</h3>
-                            <p>핵심 정보 몇 가지만 입력하면 접수 완료, 진행 상황은 실시간으로 메일로 안내합니다.</p>
-                        </div>
-                    </article>
+                    function applySlots(){
+                      const len = cards.length;
+                      cards.forEach((card, idx) => {
+                        let offset = idx - centerIndex;
+                        if (offset > 1) offset -= len;
+                        if (offset < -1) offset += len;
+                        card.dataset.slot = String(offset);
+                        const active = offset === 0;
+                        card.classList.toggle('active', active);
+                        card.setAttribute('aria-selected', active ? 'true' : 'false');
+                      });
+                    }
 
-                    <article class="card">
-                        <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M12 7v5l3 3" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3>빠른 추천</h3>
-                            <p>요청 조건을 기반으로 MD가 후보를 큐레이션하고, 비교하기 쉬운 카드로 정리해 드립니다.</p>
-                        </div>
-                    </article>
+                    function spin(card){
+                      card.classList.add('is-spinning');
+                      card.addEventListener('animationend', () => {
+                        card.classList.remove('is-spinning');
+                      }, { once: true });
+                    }
 
-                    <article class="card">
-                        <span class="ico" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c7d2ff" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <polyline points="7 10 12 15 17 10" />
-                                <line x1="12" x2="12" y1="15" y2="3" />
-                            </svg>
-                        </span>
-                        <div>
-                            <h3>링크로 공유</h3>
-                            <p>링크로 안전하게 공유하고, 필요하면 즉시 회수·재발급으로 보안과 협업을 모두 잡습니다.</p>
-                        </div>
-                    </article>
-                </div>
+                    function setCenter(card){
+                      const idx = cards.indexOf(card);
+                      if (idx < 0 || idx === centerIndex) return;
+                      centerIndex = idx;
+                      spin(card);
+                      applySlots();
+                      if (window.matchMedia('(max-width: 860px)').matches) {
+                        card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                      }
+                    }
+
+                    grid.addEventListener('click', function(e){
+                      const card = e.target.closest('.optcard');
+                      if(!card) return;
+                      if (e.target.closest('a.btn')) return;
+                      setCenter(card);
+                      e.preventDefault();
+                    });
+
+                    grid.addEventListener('keydown', function(e){
+                      const card = e.target.closest('.optcard');
+                      if(!card) return;
+                      if (e.target.closest('a.btn')) return;
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        setCenter(card);
+                        e.preventDefault();
+                        return;
+                      }
+                      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                        const dir = e.key === 'ArrowLeft' ? -1 : 1;
+                        centerIndex = (centerIndex + dir + cards.length) % cards.length;
+                        const next = cards[centerIndex];
+                        spin(next);
+                        applySlots();
+                        e.preventDefault();
+                      }
+                    });
+
+                    let scrollTimer = 0;
+                    grid.addEventListener('scroll', function(){
+                      if (!window.matchMedia('(max-width: 860px)').matches) return;
+                      clearTimeout(scrollTimer);
+                      scrollTimer = window.setTimeout(() => {
+                        const center = grid.scrollLeft + grid.clientWidth / 2;
+                        let bestIdx = 0;
+                        let bestDist = Infinity;
+                        cards.forEach((card, idx) => {
+                          const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                          const dist = Math.abs(cardCenter - center);
+                          if (dist < bestDist) {
+                            bestDist = dist;
+                            bestIdx = idx;
+                          }
+                        });
+                        if (bestIdx !== centerIndex) {
+                          centerIndex = bestIdx;
+                          applySlots();
+                        }
+                      }, 80);
+                    });
+
+                    applySlots();
+                  })();
+                </script>
+
+                {{-- (삭제) 기능 카드 3개 섹션 --}}
 
             </div>
         </section>
@@ -700,16 +1361,7 @@
                     <div>
                         <span class="success-eyebrow">SUCCESS STORIES</span>
                         <h2 id="success-title" class="success-title">최근 섭외 성공 사례</h2>
-                        <p class="muted" style="margin:8px 0 0; max-width:420px;">실제 고객 프로젝트 중 공개 가능한 일부만 소개합니다. 관리자에서 직접 발행·숨김을 관리할 수 있습니다.</p>
                     </div>
-                    @if($storyGroups->count() > 1)
-                    <div class="success-tabs" role="tablist">
-                        @foreach($storyGroups->keys() as $idx => $group)
-                            @php $slug = Str::slug($group ?: 'story'); @endphp
-                            <button class="success-tab{{ $idx === 0 ? ' active' : '' }}" data-category="{{ $slug }}" role="tab" aria-selected="{{ $idx === 0 ? 'true' : 'false' }}">{{ $group }}</button>
-                        @endforeach
-                    </div>
-                    @endif
                 </div>
 
                 <div class="stories-frame" data-active="{{ Str::slug($firstCategory ?: 'story') }}">
@@ -773,201 +1425,602 @@
         </section>
         @endif
 
+        @if(false)
+        <!-- (삭제됨) 희망 아티스트 직접 요청 섹션 -->
+        @endif
+
+        <!-- ▼ 섭외 가능 아티스트 섹션 -->
+        @php
+            $artistTabs = [
+                ['slug' => 'music', 'label' => '음악'],
+                ['slug' => 'mc', 'label' => '사회(MC)'],
+                ['slug' => 'dance', 'label' => '댄스'],
+                ['slug' => 'performance', 'label' => '퍼포먼스'],
+                ['slug' => 'plan', 'label' => '기획공연'],
+                ['slug' => 'celebrity', 'label' => '셀럽'],
+            ];
+            $artistBuckets = [];
+            try {
+                if (class_exists(\App\Models\Artist::class) && \Illuminate\Support\Facades\Schema::hasTable('artists')) {
+                    $disciplines = collect();
+                    if (class_exists(\App\Models\Discipline::class) && \Illuminate\Support\Facades\Schema::hasTable('disciplines')) {
+                        $disciplines = \App\Models\Discipline::whereIn('slug', collect($artistTabs)->pluck('slug')->all())->get()->keyBy('slug');
+                    }
+                    foreach ($artistTabs as $tab) {
+                        $query = \App\Models\Artist::query();
+                        if (\Illuminate\Support\Facades\Schema::hasColumn('artists', 'active')) {
+                            $query->where('active', true);
+                        }
+                        if ($disciplines->has($tab['slug'])) {
+                            $query->where('discipline_id', $disciplines[$tab['slug']]->id);
+                        }
+                        $artistBuckets[$tab['slug']] = $query->inRandomOrder()->take(12)->get();
+                    }
+                } else {
+                    foreach ($artistTabs as $tab) {
+                        $artistBuckets[$tab['slug']] = collect();
+                    }
+                }
+            } catch (\Throwable $e) {
+                foreach ($artistTabs as $tab) {
+                    $artistBuckets[$tab['slug']] = collect();
+                }
+            }
+        @endphp
+        <section class="artist-showcase" aria-labelledby="artist-title">
+            <div class="container">
+                <div class="artist-head">
+                    <div>
+                        <span class="artist-eyebrow">LINEUP</span>
+                        <h2 id="artist-title" class="artist-title"><a href="https://encore-unlh.onrender.com/artists">섭외 가능 아티스트</a></h2>
+                    </div>
+                    <div class="artist-actions-row">
+                        <div class="artist-tabs" role="tablist" aria-label="섭외 가능 아티스트 분류">
+                            @foreach($artistTabs as $idx => $tab)
+                                <button
+                                    class="artist-tab{{ $idx === 0 ? ' active' : '' }}"
+                                    type="button"
+                                    id="artist-tab-{{ $tab['slug'] }}"
+                                    data-target="{{ $tab['slug'] }}"
+                                    role="tab"
+                                    aria-selected="{{ $idx === 0 ? 'true' : 'false' }}"
+                                    aria-controls="artist-panel-{{ $tab['slug'] }}"
+                                >{{ $tab['label'] }}</button>
+                            @endforeach
+                        </div>
+                        <div class="artist-controls" role="group" aria-label="섭외 가능 아티스트 이동">
+                            <button class="artist-btn" type="button" id="artistPrev" aria-label="이전">‹</button>
+                            <button class="artist-btn" type="button" id="artistNext" aria-label="다음">›</button>
+                        </div>
+                    </div>
+                </div>
+                @foreach($artistTabs as $idx => $tab)
+                    @php $list = $artistBuckets[$tab['slug']] ?? collect(); @endphp
+                    <div
+                        class="artist-marquee{{ $idx === 0 ? ' active' : '' }}"
+                        id="artist-panel-{{ $tab['slug'] }}"
+                        role="tabpanel"
+                        aria-labelledby="artist-tab-{{ $tab['slug'] }}"
+                        data-key="{{ $tab['slug'] }}"
+                    >
+                        <div class="artist-track" data-key="{{ $tab['slug'] }}">
+                            <div class="artist-set" role="list">
+                                @forelse($list as $artist)
+                                    @php
+                                        $img = $artist->image_url ?? ($artist->image_path ? asset('storage/'.$artist->image_path) : ($artist->image ?? null));
+                                    @endphp
+                                    <a class="artist-card" href="{{ route('artist.show', ['artist'=>$artist->id]) }}" role="listitem">
+                                        <div class="artist-thumb">
+                                            @if($img)
+                                                <img src="{{ $img }}" alt="{{ $artist->name }} 이미지" loading="lazy" decoding="async" referrerpolicy="no-referrer">
+                                            @else
+                                                <img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Crect width='100%25' height='100%25' fill='%231a1a1a'/%3E%3C/svg%3E">
+                                            @endif
+                                        </div>
+                                        <div class="artist-name">{{ $artist->name ?? '아티스트' }}</div>
+                                        <div class="artist-meta">{{ $tab['label'] }}</div>
+                                    </a>
+                                @empty
+                                    <div class="artist-card" role="listitem">
+                                        <div class="artist-thumb"></div>
+                                        <div class="artist-name">준비중</div>
+                                        <div class="artist-meta">{{ $tab['label'] }}</div>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+
         <!-- ▼ 신규: 샘플 문의/후기 섹션 -->
+        @php
+            $fallbackTestimonials = collect([
+                [
+                    'kind' => '샘플 문의',
+                    'title' => '대학 축제 · 힙합/R&B · 1,500만 원',
+                    'body' => '9월 말 저녁 타임, 40분 내외 공연. 남녀 혼성 혹은 콜라보 가능 아티스트 위주로 후보 부탁드립니다.',
+                    'meta' => '예상 응답: 익일 오전 후보 6팀',
+                    'rating' => 4.8,
+                ],
+                [
+                    'kind' => '후기',
+                    'title' => '기업 세미나 애프터파티',
+                    'body' => '내부 승인까지 시간이 촉박했는데, 링크로 후보 공유가 빨라서 결정이 쉬웠습니다. 예산 범위도 명확했어요.',
+                    'meta' => '마케팅팀 B실장',
+                    'rating' => 5.0,
+                ],
+                [
+                    'kind' => '후기',
+                    'title' => '리테일 팝업 기념 공연',
+                    'body' => '타깃 연령대에 맞춘 추천이 정확했습니다. 공유 링크 회수/재발급으로 보안 걱정도 줄었어요.',
+                    'meta' => '브랜드 매니저 K',
+                    'rating' => 4.9,
+                ],
+            ])->map(fn($item) => (object) $item);
+            $testiItems = (isset($testimonials) && $testimonials->isNotEmpty()) ? $testimonials : $fallbackTestimonials;
+        @endphp
         <section class="testimonials" aria-labelledby="testi-title">
             <div class="container">
-                <h2 id="testi-title" class="sr-only">고객 문의 샘플 및 후기</h2>
-                <div class="testi-grid" role="list">
-                    <!-- 1) 샘플 문의 -->
-                    <article class="t-card" role="listitem" aria-labelledby="t1-title">
-                        <span class="t-kind" aria-label="유형">샘플 문의</span>
-                        <h3 id="t1-title" class="t-title">대학 축제 · 힙합/R&B · 1,500만 원</h3>
-                        <blockquote cite="#" aria-label="문의 상세">
-                            9월 말 저녁 타임, 40분 내외 공연. 남녀 혼성 혹은 콜라보 가능 아티스트 위주로 후보 부탁드립니다.
-                        </blockquote>
-                        <div class="t-meta">
-                            <span>예상 응답: 익일 오전 후보 6팀</span>
-                            <span class="stars" aria-label="만족도 예시 별점 5점 만점 4.8점">★★★★★<span class="sr-only">평균 4.8/5</span></span>
+                <div class="testi-head">
+                    <div>
+                        <span class="testi-eyebrow">Samples</span>
+                        <h2 id="testi-title" class="testi-title">샘플 문의/후기</h2>
+                    </div>
+                    <div class="testi-controls" role="group" aria-label="샘플 문의/후기 이동">
+                        <button class="testi-btn" type="button" id="testiPrev" aria-label="이전">‹</button>
+                        <button class="testi-btn" type="button" id="testiNext" aria-label="다음">›</button>
+                    </div>
+                </div>
+                <div class="testi-marquee">
+                    <div class="testi-track" id="testiTrack">
+                        <div class="testi-set" role="list">
+                            @foreach($testiItems as $t)
+                                @php
+                                    $rating = isset($t->rating) ? (float) $t->rating : null;
+                                    $stars = $rating ? str_repeat('★', (int) round($rating)) : '';
+                                @endphp
+                                <article class="t-card" role="listitem" aria-label="{{ $t->title }}">
+                                    <span class="t-kind" aria-label="유형">{{ $t->kind ?? '후기' }}</span>
+                                    <h3 class="t-title">{{ $t->title }}</h3>
+                                    <blockquote cite="#" aria-label="내용">{{ $t->body }}</blockquote>
+                                    @if(!empty($t->meta) || $rating)
+                                        <div class="t-meta">
+                                            @if(!empty($t->meta))
+                                                <span>{{ $t->meta }}</span>
+                                            @endif
+                                            @if($rating)
+                                                <span class="stars" aria-label="별점 5점 만점 {{ number_format($rating, 1) }}점">
+                                                    {{ $stars }}<span class="sr-only">{{ number_format($rating, 1) }}/5</span>
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
+                                </article>
+                            @endforeach
                         </div>
-                    </article>
-
-                    <!-- 2) 후기 -->
-                    <article class="t-card" role="listitem" aria-labelledby="t2-title">
-                        <span class="t-kind" aria-label="유형">후기</span>
-                        <h3 id="t2-title" class="t-title">기업 세미나 애프터파티</h3>
-                        <blockquote cite="#" aria-label="고객 후기">
-                            내부 승인까지 시간이 촉박했는데, 링크로 후보 공유가 빨라서 결정이 쉬웠습니다. 예산 범위도 명확했어요.
-                        </blockquote>
-                        <div class="t-meta">
-                            <span><cite>마케팅팀 B실장</cite></span>
-                            <span class="stars" aria-label="별점 5점">★★★★★<span class="sr-only">5/5</span></span>
-                        </div>
-                    </article>
-
-                    <!-- 3) 후기 -->
-                    <article class="t-card" role="listitem" aria-labelledby="t3-title">
-                        <span class="t-kind" aria-label="유형">후기</span>
-                        <h3 id="t3-title" class="t-title">리테일 팝업 기념 공연</h3>
-                        <blockquote cite="#" aria-label="고객 후기">
-                            타깃 연령대에 맞춘 추천이 정확했습니다. 공유 링크 회수/재발급으로 보안 걱정도 줄었어요.
-                        </blockquote>
-                        <div class="t-meta">
-                            <span><cite>브랜드 매니저 K</cite></span>
-                            <span class="stars" aria-label="별점 5점 만점 4.9점">★★★★★<span class="sr-only">4.9/5</span></span>
-                        </div>
-                    </article>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section aria-label="FAQ 프리뷰">
-            <div class="container" style="padding:24px 0 12px;">
-                <details style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-                    <summary style="cursor:pointer;font-weight:600;color:var(--fg)">견적은 어떻게 산정되나요?</summary>
-                    <div style="margin-top:10px;color:var(--muted);font-size:14px">예산, 일정, 행사 성격 등을 고려해 범위를 제안드리고, 확정 시 상세 견적을 제공합니다.</div>
-                </details>
-                <details style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-                    <summary style="cursor:pointer;font-weight:600;color:var(--fg)">추천 결과는 어디서 볼 수 있나요?</summary>
-                    <div style="margin-top:10px;color:var(--muted);font-size:14px">전용 공개 페이지 링크로 전달됩니다. 필요하면 링크를 회수하거나 재발급할 수 있어요.</div>
-                </details>
-            </div>
-        </section>
+        {{-- 홈 본문 FAQ 프리뷰 제거 (FAQ는 /faq 별도 페이지로 이동) --}}
     </main>
 
-    <footer class="footer" role="contentinfo">
-        <div class="container footer-inner">
-            <span>&copy; {{ date('Y') }} Encore</span>
-            <div style="display:flex;gap:12px;align-items:center">
-                <a href="{{ route('inquiry.create') }}" class="btn btn-ghost" style="padding:8px 10px">문의하기</a>
-            </div>
-        </div>
-    </footer>
-
-    <!-- AB 토글 -->
-    <div class="ab-toggle" role="group" aria-label="카피 A/B 테스트 토글" title="로컬에서만 적용됩니다">
-        <span class="label">Copy</span>
-        <button class="ab-btn" data-variant="A" type="button">A</button>
-        <button class="ab-btn" data-variant="B" type="button">B</button>
-        <button class="ab-btn" data-variant="C" type="button">C</button>
-    </div>
+    @include('public.partials.footer')
 
     <script>
         (function() {
-            const STORAGE_KEY = 'homeCopyVariant';
-            const $title = document.getElementById('copy-title');
-            const $desc = document.getElementById('copy-desc');
-            const $cta = document.getElementById('copy-cta')?.querySelector('.cta-text');
+            const testiTrack = document.getElementById('testiTrack');
+            const testiMarquee = document.querySelector('.testi-marquee');
+            if (testiTrack && testiMarquee) {
+                const prevBtn = document.getElementById('testiPrev');
+                const nextBtn = document.getElementById('testiNext');
+                let baseWidth = 0;
+                const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            const variants = {
-                A: {
-                    title: '행사에 딱 맞는 아티스트,<br>바로 추천받으세요.',
-                    desc: '간단한 요구사항만 알려주시면 예산·콘셉트·타깃에 맞춘 후보를 선별해 공유 링크로 전달합니다. 필요하면 언제든 새 링크로 회수·재발급도 가능해요.',
-                    cta: '문의하기'
-                },
-                B: {
-                    title: '기획서에 꽂히는 섭외 후보,<br>내일 아침까지.',
-                    desc: '핵심 조건만 남기면 밤사이 후보를 추려 정리합니다. 예산 가이드를 함께 드려 의사결정을 빠르게.',
-                    cta: '바로 문의'
-                },
-                C: {
-                    title: '예산·콘셉트·타깃 맞춤 추천,<br>링크로 깔끔하게 공유.',
-                    desc: '공개 링크 발급/회수/재발급까지 한 번에. 내부 검토·외부 공유가 쉬워집니다.',
-                    cta: '추천 받아보기'
-                }
-            };
+                const buildTesti = () => {
+                    const set = testiTrack.querySelector('.testi-set');
+                    if (!set) return;
+                    while (testiTrack.children.length > 1) testiTrack.removeChild(testiTrack.lastChild);
 
-            function applyVariant(key) {
-                const v = variants[key] || variants.A;
-                if ($title) $title.innerHTML = v.title;
-                if ($desc) $desc.textContent = v.desc;
-                if ($cta) $cta.textContent = v.cta;
-                document.querySelectorAll('.ab-btn').forEach(b => {
-                    b.classList.toggle('active', b.dataset.variant === key);
+                    let safety = 0;
+                    while (testiTrack.scrollWidth < testiMarquee.clientWidth * 2 && safety < 6) {
+                        const clone = set.cloneNode(true);
+                        clone.setAttribute('aria-hidden', 'true');
+                        testiTrack.appendChild(clone);
+                        safety += 1;
+                    }
+                    baseWidth = set.scrollWidth || 0;
+                    if (baseWidth === 0) {
+                        baseWidth = Math.max(1, Math.floor(testiTrack.scrollWidth / Math.max(1, testiTrack.children.length)));
+                    }
+                };
+
+                buildTesti();
+                window.addEventListener('load', buildTesti);
+                let rszTimer = 0;
+                window.addEventListener('resize', () => {
+                    clearTimeout(rszTimer);
+                    rszTimer = setTimeout(buildTesti, 150);
                 });
-                try {
-                    localStorage.setItem(STORAGE_KEY, key);
-                } catch (e) {}
+
+                let paused = false;
+                let isDragging = false;
+                let startX = 0;
+                let startScroll = 0;
+                let resumeTimer = 0;
+                const SPEED = 0.35; // px per frame @60fps
+
+                const pause = () => {
+                    paused = true;
+                    clearTimeout(resumeTimer);
+                };
+                const scheduleResume = () => {
+                    clearTimeout(resumeTimer);
+                    resumeTimer = setTimeout(() => { paused = false; }, 1200);
+                };
+
+                const onPointerDown = (e) => {
+                    isDragging = true;
+                    pause();
+                    startX = e.clientX;
+                    startScroll = testiMarquee.scrollLeft;
+                    testiMarquee.classList.add('is-dragging');
+                    testiMarquee.setPointerCapture?.(e.pointerId);
+                };
+                const onPointerMove = (e) => {
+                    if (!isDragging) return;
+                    const delta = e.clientX - startX;
+                    testiMarquee.scrollLeft = startScroll - delta;
+                };
+                const onPointerUp = (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    testiMarquee.classList.remove('is-dragging');
+                    testiMarquee.releasePointerCapture?.(e.pointerId);
+                    scheduleResume();
+                };
+
+                testiMarquee.addEventListener('pointerdown', onPointerDown);
+                testiMarquee.addEventListener('pointermove', onPointerMove);
+                testiMarquee.addEventListener('pointerup', onPointerUp);
+                testiMarquee.addEventListener('pointerleave', onPointerUp);
+                let touchActive = false;
+                let touchStartX = 0;
+                let touchStartY = 0;
+                let touchScroll = 0;
+                testiMarquee.addEventListener('touchstart', (e) => {
+                    if (!e.touches || !e.touches[0]) return;
+                    touchActive = true;
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    touchScroll = testiMarquee.scrollLeft;
+                    pause();
+                    testiMarquee.classList.add('is-dragging');
+                }, { passive: true });
+                testiMarquee.addEventListener('touchmove', (e) => {
+                    if (!touchActive || !e.touches || !e.touches[0]) return;
+                    const deltaX = e.touches[0].clientX - touchStartX;
+                    const deltaY = e.touches[0].clientY - touchStartY;
+                    if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                        touchActive = false;
+                        testiMarquee.classList.remove('is-dragging');
+                        scheduleResume();
+                        return;
+                    }
+                    e.preventDefault();
+                    testiMarquee.scrollLeft = touchScroll - deltaX;
+                }, { passive: false });
+                const onTouchEnd = () => {
+                    touchActive = false;
+                    testiMarquee.classList.remove('is-dragging');
+                    scheduleResume();
+                };
+                testiMarquee.addEventListener('touchend', onTouchEnd);
+                testiMarquee.addEventListener('touchcancel', onTouchEnd);
+                testiMarquee.addEventListener('mouseenter', pause);
+                testiMarquee.addEventListener('mouseleave', scheduleResume);
+                testiMarquee.addEventListener('wheel', () => { pause(); scheduleResume(); }, { passive: true });
+                testiMarquee.addEventListener('scroll', () => { pause(); scheduleResume(); }, { passive: true });
+
+                const getStep = () => {
+                    const card = testiMarquee.querySelector('.t-card');
+                    if (!card) return 200;
+                    const style = window.getComputedStyle(testiTrack);
+                    const gap = parseFloat(style.columnGap || style.gap || '12') || 12;
+                    return card.getBoundingClientRect().width + gap;
+                };
+                const stepScroll = (dir) => {
+                    pause();
+                    const step = getStep() * dir;
+                    testiMarquee.scrollBy({ left: step, behavior: 'smooth' });
+                    scheduleResume();
+                };
+                prevBtn?.addEventListener('click', () => stepScroll(-1));
+                nextBtn?.addEventListener('click', () => stepScroll(1));
+
+                let lastTs = 0;
+                const tick = (ts) => {
+                    if (!prefersReduced && !paused && !isDragging) {
+                        if (!lastTs) lastTs = ts;
+                        const delta = ts - lastTs;
+                        lastTs = ts;
+                        const step = SPEED * (delta / 16.67);
+                        testiMarquee.scrollLeft += step;
+                        if (baseWidth > 0 && testiMarquee.scrollLeft >= baseWidth) {
+                            testiMarquee.scrollLeft -= baseWidth;
+                        }
+                    } else {
+                        lastTs = ts;
+                    }
+                    requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
             }
 
-            const url = new URL(window.location.href);
-            const fromQuery = (url.searchParams.get('ab') || '').toUpperCase();
-            const saved = (() => {
-                try {
-                    return localStorage.getItem(STORAGE_KEY) || '';
-                } catch (e) {
-                    return '';
-                }
-            })();
-            const initial = ['A', 'B', 'C'].includes(fromQuery) ? fromQuery : (['A', 'B', 'C'].includes(saved) ? saved : 'A');
-            applyVariant(initial);
+            const artistTabs = document.querySelectorAll('.artist-tab');
+            const artistPanels = Array.from(document.querySelectorAll('.artist-marquee'));
+            if (artistTabs.length && artistPanels.length) {
+                const panelByKey = new Map(artistPanels.map(p => [p.dataset.key, p]));
+                const artistPrev = document.getElementById('artistPrev');
+                const artistNext = document.getElementById('artistNext');
+                const setActiveArtist = (key) => {
+                    artistTabs.forEach(tab => {
+                        const active = tab.dataset.target === key;
+                        tab.classList.toggle('active', active);
+                        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+                    });
+                    artistPanels.forEach(panel => {
+                        panel.classList.toggle('active', panel.dataset.key === key);
+                        if (panel.dataset.key === key) {
+                            panel.scrollLeft = 0;
+                        }
+                    });
+                };
+                artistTabs.forEach(tab => {
+                    tab.addEventListener('click', () => setActiveArtist(tab.dataset.target));
+                });
+                setActiveArtist(artistTabs[0]?.dataset.target);
 
-            document.querySelectorAll('.ab-btn').forEach(btn => {
-                btn.addEventListener('click', () => applyVariant(btn.dataset.variant));
-            });
+                const prefersReducedArtist = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                const marquees = [];
+                artistPanels.forEach(panel => {
+                    const track = panel.querySelector('.artist-track');
+                    const set = panel.querySelector('.artist-set');
+                    if (!track || !set) return;
+                    const data = { panel, track, set, baseWidth: 0, paused: false, isDragging: false, startX: 0, startScroll: 0, resumeTimer: 0 };
+                    data.scheduleResume = () => {
+                        clearTimeout(data.resumeTimer);
+                        data.resumeTimer = setTimeout(() => { data.paused = false; }, 1200);
+                    };
+                    data.build = () => {
+                        while (track.children.length > 1) track.removeChild(track.lastChild);
+                        let safety = 0;
+                        while (track.scrollWidth < panel.clientWidth * 2 && safety < 6) {
+                            const clone = set.cloneNode(true);
+                            clone.setAttribute('aria-hidden', 'true');
+                            track.appendChild(clone);
+                            safety += 1;
+                        }
+                        data.baseWidth = set.scrollWidth || 0;
+                    };
+                    data.build();
+                    panel.addEventListener('pointerdown', (e) => {
+                        data.isDragging = true;
+                        data.paused = true;
+                        clearTimeout(data.resumeTimer);
+                        data.startX = e.clientX;
+                        data.startScroll = panel.scrollLeft;
+                        panel.classList.add('is-dragging');
+                        panel.setPointerCapture?.(e.pointerId);
+                    });
+                    panel.addEventListener('pointermove', (e) => {
+                        if (!data.isDragging) return;
+                        const delta = e.clientX - data.startX;
+                        panel.scrollLeft = data.startScroll - delta;
+                    });
+                    const endDrag = (e) => {
+                        if (!data.isDragging) return;
+                        data.isDragging = false;
+                        panel.classList.remove('is-dragging');
+                        panel.releasePointerCapture?.(e.pointerId);
+                        data.scheduleResume();
+                    };
+                    panel.addEventListener('pointerup', endDrag);
+                    panel.addEventListener('pointerleave', endDrag);
+                    let tActive = false;
+                    let tStartX = 0;
+                    let tStartY = 0;
+                    let tScroll = 0;
+                    panel.addEventListener('touchstart', (e) => {
+                        if (!e.touches || !e.touches[0]) return;
+                        tActive = true;
+                        data.paused = true;
+                        clearTimeout(data.resumeTimer);
+                        tStartX = e.touches[0].clientX;
+                        tStartY = e.touches[0].clientY;
+                        tScroll = panel.scrollLeft;
+                        panel.classList.add('is-dragging');
+                    }, { passive: true });
+                    panel.addEventListener('touchmove', (e) => {
+                        if (!tActive || !e.touches || !e.touches[0]) return;
+                        const deltaX = e.touches[0].clientX - tStartX;
+                        const deltaY = e.touches[0].clientY - tStartY;
+                        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                            tActive = false;
+                            panel.classList.remove('is-dragging');
+                            data.scheduleResume();
+                            return;
+                        }
+                        e.preventDefault();
+                        panel.scrollLeft = tScroll - deltaX;
+                    }, { passive: false });
+                    const onTouchEndArtist = () => {
+                        tActive = false;
+                        panel.classList.remove('is-dragging');
+                        data.scheduleResume();
+                    };
+                    panel.addEventListener('touchend', onTouchEndArtist);
+                    panel.addEventListener('touchcancel', onTouchEndArtist);
+                    panel.addEventListener('wheel', () => { data.paused = true; data.scheduleResume(); }, { passive: true });
+                    panel.addEventListener('scroll', () => { data.paused = true; data.scheduleResume(); }, { passive: true });
+                    marquees.push(data);
+                });
+                const pauseActive = () => {
+                    const active = marquees.find(m => m.panel.classList.contains('active'));
+                    if (!active) return;
+                    active.paused = true;
+                    clearTimeout(active.resumeTimer);
+                    active.resumeTimer = setTimeout(() => { active.paused = false; }, 1200);
+                };
+                const stepActive = (dir) => {
+                    const panel = document.querySelector('.artist-marquee.active');
+                    if (!panel) return;
+                    const card = panel.querySelector('.artist-card');
+                    if (!card) return;
+                    const gap = 12;
+                    const step = card.getBoundingClientRect().width + gap;
+                    pauseActive();
+                    panel.scrollBy({ left: step * dir, behavior: 'smooth' });
+                };
+                artistPrev?.addEventListener('click', () => stepActive(-1));
+                artistNext?.addEventListener('click', () => stepActive(1));
+                let artistResizeTimer = 0;
+                window.addEventListener('resize', () => {
+                    clearTimeout(artistResizeTimer);
+                    artistResizeTimer = setTimeout(() => { marquees.forEach(m => m.build()); }, 150);
+                });
+                const SPEED = 0.28;
+                const tickArtist = () => {
+                    if (!prefersReducedArtist) {
+                        marquees.forEach(m => {
+                            if (!m.panel.classList.contains('active')) return;
+                            if (m.paused || m.isDragging) return;
+                            m.panel.scrollLeft += SPEED;
+                            if (m.baseWidth > 0 && m.panel.scrollLeft >= m.baseWidth) {
+                                m.panel.scrollLeft -= m.baseWidth;
+                            }
+                        });
+                    }
+                    requestAnimationFrame(tickArtist);
+                };
+                requestAnimationFrame(tickArtist);
+            }
 
             const frame = document.querySelector('.stories-frame');
             if (frame) {
                 const tabs = document.querySelectorAll('.success-tab');
-                const btnPrev = document.querySelector('.stories-btn[data-dir="prev"]');
-                const btnNext = document.querySelector('.stories-btn[data-dir="next"]');
-                const indicator = document.querySelector('.stories-indicator strong');
-                const totalEl = document.querySelector('.stories-total');
-
                 let activeCategory = frame.dataset.active || '';
-                let currentPage = 0;
+                const GAP = 14;
+                const SPEED = 0.35; // px per frame
 
                 const getTrack = (slug) => frame.querySelector(`.stories-track[data-category="${slug}"]`);
                 const allTracks = () => Array.from(frame.querySelectorAll('.stories-track'));
 
-                function updateButtons(track) {
-                    const total = parseInt(track?.dataset.pages || '1', 10);
-                    if (btnPrev) btnPrev.disabled = currentPage <= 0;
-                    if (btnNext) btnNext.disabled = currentPage >= total - 1;
+                let raf = 0;
+                let offset = 0;
+                let baseWidth = 0;
+                let dragging = false;
+                let startX = 0;
+                let startOffset = 0;
+                let row = null;
+
+                function sumWidth(els, count) {
+                    const arr = Array.from(els).slice(0, count);
+                    let w = 0;
+                    arr.forEach((el, idx) => {
+                        w += el.getBoundingClientRect().width;
+                        if (idx < arr.length - 1) w += GAP;
+                    });
+                    return Math.max(1, Math.round(w));
+                }
+
+                function buildRow(track) {
+                    let existing = track.querySelector('.stories-row');
+                    if (existing) return existing;
+                    const originals = Array.from(track.querySelectorAll('.story-card'));
+                    const origCount = originals.length;
+                    if (!origCount) return null;
+                    track.dataset.origCount = String(origCount);
+
+                    const r = document.createElement('div');
+                    r.className = 'stories-row';
+                    originals.forEach(card => r.appendChild(card));
+                    track.querySelectorAll('.stories-slide').forEach(s => s.remove());
+                    track.appendChild(r);
+
+                    baseWidth = sumWidth(r.children, origCount);
+                    const minTotal = frame.clientWidth * 2 + baseWidth;
+                    while (r.scrollWidth < minTotal) {
+                        for (let i = 0; i < origCount; i++) r.appendChild(r.children[i].cloneNode(true));
+                    }
+                    return r;
+                }
+
+                function tick() {
+                    if (!dragging && row) {
+                        offset += SPEED;
+                        if (baseWidth > 0) {
+                            if (offset >= baseWidth) offset -= baseWidth;
+                            row.style.transform = `translateX(${-offset}px)`;
+                        }
+                    }
+                    raf = requestAnimationFrame(tick);
                 }
 
                 function setCategory(slug) {
+                    if (raf) cancelAnimationFrame(raf);
                     const track = getTrack(slug) || getTrack(activeCategory) || allTracks()[0];
                     if (!track) return;
                     activeCategory = track.dataset.category;
                     frame.dataset.active = activeCategory;
-
                     allTracks().forEach(t => t.classList.toggle('active', t === track));
-                    const slides = Array.from(track.querySelectorAll('.stories-slide'));
-                    slides.forEach((slide, idx) => slide.classList.toggle('current', idx === 0));
-                    currentPage = 0;
-                    if (indicator) indicator.textContent = '1';
-                    if (totalEl) totalEl.textContent = track.dataset.pages || '1';
                     tabs.forEach(tab => {
                         const isActive = tab.dataset.category === activeCategory;
                         tab.classList.toggle('active', isActive);
                         tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
                     });
-                    updateButtons(track);
+                    row = buildRow(track);
+                    const orig = parseInt(track.dataset.origCount || '0', 10);
+                    baseWidth = row ? sumWidth(row.children, Math.max(1, orig)) : 0;
+                    offset = 0;
+                    tick();
                 }
 
-                function move(delta) {
-                    const track = getTrack(activeCategory);
-                    if (!track) return;
-                    const slides = Array.from(track.querySelectorAll('.stories-slide'));
-                    const total = parseInt(track.dataset.pages || slides.length || 1, 10);
-                    const next = Math.min(Math.max(currentPage + delta, 0), total - 1);
-                    if (next === currentPage) return;
-                    slides[currentPage]?.classList.remove('current');
-                    slides[next]?.classList.add('current');
-                    currentPage = next;
-                    if (indicator) indicator.textContent = String(currentPage + 1);
-                    updateButtons(track);
-                }
+                tabs.forEach(tab => tab.addEventListener('click', () => {
+                    if (!tab.classList.contains('active')) setCategory(tab.dataset.category);
+                }));
 
-                tabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        if (tab.classList.contains('active')) return;
-                        setCategory(tab.dataset.category);
-                    });
+                frame.addEventListener('pointerdown', (e) => {
+                    dragging = true;
+                    startX = e.clientX;
+                    startOffset = offset;
+                    frame.setPointerCapture?.(e.pointerId);
+                    frame.style.cursor = 'grabbing';
                 });
+                frame.addEventListener('pointermove', (e) => {
+                    if (!dragging || !row) return;
+                    const dx = e.clientX - startX;
+                    offset = startOffset - dx;
+                    if (baseWidth > 0) {
+                        while (offset < 0) offset += baseWidth;
+                        while (offset >= baseWidth) offset -= baseWidth;
+                    }
+                    row.style.transform = `translateX(${-offset}px)`;
+                });
+                ['pointerup','pointercancel','mouseleave'].forEach(evt => frame.addEventListener(evt, (e) => {
+                    dragging = false;
+                    frame.releasePointerCapture?.(e.pointerId);
+                    frame.style.cursor = 'grab';
+                }));
 
-                btnPrev?.addEventListener('click', () => move(-1));
-                btnNext?.addEventListener('click', () => move(1));
+                let rszTimer = 0;
+                window.addEventListener('resize', () => {
+                    clearTimeout(rszTimer);
+                    rszTimer = setTimeout(() => setCategory(activeCategory), 150);
+                });
 
                 setCategory(activeCategory || (allTracks()[0]?.dataset.category || ''));
             }

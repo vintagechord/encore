@@ -4,20 +4,26 @@
 <head>
     <meta charset="utf-8">
     <title>추천안 보기 #{{ $intake->id }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #050912;
-            --surface: #0f1729;
-            --surface-alt: #152033;
-            --border: #1f2b41;
-            --text: #e5ecff;
-            --muted: #98a6c9;
-            --accent: #6366f1;
-            --accent-hover: #818cf8;
+            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(141, 31, 45, 0.35), rgba(11, 9, 10, 0) 60%),
+                radial-gradient(900px 480px at 92% 2%, rgba(243, 198, 82, 0.22), rgba(11, 9, 10, 0) 55%),
+                #0b090a;
+            --surface: #151012;
+            --surface-alt: #1b1316;
+            --border: #2a1c22;
+            --text: #f7f1e9;
+            --muted: #b6a89a;
+            --accent: #f3c652;
+            --accent-hover: #f0b840;
+            --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
         }
 
         body {
-            font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            font-family: var(--font-sans);
             margin: 24px;
             line-height: 1.5;
             background: var(--bg);
@@ -35,12 +41,12 @@
         }
 
         a {
-            color: #8da2fb;
+            color: var(--accent);
             text-decoration: none;
         }
 
         a:hover {
-            color: #b3c0ff;
+            color: var(--accent-hover);
             text-decoration: underline;
         }
 
@@ -50,7 +56,7 @@
             border: 1px solid var(--accent);
             border-radius: 8px;
             background: var(--accent);
-            color: #fff;
+            color: #1b130f;
             text-decoration: none;
             cursor: pointer;
             font-weight: 600;

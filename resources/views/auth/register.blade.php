@@ -1,4 +1,8 @@
 <x-guest-layout>
+    <div class="auth-head">
+        <h1 style="margin:0 0 12px; font-size:22px; letter-spacing:-0.01em">회원가입</h1>
+        <div class="muted" style="margin-bottom:10px">간단한 정보만 입력하면 내 페이지에서 문의 내역을 확인할 수 있어요.</div>
+    </div>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -39,12 +43,14 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-indigo-300 hover:text-indigo-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+        <div class="auth-foot">
+            <div class="auth-links">
+                <a class="auth-link underline text-sm rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-slate-900" href="{{ route('login') }}">
+                    이미 계정이 있으신가요? 로그인
+                </a>
+            </div>
 
-            <x-primary-button class="ms-4">
+            <x-primary-button class="primary">
                 {{ __('Register') }}
             </x-primary-button>
         </div>

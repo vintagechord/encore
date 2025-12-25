@@ -5,19 +5,43 @@
     <meta charset="utf-8">
     <title>링크가 만료되었습니다</title>
     <meta name="robots" content="noindex, nofollow">
+    <meta name="color-scheme" content="dark light">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
     <style>
         :root {
-            --bg: #050912;
-            --fg: #e5ecff;
-            --muted: #97a6c9;
-            --card: #0f1729;
-            --border: #1f2b41;
-            --accent: #6366f1;
-            --accent-hover: #818cf8;
+            --bg: radial-gradient(1200px 520px at 12% -8%, rgba(243, 198, 82, 0.18), rgba(10, 10, 10, 0) 60%),
+                radial-gradient(900px 480px at 92% 2%, rgba(255, 255, 255, 0.05), rgba(10, 10, 10, 0) 55%),
+                #0a0a0a;
+            --fg: #f7f4ee;
+            --muted: #b4b0a8;
+            --card: #121212;
+            --border: #2a2a2a;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
+            --font-sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg: radial-gradient(980px 360px at 10% -6%, rgba(243, 198, 82, 0.14), rgba(255, 255, 255, 0) 60%),
+                linear-gradient(180deg, #ffffff 0%, #f7f3ea 100%);
+            --fg: #1c1b19;
+            --muted: #6b655c;
+            --card: #ffffff;
+            --border: #e3ddd2;
+            --accent: #f3c652;
+            --accent-hover: #e6b940;
+            --btn: #f3c652;
+            --btn-hover: #e6b940;
+            --btn-text: #17120a;
         }
 
         body {
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Apple SD Gothic Neo, Noto Sans KR, sans-serif;
+            font-family: var(--font-sans);
             line-height: 1.55;
             margin: 40px;
             color: var(--fg);
@@ -51,16 +75,16 @@
             margin-top: 14px;
             padding: 8px 12px;
             border-radius: 8px;
-            background: var(--accent);
-            color: #fff;
+            background: var(--btn);
+            color: var(--btn-text);
             text-decoration: none;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--btn);
             transition: background .2s ease, border-color .2s ease;
         }
 
         a.btn:hover {
-            background: var(--accent-hover);
-            border-color: var(--accent-hover);
+            background: var(--btn-hover);
+            border-color: var(--btn-hover);
         }
 
         code {
@@ -73,6 +97,7 @@
 </head>
 
 <body>
+    <script>(function(){try{var t=(localStorage.getItem('enc_theme')==='light') ? 'light' : 'dark';document.documentElement.setAttribute('data-theme', t);}catch(e){}})();</script>
     <h1>링크가 만료되었습니다</h1>
     <div class="card">
         <p>요청하신 공개 링크는 더 이상 유효하지 않습니다.</p>

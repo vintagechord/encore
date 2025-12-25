@@ -45,4 +45,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function payments()
+    {
+        return $this->hasMany(\App\Models\Payment::class);
+    }
+
+    public function favoriteArtists()
+    {
+        return $this->belongsToMany(\App\Models\Artist::class, 'artist_favorites')->withTimestamps();
+    }
 }

@@ -90,8 +90,8 @@
             --border: #e3ddd2;
             --chip: rgba(243, 198, 82, 0.2);
             --chip-border: rgba(243, 198, 82, 0.45);
-            --hero-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.65) 70%, rgba(255, 255, 255, 0.3) 100%);
-            --hero-video-filter: saturate(1.02) contrast(1.01) brightness(1.08);
+            --hero-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.25) 65%, rgba(255, 255, 255, 0.08) 100%);
+            --hero-video-filter: saturate(1.12) contrast(1.08) brightness(0.98);
         }
 
         * {
@@ -264,7 +264,11 @@
         .hero-inner {
             position: relative;
             z-index: 1;
-            padding: 72px 0 56px
+            padding: 72px 0 56px;
+            display: grid;
+            gap: 14px;
+            justify-items: center;
+            text-align: center;
         }
 
         .hero-media {
@@ -294,24 +298,64 @@
             .hero-video { display: none; }
         }
 
-        .hero h1 {
-            margin: 0 0 12px;
-            font-size: clamp(28px, 5vw, 44px);
-            line-height: 1.12;
-            letter-spacing: -0.03em;
-            font-weight: 700;
-            font-family: var(--font-display);
+        .hero-copy {
+            display: grid;
+            gap: 10px;
+            justify-items: center;
+            max-width: min(720px, 92vw);
         }
-        #copy-title{
-            font-family: var(--font-sans);
+
+        .hero-title {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-kicker {
+            font-size: clamp(18px, 3.2vw, 28px);
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--muted);
+            line-height: 1.25;
+        }
+
+        .hero-highlight {
+            position: relative;
+            display: inline-block;
+            font-size: clamp(34px, 7vw, 64px);
             font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            padding: 2px 8px;
+            z-index: 0;
+        }
+
+        .hero-highlight::after {
+            content: "";
+            position: absolute;
+            left: 6px;
+            right: 6px;
+            bottom: 8px;
+            height: 10px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(243, 198, 82, 0.35), rgba(243, 198, 82, 0));
+            z-index: -1;
+        }
+
+        [data-theme="light"] .hero-highlight::after {
+            background: linear-gradient(90deg, rgba(243, 198, 82, 0.55), rgba(243, 198, 82, 0.15));
         }
 
         .hero p {
-            margin: 0 0 24px;
+            margin: 0;
             color: var(--muted);
-            font-size: clamp(16px, 2.8vw, 18px)
+            font-size: clamp(15px, 2.6vw, 18px);
+        }
+
+        #copy-desc {
+            max-width: 480px;
         }
         @media (max-width: 768px) {
             #copy-desc { display: none; }
@@ -1046,10 +1090,15 @@
                 </video>
             </div>
             <div class="container hero-inner">
-                <h1 id="home-title"><span id="copy-title">견적 비교부터 계약까지<br>한 번에</span></h1>
-                <p id="copy-desc">
-                    복잡한 커뮤니케이션 없이, 필요한 인원만 딱
-                </p>
+                <div class="hero-copy">
+                    <h1 id="home-title" class="hero-title">
+                        <span class="hero-kicker">견적 비교부터 계약까지</span>
+                        <span id="copy-title" class="hero-highlight">한 번에</span>
+                    </h1>
+                    <p id="copy-desc">
+                        복잡한 커뮤니케이션 없이, 필요한 인원만 딱
+                    </p>
+                </div>
                 <style>
                   .optgrid{
                     position: relative;

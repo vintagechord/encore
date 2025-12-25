@@ -21,6 +21,18 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\NoticeController as PublicNoticeController;
 use App\Http\Controllers\FavoriteController;
 
+Route::get('/healthz', function () {
+    return response('ok', 200)
+        ->header('Content-Type', 'text/plain; charset=UTF-8')
+        ->header('Cache-Control', 'no-store');
+})->withoutMiddleware([
+    \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+    \Illuminate\Session\Middleware\StartSession::class,
+    \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    \Illuminate\Cookie\Middleware\EncryptCookies::class,
+    \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+]);
+
 Route::get('/', PublicHomeController::class)->name('home');
 // FAQ & Notices
 Route::view('/about', 'public.about')->name('about');

@@ -1,1 +1,1 @@
-<img src="{{ asset('image/encore-logo.svg') }}" alt="Encore" {{ $attributes }}>
+<img src="{{ asset('image/encore-logo-v2.svg') }}" alt="Encore" {{ $attributes }}>

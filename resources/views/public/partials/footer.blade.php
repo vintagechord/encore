@@ -21,7 +21,7 @@
 <footer class="enc-footer" role="contentinfo">
   <div class="enc-footer-inner">
     <a class="brand" href="{{ route('home') }}" aria-label="Encore 홈">
-      <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
+      <img class="brand-logo" src="{{ asset('image/encore-logo-v2.svg') }}" alt="Encore">
     </a>
     <nav class="navlinks" aria-label="바로가기">
       <a href="{{ route('about') }}">About</a>

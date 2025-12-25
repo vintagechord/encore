@@ -287,7 +287,7 @@
   <div class="enc-container enc-nav">
     <div class="enc-left">
       <a class="enc-brand" href="{{ url('/') }}" aria-label="Encore 홈">
-        <img class="brand-logo" src="{{ asset('image/encore-logo.svg') }}" alt="Encore">
+        <img class="brand-logo" src="{{ asset('image/encore-logo-v2.svg') }}" alt="Encore">
       </a>
       <form class="enc-search" action="{{ route('artists.browse') }}" method="get" role="search" aria-label="아티스트 검색">
         <input type="search" name="q" value="{{ request()->query('q') }}" placeholder="아티스트 검색" aria-label="아티스트 검색">

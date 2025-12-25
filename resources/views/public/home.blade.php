@@ -811,7 +811,7 @@
 
         .t-card {
             position: relative;
-            background: rgba(245, 245, 245, 0.82);
+            background: rgba(232, 232, 232, 0.65);
             border: 1px solid rgba(0,0,0,0.18);
             border-radius: 16px;
             padding: 14px 14px 16px;
@@ -1472,7 +1472,7 @@
                 <div class="artist-head">
                     <div>
                         <span class="artist-eyebrow">LINEUP</span>
-                        <h2 id="artist-title" class="artist-title"><a href="{{ route('inquiry.create') }}">섭외 가능 아티스트</a></h2>
+                        <h2 id="artist-title" class="artist-title"><a href="https://encore-unlh.onrender.com/artists">섭외 가능 아티스트</a></h2>
                     </div>
                     <div class="artist-actions-row">
                         <div class="artist-tabs" role="tablist" aria-label="섭외 가능 아티스트 분류">
